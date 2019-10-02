@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">안드로이드 POS 예제</string>
+    <string name="toCalc">판매</string>
+    <string name="toOffer">납품</string>
+    <string name="toOption">설정</string>
+</resources>
