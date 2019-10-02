@@ -12,9 +12,6 @@ public class MainActivity extends AppCompatActivity {
     //과제용 임시코드
     Button[] buttons = new Button[3];
     TextView title;
-    public boolean onTouchForAssignment(View view, MotionEvent motionEvent) {
-        return false;
-    }
     //과제용 임시코드 끝
 
     @SuppressLint("ClickableViewAccessibility")
