@@ -48,6 +48,13 @@
             android:text="@string/toOffer" />
 
         <Button
+            android:id="@+id/toStatis"
+            style="@style/MainMenuButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Statistics" />
+
+        <Button
             android:id="@+id/toOption"
             style="@style/MainMenuButtons"
             android:layout_width="match_parent"

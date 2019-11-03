@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class OptionActivity extends AppCompatActivity {
+public class StatisticsActivity extends AppCompatActivity {
     Button buttons[] = new Button[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_option);
+        setContentView(R.layout.activity_statistics);
 
         buttons[0] = findViewById(R.id.Confirm);
         buttons[1] = findViewById(R.id.ExitButton);

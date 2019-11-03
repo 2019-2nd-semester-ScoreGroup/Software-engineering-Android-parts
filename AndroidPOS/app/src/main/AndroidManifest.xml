@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBarAppTheme">
+        <activity android:name=".StatisticsActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoadingActivity">
             <intent-filter>
@@ -17,10 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".CalculationActivity" />
         <activity android:name=".OptionActivity" />
-        <activity android:name=".OfferActivity"></activity>
+        <activity android:name=".OfferActivity" />
     </application>
 
 </manifest>
