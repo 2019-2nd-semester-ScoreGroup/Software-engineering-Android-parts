@@ -21,6 +21,9 @@
         <activity android:name=".CalculationActivity" />
         <activity android:name=".OptionActivity" />
         <activity android:name=".OfferActivity"></activity>
+        <activity android:name=".HistoryManagingActivities.HistoryListActivity"></activity>
+        <activity android:name=".HistoryManagingActivities.SingleHistoryActivity"></activity>
+        <activity android:name=".HistoryManagingActivities.HistoryCreateActivity"></activity>
     </application>
 
 </manifest>

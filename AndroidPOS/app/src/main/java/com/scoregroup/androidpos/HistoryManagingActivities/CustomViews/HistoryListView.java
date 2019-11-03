@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 import com.scoregroup.androidpos.R;
 
-public class ChangeHistoryListView extends LinearLayout {
+public class HistoryListView extends LinearLayout {
 
-    public ChangeHistoryListView(Context context) {
+    public HistoryListView(Context context) {
         super(context);
         initialize();
     }
@@ -17,14 +17,14 @@ public class ChangeHistoryListView extends LinearLayout {
     public void initialize(){
         context=getContext();
         inflate(context, R.layout.view_history_list,this);
-        keyCode =this.findViewById(R.id.name);
-        dateTime =this.findViewById(R.id.amount);
+        keyCode =this.findViewById(R.id.keyCode);
+        dateTime =this.findViewById(R.id.dateTime);
         price=this.findViewById(R.id.price);
     }
     public void setData(String keyCode,String dateTime,int price){
         this.keyCode.setText(keyCode);
         this.dateTime.setText(dateTime);
-        this.price.setText(price);
+        this.price.setText(""+price);
     }
 
     @Override
