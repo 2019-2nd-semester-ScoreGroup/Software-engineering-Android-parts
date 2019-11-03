@@ -17,7 +17,7 @@ public class HistoryListActivity extends AppCompatActivity {
     private ArrayList<HistoryListView> listView;
     private Intent receivePack;
     private LinearLayout listScrollArea;
-
+    public int mode;
     public static int GetLayoutId(int mode) {
         switch (mode) {
             case DELIVERY:
@@ -32,7 +32,8 @@ public class HistoryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
-        setContentView(GetLayoutId(receivePack.getIntExtra("mode", SELL)));
+        mode=receivePack.getIntExtra("mode", SELL);
+        setContentView(GetLayoutId(mode));
         listScrollArea=findViewById(R.id.ScrollArea);
         listView = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
