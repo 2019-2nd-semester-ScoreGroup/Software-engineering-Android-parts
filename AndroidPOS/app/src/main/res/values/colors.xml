@@ -8,4 +8,17 @@
     <color name="colorTextAccent">#FF2020</color>
     <color name="colorTextUnavailable">#888888</color>
     <color name="colorButtonBackground">#888888</color>
+
+
+
+    <!-- history managing colors-->
+    <color name="sellPrimary">#00FF00</color>
+    <color name="sellPrimaryDark">#008000</color>
+    <color name="sellText">#001000</color>
+    <color name="sellBackground">#EEEEEE</color>
+    <color name="sellBackgroundUnavailable">#888888</color>
+    <color name="sellHint">#FF8000</color>
+
+    <!-- history managing colors-->
+
 </resources>
