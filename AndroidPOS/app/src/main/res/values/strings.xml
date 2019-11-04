@@ -13,4 +13,7 @@
     <string name="minusSymbol">-</string>
     <string name="multiplySymbol">×</string>
     <string name="divideSymbol">÷</string>
+
+    <!--Misc-->
+    <string name="empty"> </string>
 </resources>

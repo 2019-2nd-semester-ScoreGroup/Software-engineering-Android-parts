@@ -38,6 +38,7 @@ public class HistoryListActivity extends AppCompatActivity {
         setContentView(GetLayoutId(mode));
         listScrollArea=findViewById(R.id.ScrollArea);
         listView = new ArrayList<>();
+
         for (int i = 0; i < 100; i++) {
             HistoryListView item=new HistoryListView(this);
             listView.add(item);

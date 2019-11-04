@@ -18,6 +18,7 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 public class SingleHistoryActivity extends AppCompatActivity {
     private Intent receivePack;
     private LinearLayout listScrollArea;
+
     public static int GetLayoutId(int mode) {
         switch (mode) {
             case DELIVERY:
@@ -27,34 +28,36 @@ public class SingleHistoryActivity extends AppCompatActivity {
                 return R.layout.activity_sell_history_view;
         }
     }
+
     private int mode;
     private String eventKey;
     private ArrayList<HistoryItemView> listView;
-    private TextView keyView,dateView,totalPrice;
+    private TextView keyView, dateView, totalPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
-        mode=receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
-        eventKey=receivePack.getStringExtra(getString(R.string.EventIntentKey));
+        mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
+        eventKey = receivePack.getStringExtra(getString(R.string.EventIntentKey));
         setContentView(GetLayoutId(mode));
-        listScrollArea=findViewById(R.id.scrollArea);
+        listScrollArea = findViewById(R.id.scrollArea);
         listView = new ArrayList<>();
-        int totalPriceData=0;
+        int totalPriceData = 0;
         for (int i = 0; i < 100; i++) {
-            HistoryItemView item=new HistoryItemView(this);
+            HistoryItemView item = new HistoryItemView(this);
             listView.add(item);
             listScrollArea.addView(item);
-            item.setData("키"+eventKey, i,i);
+            item.setData("키" + eventKey, i, i);
             //TODO 총액계산
-            totalPriceData+=i*i;
+            totalPriceData += i * i;
         }
-        keyView=findViewById(R.id.keyNumber);
+        keyView = findViewById(R.id.keyNumber);
         keyView.setText(eventKey);
         //TODO 데이터 받아오기
-        dateView=findViewById(R.id.dateTime);
-        totalPrice=findViewById(R.id.totlaPrice);
-        totalPrice.setText(""+totalPriceData);
+        dateView = findViewById(R.id.dateTime);
+        totalPrice = findViewById(R.id.totlaPrice);
+        totalPrice.setText(getString(R.string.empty) + totalPriceData);
 
 
     }

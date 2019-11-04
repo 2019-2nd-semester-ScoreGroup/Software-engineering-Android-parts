@@ -12,12 +12,12 @@
 
 
     <!-- history managing colors-->
-    <color name="sellPrimary">#00FF00</color>
-    <color name="sellPrimaryDark">#008000</color>
-    <color name="sellText">#001000</color>
-    <color name="sellBackground">#EEEEEE</color>
-    <color name="sellBackgroundUnavailable">#888888</color>
-    <color name="sellHint">#FF8000</color>
+    <color name="histPrimary">#00FF00</color>
+    <color name="histPrimaryDark">#008000</color>
+    <color name="histText">#001000</color>
+    <color name="histBackground">#EEEEEE</color>
+    <color name="histBackgroundUnavailable">#888888</color>
+    <color name="histHint">#FF8000</color>
 
     <!-- history managing colors-->
 

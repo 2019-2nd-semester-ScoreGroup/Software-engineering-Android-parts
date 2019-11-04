@@ -37,7 +37,7 @@ public class HistoryListView extends LinearLayout {
     public void setData(String keyCode,String dateTime,int price){
         this.keyCode.setText(keyCode);
         this.dateTime.setText(dateTime);
-        this.price.setText(""+price);
+        this.price.setText(context.getString(R.string.empty)+price);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         buttons[1].setOnClickListener((view)->{
             Intent t=new Intent(MainActivity.this, HistoryListActivity.class);
             t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
+            startActivity(t);
+        });
+        buttons[2].setOnClickListener((view)->{
+           Intent t=new Intent(MainActivity.this, HistoryCreateActivity.class);
+            t.putExtra(getString(R.string.ModeIntentKey),HistoryManaging.SELL);
             startActivity(t);
         });
 
