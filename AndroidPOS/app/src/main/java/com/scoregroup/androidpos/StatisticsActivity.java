@@ -39,7 +39,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 texts[1].setText("매출");
                 texts[2].setText("상세");
                 sales_list();
-                Toast.makeText(getApplicationContext(), "Confirm!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "검색완료!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -55,14 +55,16 @@ public class StatisticsActivity extends AppCompatActivity {
     public void sales_list(){ // DB예시로 어댑터와 리스트뷰 연결
         String[] strDate = {"2017-01-03", "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-07",
                 "2017-01-08", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12"};
+        String[] strMoney = {"2,212,300", "2,008,100", "3,272,900", "1,942,000", "5,892,000",
+                "2,683,490", "1,694,400", "4,112,900", "1,772,000", "6,102,100"};
         int nDatCnt=0;
         ArrayList<itemsale> oData = new ArrayList<>();
 
         for (int i=0; i<100; ++i)
         {
             itemsale oItem = new itemsale();
-            oItem.Money = (i+1) + " 원";
-            oItem.Date = strDate[nDatCnt++];
+            oItem.Money = "\t" + strMoney[nDatCnt] + "원";
+            oItem.Date = "\t" + strDate[nDatCnt++];
             oData.add(oItem);
             if (nDatCnt >= strDate.length) nDatCnt = 0;
         }

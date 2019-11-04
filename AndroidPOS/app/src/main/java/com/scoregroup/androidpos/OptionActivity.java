@@ -21,7 +21,7 @@ public class OptionActivity extends AppCompatActivity {
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Confirm!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "설정완료!", Toast.LENGTH_LONG).show();
             }
         });
 
