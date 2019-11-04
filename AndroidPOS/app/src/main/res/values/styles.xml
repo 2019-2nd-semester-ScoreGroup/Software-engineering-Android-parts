@@ -28,4 +28,12 @@
         <item name="android:background">@color/colorButtonBackground</item>
     </style>
 
+    <style name="numpadButtons">
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

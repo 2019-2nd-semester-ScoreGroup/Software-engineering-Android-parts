@@ -1,6 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nowStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
+
+            <TableLayout
+                android:id="@+id/keypad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/plus"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="@string/plusSymbol" />
+
+                    <Button
+                        android:id="@+id/minus"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="@string/minusSymbol" />
+
+                    <Button
+                        android:id="@+id/multiply"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="@string/multiplySymbol" />
+
+                    <Button
+                        android:id="@+id/divide"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="@string/divideSymbol" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/seven"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="7" />
+
+                    <Button
+                        android:id="@+id/eight"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="8" />
+
+                    <Button
+                        android:id="@+id/nine"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="9" />
+
+                    <Button
+                        android:id="@+id/enter"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="Go" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/four"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="4" />
+
+                    <Button
+                        android:id="@+id/five"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="5" />
+
+                    <Button
+                        android:id="@+id/six"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="6" />
+
+                    <Button
+                        android:id="@+id/del"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="No" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/one"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="1" />
+
+                    <Button
+                        android:id="@+id/two"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="2" />
+
+                    <Button
+                        android:id="@+id/three"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="3" />
+
+                    <Button
+                        android:id="@+id/add1"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="." />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="0dp">
+
+
+                    <Button
+                        android:id="@+id/zero"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="0" />
+
+                    <Button
+                        android:id="@+id/doubleO"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="00" />
+
+                    <Button
+                        android:id="@+id/add2"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="." />
+
+                    <Button
+                        android:id="@+id/add3"
+                        style="@style/numpadButtons"
+                        android:layout_width="wrap_content"
+                        android:text="." />
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/priceTooltip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
+
+            <Button
+                android:id="@+id/createButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

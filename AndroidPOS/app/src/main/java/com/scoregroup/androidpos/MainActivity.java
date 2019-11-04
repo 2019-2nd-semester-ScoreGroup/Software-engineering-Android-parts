@@ -34,7 +34,11 @@ public class MainActivity extends AppCompatActivity {
             t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.SELL);
             startActivity(t);
         });
-
+        buttons[1].setOnClickListener((view)->{
+            Intent t=new Intent(MainActivity.this, HistoryListActivity.class);
+            t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
+            startActivity(t);
+        });
 
     }
 

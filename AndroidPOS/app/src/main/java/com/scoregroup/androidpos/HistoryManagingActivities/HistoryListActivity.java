@@ -3,6 +3,7 @@ package com.scoregroup.androidpos.HistoryManagingActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
@@ -18,6 +19,7 @@ public class HistoryListActivity extends AppCompatActivity {
     private Intent receivePack;
     private LinearLayout listScrollArea;
     public int mode;
+    private Button createHistoryButton;
     public static int GetLayoutId(int mode) {
         switch (mode) {
             case DELIVERY:
@@ -41,6 +43,14 @@ public class HistoryListActivity extends AppCompatActivity {
             listView.add(item);
             listScrollArea.addView(item);
             item.setData("키" + i, "날짜" + i, i);
+        }
+        if(mode==DELIVERY){
+            createHistoryButton=findViewById(R.id.createButton);
+            createHistoryButton.setOnClickListener((view)->{
+                Intent t=new Intent(HistoryListActivity.this,HistoryCreateActivity.class);
+                t.putExtra(getString(R.string.ModeIntentKey),mode);
+                startActivity(t);
+            });
         }
     }
 

@@ -7,4 +7,10 @@
     <!--IntentKeys-->
     <string name="ModeIntentKey">Mode</string>
     <string name="EventIntentKey">EventKey</string>
+
+    <!--HistoryCreate-->
+    <string name="plusSymbol">+</string>
+    <string name="minusSymbol">-</string>
+    <string name="multiplySymbol">×</string>
+    <string name="divideSymbol">÷</string>
 </resources>
