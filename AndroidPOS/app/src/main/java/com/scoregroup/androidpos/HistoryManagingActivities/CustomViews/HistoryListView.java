@@ -28,9 +28,11 @@ public class HistoryListView extends LinearLayout {
         detailButton=this.findViewById(R.id.detailButton);
         detailButton.setOnClickListener((view)->{
             Intent t=new Intent(context, SingleHistoryActivity.class);
-            t.putExtra("mode",context.mode);
-            t.putExtra("key",keyCode.getText().toString());
+            t.putExtra(context.getString(R.string.ModeIntentKey),context.mode);
+            t.putExtra(context.getString(R.string.EventIntentKey),keyCode.getText().toString());
+            context.startActivity(t);
         });
+
     }
     public void setData(String keyCode,String dateTime,int price){
         this.keyCode.setText(keyCode);

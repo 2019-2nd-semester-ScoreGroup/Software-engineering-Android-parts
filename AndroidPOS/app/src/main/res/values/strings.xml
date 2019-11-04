@@ -3,4 +3,8 @@
     <string name="toCalc">Seller</string>
     <string name="toOffer">Offerings</string>
     <string name="toOption">Options</string>
+
+    <!--IntentKeys-->
+    <string name="ModeIntentKey">Mode</string>
+    <string name="EventIntentKey">EventKey</string>
 </resources>

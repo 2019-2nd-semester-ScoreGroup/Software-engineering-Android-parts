@@ -32,7 +32,7 @@ public class HistoryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
-        mode=receivePack.getIntExtra("mode", SELL);
+        mode=receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         setContentView(GetLayoutId(mode));
         listScrollArea=findViewById(R.id.ScrollArea);
         listView = new ArrayList<>();

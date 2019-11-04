@@ -23,7 +23,7 @@ public class HistoryItemView extends LinearLayout {
     public void setData(String name,int amount,int pricePerItem){
         this.name.setText(name);
         this.amount.setText(""+amount);
-        price.setText(amount*pricePerItem);
+        price.setText(""+amount*pricePerItem);
     }
 
     @Override
