@@ -4,4 +4,6 @@
     <string name="toCalc">판매</string>
     <string name="toOffer">납품</string>
     <string name="toOption">설정</string>
+    <string name="paymentTitle">결제 진행중</string>
+    <string name="paymentProcessingName">진행중.</string>
 </resources>
