@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StatisticsActivity">
+
+    <TextView
+        android:id="@+id/Statistics_Title1"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#4D000000"
+        android:gravity="center"
+        android:text="재무 통계"
+        android:textColor="#000000"
+        android:textSize="30dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:context=".StatisticsActivity">
+
+        <TextView
+            android:id="@+id/search_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="검색년도"
+            android:textColor="#000000"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/StartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="1234567890/"
+            android:ems="10"
+            android:hint="시작날짜(년/월/일)"
+            android:inputType="number"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/EndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="1234567890/"
+            android:ems="10"
+            android:hint="종료날짜(년/월/일)"
+            android:inputType="number"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/ExitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="나가기"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/S_date"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#4D000000"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/S_money"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#4D000000"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FF0000"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/S_detail"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#4D000000"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/salelist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+</LinearLayout>
