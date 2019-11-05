@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/historyContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/keyCode"
+        style="@style/historyTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="키" />
+
+    <TextView
+        android:id="@+id/dateTime"
+        style="@style/historyTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="날짜" />
+
+    <TextView
+        android:id="@+id/price"
+        style="@style/historyTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="9999"
+        android:textAlignment="textEnd" />
+
+    <Button
+        android:id="@+id/detailButton"
+        style="@style/historyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Details..." />
+</android.widget.LinearLayout>
