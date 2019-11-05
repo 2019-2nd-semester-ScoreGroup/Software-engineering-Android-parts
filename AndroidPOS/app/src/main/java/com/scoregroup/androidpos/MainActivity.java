@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         buttons[0] = findViewById(R.id.toCalc);
         buttons[1] = findViewById(R.id.toOffer);
         buttons[2] = findViewById(R.id.toOption);
-        title=findViewById(R.id.titleTextView);
+        buttons[3] = findViewById(R.id.toStatis);
+
         buttons[0].setOnClickListener((view)->{
             Intent t=new Intent(MainActivity.this, HistoryCreateActivity.class);
             t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.SELL);
@@ -37,7 +38,15 @@ public class MainActivity extends AppCompatActivity {
             t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
             startActivity(t);
         });
-
+        buttons[2].setOnClickListener((view)->{
+            Intent t=new Intent(MainActivity.this, OptionActivity.class);
+            //t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
+            startActivity(t);
+        });
+        buttons[3].setOnClickListener((view)->{
+            Intent t=new Intent(MainActivity.this, StatisticsActivity.class);
+            //t.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
+            startActivity(t);
+        });
     }
-
 }
