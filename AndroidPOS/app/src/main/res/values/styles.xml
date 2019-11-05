@@ -27,5 +27,35 @@
         <item name="android:textColor">@color/colorTextNormal</item>
         <item name="android:background">@color/colorButtonBackground</item>
     </style>
+    <!--History Styles-->
+    <style name="numpadButtons">
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="historyContainer">
+        <item name="android:elevation">40dp</item>
+    </style>
+    <style name="historyTexts" parent="historyContainer">
+        <item name="android:textColor">@color/histText</item>
+    </style>
+    <style name="historyButton" parent="historyTexts">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+    <style name="historyTitleContainer">
+        <item name="android:background">@color/histPrimary</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:minHeight">20dp</item>
+    </style>
+    <style name="historyTitleText">
+        <item name="android:textColor">@color/histPrimaryDark</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20dp</item>
+
+    </style>
 
 </resources>

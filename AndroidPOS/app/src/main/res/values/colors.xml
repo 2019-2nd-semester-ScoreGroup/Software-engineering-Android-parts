@@ -8,4 +8,17 @@
     <color name="colorTextAccent">#FF2020</color>
     <color name="colorTextUnavailable">#888888</color>
     <color name="colorButtonBackground">#888888</color>
+
+
+
+    <!-- history managing colors-->
+    <color name="histPrimary">#008c00</color>
+    <color name="histPrimaryDark">#0e400e</color>
+    <color name="histText">#001000</color>
+    <color name="histBackground">#EEEEEE</color>
+    <color name="histBackgroundUnavailable">#888888</color>
+    <color name="histHint">#FF8000</color>
+
+    <!-- history managing colors-->
+
 </resources>
