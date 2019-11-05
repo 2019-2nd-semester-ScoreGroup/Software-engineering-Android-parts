@@ -3,6 +3,7 @@ package com.scoregroup.androidpos.HistoryManagingActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,7 +11,10 @@ import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryIt
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
 import com.scoregroup.androidpos.R;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
@@ -33,7 +37,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
     private String eventKey;
     private ArrayList<HistoryItemView> listView;
     private TextView keyView, dateView, totalPrice;
-
+    private Button cancelButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +60,11 @@ public class SingleHistoryActivity extends AppCompatActivity {
         keyView.setText(eventKey);
         //TODO 데이터 받아오기
         dateView = findViewById(R.id.dateTime);
+        dateView.setText(new SimpleDateFormat("yyyy.mm.dd.hh.mm").format(Calendar.getInstance().getTime()));
         totalPrice = findViewById(R.id.totlaPrice);
         totalPrice.setText(getString(R.string.empty) + totalPriceData);
+        cancelButton=findViewById(R.id.cancel);
+        cancelButton.setOnClickListener((view)->finish());
 
 
     }

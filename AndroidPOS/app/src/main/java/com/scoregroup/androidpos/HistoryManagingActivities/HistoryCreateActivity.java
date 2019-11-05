@@ -46,7 +46,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private TextView calcStatus;
     private LinearLayout scrollArea;
     private ArrayList<HistoryItemView> itemList;
-    private Button payButton;
+    private Button payButton,historyButton;
     private int selected=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         for (int i = 0; i < 100; i++) {
             addItem("키"+i);
         }
+
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
             String newKey="새로운 키";
@@ -73,14 +74,28 @@ public class HistoryCreateActivity extends AppCompatActivity {
             if(newKey==null){
                 Log.e("POS","DB registering Failed");
             }else {
-                //TODO 결재 액티비티로 변경
-                Intent t = new Intent(HistoryCreateActivity.this, MainActivity.class);
+                if(mode==SELL){
+                    //TODO 결재 액티비티로 변경
+                    Intent t = new Intent(HistoryCreateActivity.this, MainActivity.class);
 
-                t.putExtra(getString(R.string.ModeIntentKey), mode);
-                t.putExtra(getString(R.string.EventIntentKey), newKey);
-                startActivity(t);
+                    t.putExtra(getString(R.string.ModeIntentKey), mode);
+                    t.putExtra(getString(R.string.EventIntentKey), newKey);
+                    startActivity(t);
+                }else if(mode==DELIVERY){
+                    //TODO 액티비티 나가기
+                    finish();
+                }
+
             }
         });
+        if(mode==SELL){
+            historyButton=findViewById(R.id.historyButton);
+            historyButton.setOnClickListener((view)->{
+                Intent t=new Intent(HistoryCreateActivity.this,HistoryListActivity.class);
+                t.putExtra(getString(R.string.ModeIntentKey),mode);
+                startActivity(t);
+            });
+        }
     }
     private void addItem(String key){
         HistoryItemView item=new HistoryItemView(this);

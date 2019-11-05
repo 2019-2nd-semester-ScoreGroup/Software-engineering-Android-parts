@@ -8,12 +8,24 @@
     <string name="ModeIntentKey">Mode</string>
     <string name="EventIntentKey">EventKey</string>
 
-    <!--HistoryCreate-->
+    <!--History-->
     <string name="plusSymbol">+</string>
     <string name="minusSymbol">-</string>
     <string name="multiplySymbol">×</string>
     <string name="divideSymbol">÷</string>
-
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+    <string name="amount">Amount</string>
+    <string name="price">Price</string>
+    <string name="totalPrice">Total price :</string>
+    <string name="list">List</string>
+    <string name="history">History</string>
+    <string name="create">Create</string>
+    <string name="pay">Pay</string>
+    <string name="details">Details</string>
+    <string name="serialno">SerialNo.</string>
+    <string name="cancel">Cancel</string>
     <!--Misc-->
     <string name="empty"> </string>
+
 </resources>

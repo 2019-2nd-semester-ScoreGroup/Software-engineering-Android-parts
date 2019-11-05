@@ -8,6 +8,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/TitleBackground"
+        style="@style/historyTitleContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,13 +17,14 @@
 
         <TextView
             android:id="@+id/Title"
+            style="@style/historyTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="@string/history"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +43,7 @@
 
         <TextView
             android:id="@+id/keyNumber"
+            style="@style/historyTexts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,6 +51,7 @@
 
         <TextView
             android:id="@+id/dateTime"
+            style="@style/historyTexts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,30 +80,36 @@
 
             <TextView
                 android:id="@+id/tooltipName"
+                style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@string/name"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/tooltipAmount"
+                style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@string/amount"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/tooltipPrice"
+                style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@string/price"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1">
 
             <LinearLayout
@@ -116,24 +126,26 @@
 
             <TextView
                 android:id="@+id/textView5"
+                style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@string/totalPrice" />
 
             <TextView
                 android:id="@+id/totlaPrice"
+                style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TextView" />
 
             <Button
-                android:id="@+id/Cancel"
+                android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/cancel" />
 
         </LinearLayout>
 
