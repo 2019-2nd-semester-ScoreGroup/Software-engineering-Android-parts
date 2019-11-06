@@ -57,6 +57,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 "2017-01-08", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12"};
         String[] strMoney = {"2,212,300", "2,008,100", "3,272,900", "1,942,000", "5,892,000",
                 "2,683,490", "1,694,400", "4,112,900", "1,772,000", "6,102,100"};
+
         int nDatCnt=0;
         ArrayList<itemsale> oData = new ArrayList<>();
 
