@@ -18,13 +18,20 @@
 
         <Button
             android:id="@+id/f5"
-            android:layout_width="212dp"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:text="F5" />
 
         <Button
+            android:id="@+id/toHistory"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="납품기록" />
+
+        <Button
             android:id="@+id/exit"
-            android:layout_width="205dp"
+            android:layout_width="127dp"
             android:layout_height="wrap_content"
             android:text="Exit" />
 
