@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 
-import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryEvent;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListAdapter;
 import com.scoregroup.androidpos.R;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryListActivity extends AppCompatActivity {
-    private ArrayList<HistoryListView> listView;
+    private ArrayList<HistoryEvent> events;
     private Intent receivePack;
-    private LinearLayout listScrollArea;
+    private ListView listScrollArea;
     public int mode;
     private Button createHistoryButton;
     public static int GetLayoutId(int mode) {
@@ -36,15 +37,15 @@ public class HistoryListActivity extends AppCompatActivity {
         receivePack = getIntent();
         mode=receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         setContentView(GetLayoutId(mode));
-        listScrollArea=findViewById(R.id.ScrollArea);
-        listView = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            HistoryListView item=new HistoryListView(this);
-            listView.add(item);
-            listScrollArea.addView(item);
-            item.setData("키" + i, "날짜" + i, i);
+        listScrollArea= findViewById(R.id.scrollArea);
+        events=new ArrayList<>();
+        for(int i=0;i<100;i++){
+            events.add(new HistoryEvent("키"+i,HistoryManaging.getNowTime(),i*100));
         }
+        HistoryListAdapter adapter=new HistoryListAdapter(events);
+        listScrollArea.setAdapter(adapter);
+
+
         if(mode==DELIVERY){
             createHistoryButton=findViewById(R.id.createButton);
             createHistoryButton.setOnClickListener((view)->{
