@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/productname"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4D000000"
+        android:text="물건  이름"
+        android:textSize="30dp"/>
+
+
+    <EditText
+        android:id = "@+id/modifyname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="이름"
+        />
+    <Button
+        android:id="@+id/namebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이름 수정" />
+
+
+    <EditText
+        android:id = "@+id/modifyprice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="가격"
+        />
+    <Button
+        android:id="@+id/pricebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="가격 수정" />
+
+    <EditText
+        android:id = "@+id/modifybarcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="바코드"
+        />
+    <Button
+        android:id="@+id/barcodebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="바코드 번호 수정" />
+
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="재고 추가" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="품목 삭제" />
+
+    <Button
+        android:id="@+id/goback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이전 화면으로" />
+
+
+
+
+</LinearLayout>

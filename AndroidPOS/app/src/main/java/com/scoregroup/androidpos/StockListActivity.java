@@ -16,6 +16,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class StockListActivity extends AppCompatActivity {
+    final int _REQ = 100;
+    final int RESULT_STORE = 0;
+    final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
     Button buttons[] = new Button[2];
     TextView texts[] = new TextView[4];
@@ -50,6 +53,8 @@ public class StockListActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void stock_list(){ // DB예시로 어댑터와 리스트뷰 연결
         String[] strDate = {"A12","A13","A15","C23"};
@@ -133,12 +138,15 @@ public class StockListActivity extends AppCompatActivity {
             oTextCount.setText(m_oData.get(position).Count);
             oTextPrice.setText(m_oData.get(position).Count+"000");
 
-            Button f=convertView.findViewById(R.id.detail);
+            Button f = convertView.findViewById(R.id.detail);
             f.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(StockListActivity.this,MainActivity.class); //석빈이 껄로 가야함
+                    Intent intent=new Intent(StockListActivity.this,SingleStockActivity.class);
                     intent.putExtra("nextKey",m_oData.get(position).Code);
+                    intent.putExtra("nextCount",m_oData.get(position).Count);
+                    intent.putExtra("nextName",m_oData.get(position).Name);
+                    intent.putExtra("nextPrice",m_oData.get(position).Price);
                     startActivity(intent);
                 }
             });
