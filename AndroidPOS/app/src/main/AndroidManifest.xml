@@ -24,6 +24,8 @@
         <activity android:name=".HistoryManagingActivities.HistoryListActivity"></activity>
         <activity android:name=".HistoryManagingActivities.SingleHistoryActivity"></activity>
         <activity android:name=".HistoryManagingActivities.HistoryCreateActivity"></activity>
+        <activity android:name=".PaymentActivity"/>
+        <activity android:name=".StockListActivity" />
     </application>
 
 </manifest>
