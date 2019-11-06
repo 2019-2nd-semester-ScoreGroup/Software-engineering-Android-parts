@@ -60,5 +60,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/toOption" />
+
+        <Button
+            android:id="@+id/toStock"
+            style="@style/MainMenuButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="toStock" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
