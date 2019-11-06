@@ -13,11 +13,7 @@
         android:layout_height="55dp"
         android:background="#4D000000"
         android:gravity="center"
-<<<<<<< HEAD
         android:text="앱 설정"
-=======
-        android:text="App Settings"
->>>>>>> Kim
         android:textColor="#000000"
         android:textSize="30dp" />
 
@@ -61,11 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-<<<<<<< HEAD
             android:text="확인"
-=======
-            android:text="Confirm"
->>>>>>> Kim
             android:textSize="20dp" />
 
         <Button
@@ -73,12 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-<<<<<<< HEAD
-            android:text="나가기"
-=======
-            android:text="Exit"
->>>>>>> Kim
-            android:textSize="20dp" />
+            android:text="나가기" />
     </LinearLayout>
 
     <TextView
@@ -125,13 +112,7 @@
         android:layout_height="55dp"
         android:background="#4D000000"
         android:gravity="center"
-<<<<<<< HEAD
-        android:text="앱 정보"
-=======
-        android:text="App Info"
->>>>>>> Kim
-        android:textColor="#000000"
-        android:textSize="30dp" />
+        android:text="앱 정보" />
 
     <LinearLayout
         android:layout_width="match_parent"
