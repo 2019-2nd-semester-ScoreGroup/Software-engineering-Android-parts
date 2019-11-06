@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemView;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
 import com.scoregroup.androidpos.MainActivity;
+import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
             }else {
                 if(mode==SELL){
                     //TODO 결재 액티비티로 변경
-                    Intent t = new Intent(HistoryCreateActivity.this, MainActivity.class);
+                    Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
 
                     t.putExtra(getString(R.string.ModeIntentKey), mode);
                     t.putExtra(getString(R.string.EventIntentKey), newKey);

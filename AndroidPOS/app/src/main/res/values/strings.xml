@@ -3,6 +3,8 @@
     <string name="toCalc">Seller</string>
     <string name="toOffer">Offerings</string>
     <string name="toOption">Options</string>
+    <string name="paymentTitle">paying</string>
+    <string name="paymentProcessingName">processing</string>
 
     <!--IntentKeys-->
     <string name="ModeIntentKey">Mode</string>
