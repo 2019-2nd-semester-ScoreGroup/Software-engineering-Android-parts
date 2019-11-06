@@ -13,11 +13,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
+
 import java.util.ArrayList;
 
 public class StockListActivity extends AppCompatActivity {
     private ListView StockListView = null;
-    Button buttons[] = new Button[2];
+    Button buttons[] = new Button[3];
     TextView texts[] = new TextView[4];
 
     @Override
@@ -26,10 +30,11 @@ public class StockListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stock);
         buttons[0] = findViewById(R.id.f5);
         buttons[1] = findViewById(R.id.exit);
+        buttons[2] = findViewById(R.id.toHistory);
         texts[0] = findViewById(R.id.keycode);
         texts[1] = findViewById(R.id.name);
         texts[2] = findViewById(R.id.Price);
-        texts[3]=findViewById(R.id.Count);
+        texts[3] = findViewById(R.id.Count);
 
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +54,17 @@ public class StockListActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        buttons[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
+                in.putExtra(getString(R.string.ModeIntentKey),HistoryManaging.DELIVERY);
+                startActivity(in);
+            }
+        });
     }
+
 
     public void stock_list(){ // DB예시로 어댑터와 리스트뷰 연결
         String[] strDate = {"A12","A13","A15","C23"};
