@@ -13,6 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
+
 import java.util.ArrayList;
 
 public class StockListActivity extends AppCompatActivity {
@@ -20,7 +24,7 @@ public class StockListActivity extends AppCompatActivity {
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
-    Button buttons[] = new Button[2];
+    Button buttons[] = new Button[3];
     TextView texts[] = new TextView[4];
 
     @Override
@@ -29,10 +33,11 @@ public class StockListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stock);
         buttons[0] = findViewById(R.id.f5);
         buttons[1] = findViewById(R.id.exit);
+        buttons[2] = findViewById(R.id.toHistory);
         texts[0] = findViewById(R.id.keycode);
         texts[1] = findViewById(R.id.name);
         texts[2] = findViewById(R.id.Price);
-        texts[3]=findViewById(R.id.Count);
+        texts[3] = findViewById(R.id.Count);
 
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +54,15 @@ public class StockListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(in);
+            }
+        });
+
+        buttons[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
+                in.putExtra(getString(R.string.ModeIntentKey),HistoryManaging.DELIVERY);
                 startActivity(in);
             }
         });
