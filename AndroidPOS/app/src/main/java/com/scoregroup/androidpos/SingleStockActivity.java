@@ -34,7 +34,13 @@ public class SingleStockActivity extends AppCompatActivity {
         StockListActivity.itemsale Name = intent.getParcelableExtra("nextName");
         StockListActivity.itemsale Count = intent.getParcelableExtra("nextCount");
 
-
+        Button exitButton = findViewById(R.id.goback);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public class sendData{
