@@ -7,10 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemView;
-import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.MainActivity;
 import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
@@ -45,8 +46,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private int mode;
     private Intent receivePack;
     private TextView calcStatus;
-    private LinearLayout scrollArea;
-    private ArrayList<HistoryItemView> itemList;
+    private ListView scrollArea;
+    private ArrayList<HistoryItem> itemList;
     private Button payButton,historyButton;
     private int selected=-1;
     @Override
@@ -65,9 +66,9 @@ public class HistoryCreateActivity extends AppCompatActivity {
         itemList=new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
-            addItem("키"+i);
+            itemList.add(new HistoryItem("키"+i,"이름"+i,100,i));
         }
-
+        scrollArea.setAdapter(new HistoryItemAdapter(itemList));
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
             String newKey="새로운 키";
@@ -97,13 +98,6 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 startActivity(t);
             });
         }
-    }
-    private void addItem(String key){
-        HistoryItemView item=new HistoryItemView(this);
-        itemList.add(item);
-        scrollArea.addView(item);
-        item.setData(key , 0, 1);
-        selected=itemList.size()-1;
     }
 
     private void refreshCalcStatus() {
