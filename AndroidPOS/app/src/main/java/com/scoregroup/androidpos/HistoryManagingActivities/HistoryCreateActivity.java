@@ -97,6 +97,9 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 t.putExtra(getString(R.string.ModeIntentKey),mode);
                 startActivity(t);
             });
+            //TODO 판매중일 때 UI 이벤트 바인딩
+        }else if(mode==DELIVERY){
+            //TODO 납품중일 때 UI 이벤트 바인딩
         }
     }
 
@@ -104,7 +107,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         calcStatus.setText(symbols[status] + value);
     }
 
-    private void ProcessNumpadButton(View view) {
+    private void ProcessNumpadButton(View view) {//TODO 넘패드 버튼 이벤트
         switch (view.getId()) {
             case R.id.one:
                 value += 1;
