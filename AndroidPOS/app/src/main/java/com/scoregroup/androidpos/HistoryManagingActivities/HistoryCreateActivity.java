@@ -6,13 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
-import com.scoregroup.androidpos.MainActivity;
 import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
 
@@ -29,7 +27,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     };
     private final int[] numPadKeys =
             new int[]{R.id.zero, R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight, R.id.nine,
-                    R.id.doubleO, R.id.plus, R.id.minus, R.id.multiply, R.id.divide, R.id.enter, R.id.del, R.id.cancel, R.id.add1, R.id.add2};
+                    R.id.remove, R.id.plus, R.id.minus, R.id.multiply, R.id.divide, R.id.enter, R.id.del, R.id.cancel, R.id.add1, R.id.add2};
 
     public static int GetLayoutId(int mode) {
         switch (mode) {
@@ -50,6 +48,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private ArrayList<HistoryItem> itemList;
     private Button payButton,historyButton;
     private int selected=-1;
+    private TextView totalPrice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +78,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                     t.putExtra(getString(R.string.ModeIntentKey), mode);
                     t.putExtra(getString(R.string.EventIntentKey), newKey);
                     startActivity(t);
+                    reInitialize();
                 }else if(mode==DELIVERY){
                     //TODO 액티비티 나가기
                     finish();
@@ -97,13 +97,22 @@ public class HistoryCreateActivity extends AppCompatActivity {
         }else if(mode==DELIVERY){
             //TODO 납품중일 때 UI 이벤트 바인딩
         }
+
+        totalPrice=findViewById(R.id.totalPrice);
     }
 
     private void refreshCalcStatus() {
         calcStatus.setText(symbols[status] + value);
+        int totP=0;
+        for(HistoryItem t:itemList){
+            totP+=t.getAmount()*t.getPricePerItem();
+        }
+        totalPrice.setText(""+totP);
+
     }
 
     private void ProcessNumpadButton(View view) {//TODO 넘패드 버튼 이벤트
+        selected=adapter.getSelected();
         if(status==CANCEL)status=ADD;
         switch (view.getId()) {
             case R.id.one:
@@ -136,8 +145,9 @@ public class HistoryCreateActivity extends AppCompatActivity {
             case R.id.zero:
                 value += "0";
                 break;
-            case R.id.doubleO:
-                value += "00";
+            case R.id.remove:
+                itemList.remove(selected);
+                selected=-1;
                 break;
             case R.id.plus:
                 if(status==PLUS)
@@ -146,7 +156,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 break;
             case R.id.minus:
                 if(status==MINUS)
-                    value=""+(ToInteger(value)-1);
+                    value=""+(ToInteger(value)+1);
                 else status=MINUS;
                 break;
             case R.id.multiply:
@@ -204,6 +214,11 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 value="";
                 break;
             case R.id.del:
+                if(value.length()>1){
+                    value=value.substring(0,value.length()-1);
+                }else{
+                    value="";
+                }
                 break;
             case R.id.add1:
                 break;
@@ -223,6 +238,15 @@ public class HistoryCreateActivity extends AppCompatActivity {
         if(input.length()>0)
             ret=Integer.valueOf(input);
         return ret;
+    }
+    public void reInitialize(){
+        status=ADD;
+        value="";
+        itemList.clear();
+        selected=-1;
+        adapter.setSelected(-1);
+        adapter.notifyDataSetChanged();
+        refreshCalcStatus();
     }
 
 }
