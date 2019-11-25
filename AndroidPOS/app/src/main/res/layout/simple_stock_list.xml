@@ -4,28 +4,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/KeyCode"
+        android:id="@+id/Product_KeyCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="코드" />
 
     <TextView
-        android:id="@+id/Name"
+        android:id="@+id/Product_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="품명" />
 
     <TextView
-        android:id="@+id/Price"
+        android:id="@+id/Product_Price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="가격" />
 
     <TextView
-        android:id="@+id/Count"
+        android:id="@+id/Product_Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.BitSet;
 
 public class SingleStockActivity extends AppCompatActivity {
-    final int _REQ = 100;
+    final int RESULT_OK = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
+    final int REQUEST_BARCODE = 1;
+    final int REQUEST_NAME = 2;
+    final int REQUEST_PRICE=3;
     private ListView StockListView = null;
     ArrayList<StockListActivity.itemsale> oData = new ArrayList<>();
 
@@ -35,6 +38,37 @@ public class SingleStockActivity extends AppCompatActivity {
         StockListActivity.itemsale Count = intent.getParcelableExtra("nextCount");
 
         Button exitButton = findViewById(R.id.goback);
+        Button nameButton = findViewById(R.id.namebutton);
+        Button priceButton = findViewById(R.id.pricebutton);
+        Button barcodeButton = findViewById(R.id.barcodebutton);
+
+        nameButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                sendData.modified_name = s_n.getText().toString();
+                intent.putExtra("Result_Name",s_n.getText().toString());
+                setResult(REQUEST_NAME,intent);
+            }
+
+        });
+        priceButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                sendData.modified_price= s_p.getText().toString();
+                intent.putExtra("Result_Price", s_p.getText().toString());
+                setResult(REQUEST_PRICE,intent);
+            }
+
+        });
+        barcodeButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                sendData.modified_barcode = s_b.getText().toString();
+                intent.putExtra("Result_Barcode", s_b.getText().toString());
+                setResult(REQUEST_BARCODE,intent);
+            }
+
+
+        });        ;;
+
+
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,11 +77,11 @@ public class SingleStockActivity extends AppCompatActivity {
         });
     }
 
-    public class sendData{
-        public String modified_Count;
-        public String modified_Code;
-        public String modified_Name;
-        public String modified_Price;
+    public static class sendData{
+        public static String modified_count;
+        public static String modified_barcode;
+        public static String  modified_name;
+        public static String modified_price;
 
     }
 

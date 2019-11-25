@@ -20,9 +20,12 @@ import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 import java.util.ArrayList;
 
 public class StockListActivity extends AppCompatActivity {
-    final int _REQ = 100;
+    final int RESULT_OK = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
+    final int REQUEST_BARCODE = 1;
+    final int REQUEST_NAME = 2;
+    final int REQUEST_PRICE= 3;
     private ListView StockListView = null;
     Button buttons[] = new Button[3];
     TextView texts[] = new TextView[4];
@@ -85,7 +88,7 @@ public class StockListActivity extends AppCompatActivity {
             oData.add(oItem);
             if (nDatCnt >= strDate.length) nDatCnt = 0;
         }
-
+//TODO 데이터 받아오기
         StockListView = (ListView)findViewById(R.id.stocklist);
         ListAdapter oAdapter = new ListAdapter(oData);
         StockListView.setAdapter(oAdapter);
@@ -142,10 +145,10 @@ public class StockListActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.simple_stock_list, parent, false);
             }
 
-            TextView oTextCode = (TextView) convertView.findViewById(R.id.KeyCode);
-            TextView oTextName = (TextView) convertView.findViewById(R.id.name);
-            TextView oTextPrice = (TextView) convertView.findViewById(R.id.Price);
-            TextView oTextCount = (TextView) convertView.findViewById(R.id.Count);
+            TextView oTextCode = (TextView) convertView.findViewById(R.id.Product_KeyCode);
+            TextView oTextName = (TextView) convertView.findViewById(R.id.Product_Name);
+            TextView oTextPrice = (TextView) convertView.findViewById(R.id.Product_Price);
+            TextView oTextCount = (TextView) convertView.findViewById(R.id.Product_Count);
 
 
             oTextCode.setText(m_oData.get(position).Code);
@@ -161,10 +164,38 @@ public class StockListActivity extends AppCompatActivity {
                     intent.putExtra("nextCount",m_oData.get(position).Count);
                     intent.putExtra("nextName",m_oData.get(position).Name);
                     intent.putExtra("nextPrice",m_oData.get(position).Price);
-                    startActivity(intent);
+                    startActivityForResult(intent,RESULT_OK);
+
                 }
+
             });
+
             return convertView;
         }
+
     }
+
+    protected void onActivityResult ( int requestCode, int resultCode, Intent data)
+    {
+        TextView oTextCode = (TextView) findViewById(R.id.Product_KeyCode);
+        TextView oTextName = (TextView) findViewById(R.id.Product_Name);
+        TextView oTextPrice = (TextView) findViewById(R.id.Product_Price);
+        TextView oTextCount = (TextView) findViewById(R.id.Product_Count);
+
+        switch (requestCode){
+            case RESULT_OK:
+                if (resultCode==REQUEST_BARCODE){
+                    oTextCode.setText(data.getStringExtra("Result_Barcode"));
+                }
+                else if (resultCode==REQUEST_NAME){
+                    oTextName.setText(data.getStringExtra("Result_Name"));
+                }
+                else if (resultCode==REQUEST_PRICE){
+                    oTextPrice.setText(data.getStringExtra("Result_Price"));
+                }
+                break;
+
+        }
+    }
+
 }
