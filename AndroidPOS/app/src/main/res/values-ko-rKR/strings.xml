@@ -6,4 +6,8 @@
     <string name="toOption">설정</string>
     <string name="paymentTitle">결제 진행중</string>
     <string name="paymentProcessingName">진행중.</string>
+    <string name="ABcancel">취소</string>
+    <string name="ABdelete">삭제</string>
+    <string name="ABenter">확인</string>
+    <string name="ABremove">제거</string>
 </resources>

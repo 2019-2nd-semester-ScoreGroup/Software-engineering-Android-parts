@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemView;
-import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryListView;
-import com.scoregroup.androidpos.MainActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
+import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
 
@@ -22,13 +21,13 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 
 public class HistoryCreateActivity extends AppCompatActivity {
     private static final int
-            ADD = 0, PLUS = 1, MINUS = 2, MULTIPLY = 3, DIVIDE = 4, DELETE = 5, CANCEL = 6, ACC = 7, DCC = 8;
+            ADD = 0, PLUS = 1, MINUS = 2, MULTIPLY = 3, DIVIDE = 4, DELETE = 5, CANCEL = 6;
     private static final String[] symbols = new String[]{
-            "", "+", "-", "×", "÷", "DEL", "CAN"
+            "", "+", "-", "×", "÷", "DEL", "CANCEL"
     };
     private final int[] numPadKeys =
             new int[]{R.id.zero, R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight, R.id.nine,
-                    R.id.doubleO, R.id.plus, R.id.minus, R.id.multiply, R.id.divide, R.id.enter, R.id.del, R.id.cancel, R.id.add1, R.id.add2};
+                    R.id.remove, R.id.plus, R.id.minus, R.id.multiply, R.id.divide, R.id.enter, R.id.del, R.id.cancel, R.id.add1, R.id.add2};
 
     public static int GetLayoutId(int mode) {
         switch (mode) {
@@ -39,16 +38,17 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 return R.layout.activity_sell_history_creating;
         }
     }
-
+    private HistoryItemAdapter adapter;
     private int status;
     private String value = "";
     private int mode;
     private Intent receivePack;
     private TextView calcStatus;
-    private LinearLayout scrollArea;
-    private ArrayList<HistoryItemView> itemList;
+    private ListView scrollArea;
+    private ArrayList<HistoryItem> itemList;
     private Button payButton,historyButton;
     private int selected=-1;
+    private TextView totalPrice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +63,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
             numButton.setOnClickListener((view) -> ProcessNumpadButton(view));
         }
         itemList=new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            addItem("키"+i);
-        }
-
+         adapter=new HistoryItemAdapter(itemList);
+        scrollArea.setAdapter(adapter);
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
             String newKey="새로운 키";
@@ -78,10 +75,10 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 if(mode==SELL){
                     //TODO 결재 액티비티로 변경
                     Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
-
                     t.putExtra(getString(R.string.ModeIntentKey), mode);
                     t.putExtra(getString(R.string.EventIntentKey), newKey);
                     startActivity(t);
+                    reInitialize();
                 }else if(mode==DELIVERY){
                     //TODO 액티비티 나가기
                     finish();
@@ -96,77 +93,132 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 t.putExtra(getString(R.string.ModeIntentKey),mode);
                 startActivity(t);
             });
+            //TODO 판매중일 때 UI 이벤트 바인딩
+        }else if(mode==DELIVERY){
+            //TODO 납품중일 때 UI 이벤트 바인딩
         }
-    }
-    private void addItem(String key){
-        HistoryItemView item=new HistoryItemView(this);
-        itemList.add(item);
-        scrollArea.addView(item);
-        item.setData(key , 0, 1);
-        selected=itemList.size()-1;
+
+        totalPrice=findViewById(R.id.totalPrice);
     }
 
     private void refreshCalcStatus() {
         calcStatus.setText(symbols[status] + value);
+        int totP=0;
+        for(HistoryItem t:itemList){
+            totP+=t.getAmount()*t.getPricePerItem();
+        }
+        totalPrice.setText(""+totP);
+
     }
 
-    private void ProcessNumpadButton(View view) {
+    private void ProcessNumpadButton(View view) {//TODO 넘패드 버튼 이벤트
+        selected=adapter.getSelected();
+        if(status==CANCEL)status=ADD;
         switch (view.getId()) {
             case R.id.one:
-                value += 1;
+                value += "1";
                 break;
             case R.id.two:
-                value += 2;
+                value += "2";
                 break;
             case R.id.three:
-                value += 3;
+                value += "3";
                 break;
             case R.id.four:
-                value += 4;
+                value += "4";
                 break;
             case R.id.five:
-                value += 5;
+                value += "5";
                 break;
             case R.id.six:
-                value += 6;
+                value += "6";
                 break;
             case R.id.seven:
-                value += 7;
+                value += "7";
                 break;
             case R.id.eight:
-                value += 8;
+                value += "8";
                 break;
             case R.id.nine:
-                value += 9;
+                value += "9";
                 break;
             case R.id.zero:
-                value += 0;
+                value += "0";
                 break;
-            case R.id.doubleO:
-                value += "00";
+            case R.id.remove:
+                itemList.remove(selected);
+                selected=-1;
                 break;
             case R.id.plus:
-                if (status == ADD) status = PLUS;
-                else if (status == PLUS) {
-                    status = ACC;
-                } else if (status == ACC) {
-                    value = String.valueOf(Integer.parseInt(value) + 1);
-                }
+                if(status==PLUS)
+                    value=""+(ToInteger(value)+1);
+                else status=PLUS;
                 break;
             case R.id.minus:
+                if(status==MINUS)
+                    value=""+(ToInteger(value)+1);
+                else status=MINUS;
                 break;
             case R.id.multiply:
+                status=MULTIPLY;
                 break;
             case R.id.divide:
+                status=DIVIDE;
                 break;
             case R.id.enter:
-                break;
-            case R.id.cancel:
-                if (status == ACC) {
+                HistoryItem item;
+                switch(status){
+                    case ADD:
+                        boolean added=false;
+                        for(HistoryItem t :itemList){
+                            if(t.getKey().equals(value)){
+                                t.setAmount(t.getAmount()+1);
+                            }
+                        }
+                        if(added)break;
 
+                        //TODO 네트워크
+                        item=new HistoryItem(value,"example",100,1);
+                        itemList.add(item);
+                        value="";
+                        selected=itemList.indexOf(item);
+                        break;
+                    case PLUS:
+                        item=itemList.get(selected);
+                        item.setAmount(item.getAmount()+ToInteger(value));
+                        status=ADD;
+                        value="";
+                        break;
+                    case MINUS:
+                        item=itemList.get(selected);
+                        item.setAmount(item.getAmount()-ToInteger(value));
+                        status=ADD;
+                        value="";
+                        break;
+                    case MULTIPLY:
+                        item=itemList.get(selected);
+                        item.setAmount(item.getAmount()*ToInteger(value));
+                        status=ADD;
+                        value="";
+                        break;
+                    case DIVIDE:
+                        item=itemList.get(selected);
+                        item.setAmount(item.getAmount()/ToInteger(value));
+                        status=ADD;
+                        value="";
+                        break;
                 }
                 break;
+            case R.id.cancel:
+                status=ADD;
+                value="";
+                break;
             case R.id.del:
+                if(value.length()>1){
+                    value=value.substring(0,value.length()-1);
+                }else{
+                    value="";
+                }
                 break;
             case R.id.add1:
                 break;
@@ -177,7 +229,24 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 break;
         }
         refreshCalcStatus();
-    }
+        adapter.setSelected(selected);
+        adapter.notifyDataSetChanged();
 
+    }
+    private int ToInteger(String input){
+        int ret=0;
+        if(input.length()>0)
+            ret=Integer.valueOf(input);
+        return ret;
+    }
+    public void reInitialize(){
+        status=ADD;
+        value="";
+        itemList.clear();
+        selected=-1;
+        adapter.setSelected(-1);
+        adapter.notifyDataSetChanged();
+        refreshCalcStatus();
+    }
 
 }

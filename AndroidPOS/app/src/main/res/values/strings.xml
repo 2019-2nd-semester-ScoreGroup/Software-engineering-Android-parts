@@ -29,5 +29,11 @@
     <string name="cancel">Cancel</string>
     <!--Misc-->
     <string name="empty"> </string>
+    <string name="barcode">Barcode</string>
+    <!--abbreviation-->
+    <string name="ABenter">EN</string>
+    <string name="ABcancel">CN</string>
+    <string name="ABdelete">DL</string>
+    <string name="ABremove">RM</string>
 
 </resources>
