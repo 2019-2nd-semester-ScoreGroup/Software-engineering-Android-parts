@@ -1,49 +1,31 @@
 package com.scoregroup.androidpos.Client;
 
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-//쉐얼드 프리퍼런스 구현...
 public class ClientManger {
-    Socket sock = null;
-    BufferedReader in = null;        //Server로부터 데이터를 읽어들이기 위한 입력스트림
-    PrintWriter out = null;            //서버로 내보내기 위한 출력 스트림
+    private static ClientManger cm; // 액티비티가 모두 사용가능
+    private static String ip;// 아이피를 저장
+    private static boolean wait = true; // 응답을 기다림
 
-    public ClientManger(String msg){
-        new Thread(()->{
-            try {
-                sock = new Socket("192.168.43.177", 8080);
-                in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())));
-                Log.i("connect", "서버 연결");
-                PushMsg(msg);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.i("connect", "서버 연결 실패");
-            }
-        }).start();
+    private ClientManger(){} // 임의로 생성 불가
+
+    public static ClientManger getInstance(){ // 클라이언트 매니저는 한번만 생성되어 여러 액티비티에서 사용
+        if(cm == null)
+            cm = new ClientManger();
+        return cm;
     }
 
-    public void PushMsg(String msg){
-        out.println(msg);                        //서버로 데이터 전송
-        out.flush();
-        Log.i("push", msg);
-        ReadMsg();
+    public static void set_IP(String ip_num){ // IP를 기억함
+        ip = ip_num;
     }
 
-    public void ReadMsg(){
-        String rec_msg = null;
-        try {
-            rec_msg = in.readLine();                //Client로부터 데이터를 읽어옴
-            Log.i("read", rec_msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void wait_false(){ // 데이터에 응답을 기다리는 메소드
+        wait = false;
+    }
+
+    public void getDB(String msg){ // DB에 msg대한 데이터 요청
+        Client c = new Client(ip); // 서버에 연결 시도
+        c.PushMsg(msg);
+        c.ReadMsg();
+        while(wait)
+            System.out.println("wait...");
     }
 }
