@@ -13,12 +13,12 @@ public class ClientManger {
         return cm;
     }
 
-    public static void set_IP(String ip_num){ // IP를 기억함
-        ip = ip_num;
-    }
-
     public static void wait_false(){ // 데이터에 응답을 기다리는 메소드
         wait = false;
+    }
+
+    public static void set_IP(String ip_num){ // IP를 기억함
+        ip = ip_num;
     }
 
     public void getDB(String msg){ // DB에 msg대한 데이터 요청
