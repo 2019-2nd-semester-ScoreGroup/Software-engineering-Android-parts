@@ -1,6 +1,7 @@
 package com.scoregroup.androidpos.HistoryManagingActivities.CustomViews;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class HistoryItemAdapter extends BaseAdapter {
     ArrayList<HistoryItem> items;
-
+    int selected=-1;
     public HistoryItemAdapter(ArrayList<HistoryItem> items) {
         this.items = items;
     }
@@ -46,10 +47,14 @@ public class HistoryItemAdapter extends BaseAdapter {
         TextView amount = view.findViewById(R.id.amount);
         TextView price = view.findViewById(R.id.price);
         HistoryItem item=items.get(i);
-
+        view.setBackgroundColor(selected==i? Color.YELLOW:Color.GRAY);
         name.setText(item.getName());
         amount.setText(context.getString(R.string.empty) + item.getAmount());
         price.setText(context.getString(R.string.empty) + (item.getAmount()*item.getPricePerItem()));
         return view;
+    }
+
+    public void setSelected(int selected) {
+        this.selected=selected;
     }
 }
