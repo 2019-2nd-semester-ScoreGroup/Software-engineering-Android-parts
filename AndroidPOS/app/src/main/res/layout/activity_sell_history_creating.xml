@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -32,295 +33,312 @@
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleBackground">
 
-        <TextView
-            android:id="@+id/keyTooltip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/barcode"
-            android:textAlignment="textStart" />
-
-        <TextView
-            android:id="@+id/nameTooltip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/name"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/amountTooltip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/amount"
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/priceTooltip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/price"
-            android:textAlignment="textEnd" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/scrollArea"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/left"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-    </ListView>
-
-    <LinearLayout
-        android:id="@+id/left"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/right"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/nowStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="textEnd" />
-
-        <TableLayout
-            android:id="@+id/keypad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="0">
-
-                <Button
-                    android:id="@+id/plus"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/plusSymbol" />
-
-                <Button
-                    android:id="@+id/minus"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/minusSymbol" />
-
-                <Button
-                    android:id="@+id/multiply"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/multiplySymbol" />
-
-                <Button
-                    android:id="@+id/divide"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/divideSymbol" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-
-                <Button
-                    android:id="@+id/seven"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="7" />
-
-                <Button
-                    android:id="@+id/eight"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="8" />
-
-                <Button
-                    android:id="@+id/nine"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="9" />
-
-                <Button
-                    android:id="@+id/enter"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/ABenter" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-
-                <Button
-                    android:id="@+id/four"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="4" />
-
-                <Button
-                    android:id="@+id/five"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="5" />
-
-                <Button
-                    android:id="@+id/six"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="6" />
-
-                <Button
-                    android:id="@+id/del"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/ABdelete" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-
-                <Button
-                    android:id="@+id/one"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="1" />
-
-                <Button
-                    android:id="@+id/two"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="2" />
-
-                <Button
-                    android:id="@+id/three"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="3" />
-
-                <Button
-                    android:id="@+id/cancel"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/ABcancel" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="0dp">
-
-
-                <Button
-                    android:id="@+id/zero"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="0" />
-
-                <Button
-                    android:id="@+id/remove"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="@string/ABremove" />
-
-                <Button
-                    android:id="@+id/add2"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="." />
-
-                <Button
-                    android:id="@+id/add1"
-                    style="@style/numpadButtons"
-                    android:layout_width="match_parent"
-                    android:text="." />
-            </TableRow>
-        </TableLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/right"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1"
-        android:gravity="bottom|right"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/left"
-        app:layout_constraintTop_toBottomOf="@+id/scrollArea">
-
-        <Space
-            android:id="@+id/CamSpace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/totalPriceTooltip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/totalPrice" />
-
-        <TextView
-            android:id="@+id/totalPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="9999"
-            android:textAlignment="textEnd" />
-
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/createButton"
+            <TextView
+                android:id="@+id/keyTooltip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/pay" />
+                android:text="@string/barcode"
+                android:textAlignment="textStart" />
 
-            <Button
-                android:id="@+id/historyButton"
+            <TextView
+                android:id="@+id/nameTooltip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/name"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/amountTooltip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/amount"
+                android:textAlignment="textEnd" />
+
+            <TextView
+                android:id="@+id/priceTooltip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/price"
+                android:textAlignment="textEnd" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/scrollArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nowStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAlignment="textEnd"
+                android:textSize="20sp" />
+
+            <TableLayout
+                android:id="@+id/keypad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp">
+
+                    <Button
+                        android:id="@+id/plus"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/plusSymbol" />
+
+                    <Button
+                        android:id="@+id/minus"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/minusSymbol" />
+
+                    <Button
+                        android:id="@+id/multiply"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/multiplySymbol" />
+
+                    <Button
+                        android:id="@+id/divide"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/divideSymbol" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/seven"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="7" />
+
+                    <Button
+                        android:id="@+id/eight"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="8" />
+
+                    <Button
+                        android:id="@+id/nine"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="9" />
+
+                    <Button
+                        android:id="@+id/enter"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/ABenter" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/four"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="4" />
+
+                    <Button
+                        android:id="@+id/five"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="5" />
+
+                    <Button
+                        android:id="@+id/six"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="6" />
+
+                    <Button
+                        android:id="@+id/del"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/ABdelete" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+
+                    <Button
+                        android:id="@+id/one"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="1" />
+
+                    <Button
+                        android:id="@+id/two"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="2" />
+
+                    <Button
+                        android:id="@+id/three"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="3" />
+
+                    <Button
+                        android:id="@+id/cancel"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/ABcancel" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="0dp">
+
+
+                    <Button
+                        android:id="@+id/zero"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="0" />
+
+                    <Button
+                        android:id="@+id/remove"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="@string/ABremove" />
+
+                    <Button
+                        android:id="@+id/add2"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="." />
+
+                    <Button
+                        android:id="@+id/add1"
+                        style="@style/numpadButtons"
+                        android:layout_width="match_parent"
+                        android:text="." />
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:orientation="vertical">
+
+
+            <com.journeyapps.barcodescanner.DecoratedBarcodeView
+                android:id="@+id/barcodeScanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/history" />
+                app:zxing_preview_scaling_strategy="centerCrop"
+                app:zxing_scanner_layout="@layout/custom_scanner"
+                app:zxing_use_texture_view="false" />
+
+            <TextView
+                android:id="@+id/totalPriceTooltip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/totalPrice" />
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9999"
+                android:textAlignment="textEnd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/createButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pay" />
+
+                <Button
+                    android:id="@+id/historyButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/history" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
