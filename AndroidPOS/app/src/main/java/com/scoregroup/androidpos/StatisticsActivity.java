@@ -32,23 +32,17 @@ public class StatisticsActivity extends AppCompatActivity {
         texts[1] = findViewById(R.id.S_money);
         texts[2] = findViewById(R.id.S_detail);
 
-        buttons[0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                texts[0].setText("날짜");
-                texts[1].setText("매출");
-                texts[2].setText("상세");
-                sales_list();
-                Toast.makeText(getApplicationContext(), "검색완료!", Toast.LENGTH_LONG).show();
-            }
+        buttons[0].setOnClickListener(view -> {
+            texts[0].setText("날짜");
+            texts[1].setText("매출");
+            texts[2].setText("비고");
+            sales_list();
+            Toast.makeText(getApplicationContext(), "검색완료!", Toast.LENGTH_LONG).show();
         });
 
-        buttons[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(in);
-            }
+        buttons[1].setOnClickListener(view -> {
+            Intent in = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(in);
         });
     }
 
