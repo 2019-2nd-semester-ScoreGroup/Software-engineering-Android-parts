@@ -27,6 +27,8 @@
         <activity android:name=".PaymentActivity"/>
         <activity android:name=".StockListActivity" />
         <activity android:name=".SingleStockActivity" />
+
     </application>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
 </manifest>
