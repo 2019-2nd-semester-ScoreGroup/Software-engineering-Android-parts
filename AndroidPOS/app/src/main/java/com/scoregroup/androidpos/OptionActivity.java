@@ -1,6 +1,7 @@
 package com.scoregroup.androidpos;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,10 +17,25 @@ public class OptionActivity extends AppCompatActivity {
     Button buttons[] = new Button[2];
     EditText E_IP, E_PASS;
 
+    public void SaveIPPW(String ip, String pw){ // sp에 아이피, 비번 저장
+        SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("IP", ip);
+        editor.putString("PW", pw);
+        editor.commit();
+    }
+
+    public void ImportIPPW(){
+        SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
+        IP = pref.getString("IP", "");
+        PASS = pref.getString("PW", "");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
+        ImportIPPW();
 
         buttons[0] = findViewById(R.id.Confirm);
         buttons[1] = findViewById(R.id.ExitButton);
@@ -39,6 +55,7 @@ public class OptionActivity extends AppCompatActivity {
             }
             // 성공 시
             IP = E_IP.getText().toString(); // 아이피 입력 저장
+            SaveIPPW(IP, PASS); // sp에 저장
             ClientManger.set_IP(IP); // 클라이언트 매니저에 IP 저장
             // DB와 통신 시작
             Data = cm.getDB("hello");
