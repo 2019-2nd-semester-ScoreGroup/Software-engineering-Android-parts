@@ -1,6 +1,8 @@
 package com.scoregroup.androidpos;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,12 +15,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 
+import java.security.cert.PKIXRevocationChecker;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
+//activity_stock.xml
 public class StockListActivity extends AppCompatActivity {
     final int _REQ = 100;
     final int RESULT_STORE = 0;
@@ -39,12 +46,14 @@ public class StockListActivity extends AppCompatActivity {
         texts[2] = findViewById(R.id.Price);
         texts[3] = findViewById(R.id.Count);
 
+        texts[0].setText("코드");
+        texts[1].setText("품명");
+        texts[2].setText("가격");
+
         buttons[0].setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                texts[0].setText("코드");
-                texts[1].setText("품명");
-                texts[2].setText("가격");
                 stock_list();
                 Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
             }
@@ -70,22 +79,40 @@ public class StockListActivity extends AppCompatActivity {
 
 
 
-    public void stock_list(){ // DB예시로 어댑터와 리스트뷰 연결
-        String[] strDate = {"A12","A13","A15","C23"};
-        int nDatCnt=0;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void stock_list(){
+        String ackMsg;
+
         ArrayList<itemsale> oData = new ArrayList<>();
 
-        for (int i=0; i<100; ++i)
+        ClientManger clientManger = ClientManger.getInstance();
+
+        ackMsg = clientManger.getDB("getStocks");
+
+        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
+        while(stringTokenizer.hasMoreTokens())
         {
-            itemsale oItem = new itemsale();
-            oItem.Count = (i+1) + " ";
-            oItem.Code = strDate[nDatCnt++];
-            //oltem.Price =
+            String line = stringTokenizer.nextToken();
+            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+            String parsedAckMsg = lineTokenizer.nextToken();
 
-            oData.add(oItem);
-            if (nDatCnt >= strDate.length) nDatCnt = 0;
+            itemsale itemsale = new itemsale();
+            itemsale.Code = parsedAckMsg;
+
+            lineTokenizer.hasMoreTokens();
+            parsedAckMsg = lineTokenizer.nextToken();
+            itemsale.Name = parsedAckMsg;
+
+            lineTokenizer.hasMoreTokens();
+            parsedAckMsg = lineTokenizer.nextToken();
+            itemsale.Price = parsedAckMsg;
+
+            lineTokenizer.hasMoreTokens();
+            parsedAckMsg = lineTokenizer.nextToken();
+            itemsale.Count = parsedAckMsg;
+
+            oData.add(itemsale);
         }
-
         StockListView = (ListView)findViewById(R.id.stocklist);
         ListAdapter oAdapter = new ListAdapter(oData);
         StockListView.setAdapter(oAdapter);
@@ -143,14 +170,15 @@ public class StockListActivity extends AppCompatActivity {
             }
 
             TextView oTextCode = (TextView) convertView.findViewById(R.id.KeyCode);
-            TextView oTextName = (TextView) convertView.findViewById(R.id.name);
+            TextView oTextName = (TextView) convertView.findViewById(R.id.Name);
             TextView oTextPrice = (TextView) convertView.findViewById(R.id.Price);
             TextView oTextCount = (TextView) convertView.findViewById(R.id.Count);
 
 
             oTextCode.setText(m_oData.get(position).Code);
+            oTextName.setText(m_oData.get(position).Name);
             oTextCount.setText(m_oData.get(position).Count);
-            oTextPrice.setText(m_oData.get(position).Count+"000");
+            oTextPrice.setText(m_oData.get(position).Price);
 
             Button f = convertView.findViewById(R.id.detail);
             f.setOnClickListener(new View.OnClickListener() {
