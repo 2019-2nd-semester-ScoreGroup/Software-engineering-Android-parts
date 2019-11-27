@@ -14,9 +14,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.ClientManger;
+
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class StatisticsActivity extends AppCompatActivity {
+    ClientManger cm = ClientManger.getInstance();
     private ListView SaleListView = null;
     Button buttons[] = new Button[2];
     TextView texts[] = new TextView[3];
@@ -46,30 +50,33 @@ public class StatisticsActivity extends AppCompatActivity {
         });
     }
 
-    public void sales_list(){ // DB예시로 어댑터와 리스트뷰 연결
-        String[] strDate = {"2017-01-03", "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-07",
-                "2017-01-08", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12"};
-        String[] strMoney = {"2,212,300", "2,008,100", "3,272,900", "1,942,000", "5,892,000",
-                "2,683,490", "1,694,400", "4,112,900", "1,772,000", "6,102,100"};
+    public void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
+        String ackMsg;
 
-        int nDatCnt=0;
-        ArrayList<itemsale> oData = new ArrayList<>();
+        ArrayList<itemsale> sData = new ArrayList<>();
 
-        for (int i=0; i<100; ++i)
-        {
-            itemsale oItem = new itemsale();
-            oItem.Money = "\t" + strMoney[nDatCnt] + "원";
-            oItem.Date = "\t" + strDate[nDatCnt++];
-            oData.add(oItem);
-            if (nDatCnt >= strDate.length) nDatCnt = 0;
+        ackMsg = cm.getDB("sale");
+
+        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
+        while(stringTokenizer.hasMoreTokens()){
+            String line = stringTokenizer.nextToken();
+            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+            itemsale item  = new itemsale();
+
+            String parsedAckMsg = lineTokenizer.nextToken();
+            item.Date = parsedAckMsg;
+
+            lineTokenizer.hasMoreTokens();
+            item.Money = parsedAckMsg;
+
+            sData.add(item);
         }
-
         SaleListView = (ListView)findViewById(R.id.salelist);
-        ListAdapter oAdapter = new ListAdapter(oData);
-        SaleListView.setAdapter(oAdapter);
+        ListAdapter sales_Adapter = new ListAdapter(sData);
+        SaleListView.setAdapter(sales_Adapter);
     }
 
-    public class itemsale{ // 리스트뷰 데이터 클래스
+    public class itemsale{ // 리스트뷰 용 매출통계 데이터 클래스
         public String Date;
         public String Money;
     }
@@ -77,13 +84,13 @@ public class StatisticsActivity extends AppCompatActivity {
     public class ListAdapter extends BaseAdapter // 커스텀 리스트뷰 어댑터 구현
     {
         LayoutInflater inflater = null;
-        private ArrayList<itemsale> m_oData = null;
+        private ArrayList<itemsale> SaleData = null;
         private int nListCnt = 0;
 
-        public ListAdapter(ArrayList<itemsale> _oData)
+        public ListAdapter(ArrayList<itemsale> sData)
         {
-            m_oData = _oData;
-            nListCnt = m_oData.size();
+            SaleData = sData;
+            nListCnt = SaleData.size();
         }
 
         @Override
@@ -121,8 +128,8 @@ public class StatisticsActivity extends AppCompatActivity {
             TextView oTextDate = (TextView) convertView.findViewById(R.id.date);
             TextView oTextMoney = (TextView) convertView.findViewById(R.id.sale);
 
-            oTextDate.setText(m_oData.get(position).Date);
-            oTextMoney.setText(m_oData.get(position).Money);
+            oTextDate.setText(SaleData.get(position).Date);
+            oTextMoney.setText(SaleData.get(position).Money);
             return convertView;
         }
     }
