@@ -50,7 +50,7 @@ public class OptionActivity extends AppCompatActivity {
 
             if(!PASS.equals("1234")) { // 초기 비밀번호는 1234, 틀릴 시 리턴
                 PASS = ""; // 패스워드 초기화
-                Toast.makeText(getApplicationContext(), "비밀번호가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
             // 성공 시
@@ -60,7 +60,7 @@ public class OptionActivity extends AppCompatActivity {
             // DB와 통신 시작
             Data = cm.getDB("hello");
             // 성공된 데이터 출력
-            Toast.makeText(getApplicationContext(), Data, Toast.LENGTH_LONG).show(); // 임시, 받은 데이터 출력
+            Toast.makeText(getApplicationContext(), Data, Toast.LENGTH_SHORT).show(); // 임시, 받은 데이터 출력
         });
 
         buttons[1].setOnClickListener(view -> {
