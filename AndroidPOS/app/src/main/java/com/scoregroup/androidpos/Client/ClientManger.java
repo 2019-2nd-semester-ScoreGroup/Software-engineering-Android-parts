@@ -2,7 +2,7 @@ package com.scoregroup.androidpos.Client;
 
 public class ClientManger {
     private static ClientManger cm; // 액티비티가 모두 접근 가능
-    private static String ip;// 아이피를 저장
+    private static String ip = "127.0.0.1";// 아이피를 저장
     private static boolean wait = true; // 응답을 기다리는 변수
 
     private ClientManger(){} // 임의로 생성 불가

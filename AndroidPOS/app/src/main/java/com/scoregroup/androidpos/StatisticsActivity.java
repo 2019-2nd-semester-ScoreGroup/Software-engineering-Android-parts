@@ -1,5 +1,6 @@
 package com.scoregroup.androidpos;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +19,15 @@ import android.widget.Toast;
 import com.scoregroup.androidpos.Client.ClientManger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
     private ListView SaleListView = null;
-    Button buttons[] = new Button[2];
+    Button buttons[] = new Button[4];
     TextView texts[] = new TextView[3];
+    String startymd, endymd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +35,44 @@ public class StatisticsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
 
         buttons[0] = findViewById(R.id.Confirm);
-        buttons[1] = findViewById(R.id.ExitButton);
+        buttons[1] = findViewById(R.id.StartDate);
+        buttons[2] = findViewById(R.id.EndDate);
+        buttons[3] = findViewById(R.id.ExitButton);
         texts[0] = findViewById(R.id.S_date);
         texts[1] = findViewById(R.id.S_money);
         texts[2] = findViewById(R.id.S_detail);
+
+        DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
+            buttons[1].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+            startymd = buttons[1].getText().toString();
+        };
+
+        DatePickerDialog.OnDateSetListener end = (view, year, month, dayOfMonth) -> {
+            buttons[2].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+            endymd = buttons[2].getText().toString();
+        };
 
         buttons[0].setOnClickListener(view -> {
             texts[0].setText("날짜");
             texts[1].setText("매출");
             texts[2].setText("비고");
-            sales_list(strDate.getText().toString(), endDate.getText().toString());
+            sales_list(startymd, endymd);
+            Log.i("ymd", startymd + " and " + endymd);
         });
 
         buttons[1].setOnClickListener(view -> {
+            Calendar cal = Calendar.getInstance();
+            DatePickerDialog StrDialog = new DatePickerDialog(this, start, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
+            StrDialog.show();
+        });
+
+        buttons[2].setOnClickListener(view -> {
+            Calendar cal = Calendar.getInstance();
+            DatePickerDialog EndDialog = new DatePickerDialog(this, end, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
+            EndDialog.show();
+        });
+
+        buttons[3].setOnClickListener(view -> {
             Intent in = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(in);
         });
