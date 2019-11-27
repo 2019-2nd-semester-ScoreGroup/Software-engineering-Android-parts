@@ -25,7 +25,7 @@ public class ClientManger {
         Client c = new Client(ip); // 서버에 연결 시도
 
         if(c.Communication(msg) == 2) // 2실패, 예외 처리
-            return "통신 에러";
+            return "NetworkError";
         else{ // 연결 성공
             while(wait) // DB로 온 데이터를 기다림
                 System.out.println("data wait...");

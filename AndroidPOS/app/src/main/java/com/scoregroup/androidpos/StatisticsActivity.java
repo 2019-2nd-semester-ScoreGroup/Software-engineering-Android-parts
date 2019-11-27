@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import java.util.StringTokenizer;
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
     private ListView SaleListView = null;
-    EditText strDate, endDate;
     Button buttons[] = new Button[2];
     TextView texts[] = new TextView[3];
 
@@ -37,15 +35,12 @@ public class StatisticsActivity extends AppCompatActivity {
         texts[0] = findViewById(R.id.S_date);
         texts[1] = findViewById(R.id.S_money);
         texts[2] = findViewById(R.id.S_detail);
-        strDate = findViewById(R.id.StartDate);
-        endDate = findViewById(R.id.EndDate);
 
         buttons[0].setOnClickListener(view -> {
             texts[0].setText("날짜");
             texts[1].setText("매출");
             texts[2].setText("비고");
             sales_list(strDate.getText().toString(), endDate.getText().toString());
-            Toast.makeText(getApplicationContext(), "검색완료!", Toast.LENGTH_LONG).show();
         });
 
         buttons[1].setOnClickListener(view -> {
@@ -60,6 +55,11 @@ public class StatisticsActivity extends AppCompatActivity {
         ArrayList<item_selling> sData = new ArrayList<>();
 
         ackMsg = cm.getDB("getSelling"+ " " + strDate + " " + endDate);
+
+        if(ackMsg.equals("NetworkError")){
+            Toast.makeText(getApplicationContext(), ackMsg, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
         while(stringTokenizer.hasMoreTokens()){
