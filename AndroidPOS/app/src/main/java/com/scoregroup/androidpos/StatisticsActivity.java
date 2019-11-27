@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import java.util.StringTokenizer;
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
     private ListView SaleListView = null;
+    EditText strDate, endDate;
     Button buttons[] = new Button[2];
     TextView texts[] = new TextView[3];
 
@@ -35,12 +37,14 @@ public class StatisticsActivity extends AppCompatActivity {
         texts[0] = findViewById(R.id.S_date);
         texts[1] = findViewById(R.id.S_money);
         texts[2] = findViewById(R.id.S_detail);
+        strDate = findViewById(R.id.StartDate);
+        endDate = findViewById(R.id.EndDate);
 
         buttons[0].setOnClickListener(view -> {
             texts[0].setText("날짜");
             texts[1].setText("매출");
             texts[2].setText("비고");
-            sales_list();
+            sales_list(strDate.getText().toString(), endDate.getText().toString());
             Toast.makeText(getApplicationContext(), "검색완료!", Toast.LENGTH_LONG).show();
         });
 
@@ -50,18 +54,18 @@ public class StatisticsActivity extends AppCompatActivity {
         });
     }
 
-    public void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
+    public void sales_list(String strDate, String endDate){ // DB데이터로 어댑터와 리스트뷰 연결
         String ackMsg;
 
-        ArrayList<itemsale> sData = new ArrayList<>();
+        ArrayList<item_selling> sData = new ArrayList<>();
 
-        ackMsg = cm.getDB("sale");
+        ackMsg = cm.getDB("getSelling"+ " " + strDate + " " + endDate);
 
         StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
         while(stringTokenizer.hasMoreTokens()){
             String line = stringTokenizer.nextToken();
             StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-            itemsale item  = new itemsale();
+            item_selling item  = new item_selling();
 
             String parsedAckMsg = lineTokenizer.nextToken();
             item.Date = parsedAckMsg;
@@ -76,7 +80,7 @@ public class StatisticsActivity extends AppCompatActivity {
         SaleListView.setAdapter(sales_Adapter);
     }
 
-    public class itemsale{ // 리스트뷰 용 매출통계 데이터 클래스
+    public class item_selling{ // 리스트뷰 용 매출통계 데이터 클래스
         public String Date;
         public String Money;
     }
@@ -84,10 +88,10 @@ public class StatisticsActivity extends AppCompatActivity {
     public class ListAdapter extends BaseAdapter // 커스텀 리스트뷰 어댑터 구현
     {
         LayoutInflater inflater = null;
-        private ArrayList<itemsale> SaleData = null;
+        private ArrayList<item_selling> SaleData = null;
         private int nListCnt = 0;
 
-        public ListAdapter(ArrayList<itemsale> sData)
+        public ListAdapter(ArrayList<item_selling> sData)
         {
             SaleData = sData;
             nListCnt = SaleData.size();

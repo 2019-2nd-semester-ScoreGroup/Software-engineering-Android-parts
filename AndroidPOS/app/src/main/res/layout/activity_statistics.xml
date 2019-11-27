@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:digits="1234567890/"
+            android:digits="1234567890-"
             android:ems="10"
             android:hint="시작날짜(년/월/일)"
             android:inputType="number"
@@ -50,11 +50,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:digits="1234567890/"
+            android:digits="1234567890-"
             android:ems="10"
-
             android:hint="종료날짜(년/월/일)"
-
             android:inputType="number"
             android:textSize="16dp" />
     </LinearLayout>
