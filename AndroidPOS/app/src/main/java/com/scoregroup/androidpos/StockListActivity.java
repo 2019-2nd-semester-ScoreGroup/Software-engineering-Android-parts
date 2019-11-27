@@ -175,10 +175,10 @@ public class StockListActivity extends AppCompatActivity {
             TextView oTextCount = (TextView) convertView.findViewById(R.id.Count);
 
 
-            oTextCode.setText(m_oData.get(position).Code);
-            oTextName.setText(m_oData.get(position).Name);
-            oTextCount.setText(m_oData.get(position).Count);
-            oTextPrice.setText(m_oData.get(position).Price);
+            oTextCode.setText(m_oData.get(position).Code.replaceAll(" ",""));
+            oTextName.setText(m_oData.get(position).Name.replaceAll(" ",""));
+            oTextCount.setText(m_oData.get(position).Count.replaceAll(" ",""));
+            oTextPrice.setText(m_oData.get(position).Price.replaceAll(" ",""));
 
             Button f = convertView.findViewById(R.id.detail);
             f.setOnClickListener(new View.OnClickListener() {
