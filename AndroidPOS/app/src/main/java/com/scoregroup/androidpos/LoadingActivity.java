@@ -36,12 +36,15 @@ public class LoadingActivity extends AppCompatActivity {
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
+        }else{
+            startNext();
         }
-        startNext();
+
     }
 
     @Override
@@ -82,7 +85,7 @@ public class LoadingActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("취소하기", (paramAnonymousDialogInterface, paramAnonymousInt) -> Toast.makeText(getApplication(), getString(R.string.barcode), Toast.LENGTH_SHORT).show())
+                .setNegativeButton("취소하기", (paramAnonymousDialogInterface, paramAnonymousInt) -> Toast.makeText(getApplication(), "진행을 막습니다.", Toast.LENGTH_SHORT).show())
                 .create()
                 .show();
     }
