@@ -8,16 +8,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
+import com.scoregroup.androidpos.util.EAN13;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
+
 
 public class HistoryCreateActivity extends AppCompatActivity {
     private static final int
@@ -49,6 +61,10 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private Button payButton,historyButton;
     private int selected=-1;
     private TextView totalPrice;
+
+    private String lastText;
+    private DecoratedBarcodeView barcodeScanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +85,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
         payButton.setOnClickListener((view)->{
             String newKey="새로운 키";
             //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
+
+
             if(newKey==null){
                 Log.e("POS","DB registering Failed");
             }else {
@@ -99,6 +117,15 @@ public class HistoryCreateActivity extends AppCompatActivity {
         }
 
         totalPrice=findViewById(R.id.totalPrice);
+
+
+        //바코드 스캐너
+        barcodeScanner= findViewById(R.id.barcodeScanner);
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        barcodeScanner.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        barcodeScanner.initializeFromIntent(getIntent());
+        barcodeScanner.decodeContinuous(callback);
+        Log.d("DEBUG",Boolean.toString(barcodeScanner!=null));
     }
 
     private void refreshCalcStatus() {
@@ -110,7 +137,32 @@ public class HistoryCreateActivity extends AppCompatActivity {
         totalPrice.setText(""+totP);
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        barcodeScanner.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        barcodeScanner.pause();
+    }
+    public void triggerScan(View view) {
+        barcodeScanner.decodeSingle(callback);
+    }
+
+
+
+    public void pause(View view) {
+        barcodeScanner.pause();
+    }
+
+    public void resume(View view) {
+        barcodeScanner.resume();
+    }
     private void ProcessNumpadButton(View view) {//TODO 넘패드 버튼 이벤트
         selected=adapter.getSelected();
         if(status==CANCEL)status=ADD;
@@ -173,15 +225,16 @@ public class HistoryCreateActivity extends AppCompatActivity {
                         for(HistoryItem t :itemList){
                             if(t.getKey().equals(value)){
                                 t.setAmount(t.getAmount()+1);
+                                added=true;
                             }
                         }
-                        if(added)break;
-
-                        //TODO 네트워크
-                        item=new HistoryItem(value,"example",100,1);
-                        itemList.add(item);
+                        if(!added){
+                            //TODO 네트워크
+                            item=new HistoryItem(value,"example",100,1);
+                            itemList.add(item);
+                            selected=itemList.indexOf(item);
+                        }
                         value="";
-                        selected=itemList.indexOf(item);
                         break;
                     case PLUS:
                         item=itemList.get(selected);
@@ -249,4 +302,35 @@ public class HistoryCreateActivity extends AppCompatActivity {
         refreshCalcStatus();
     }
 
+    public synchronized void inputDataByBarcode(String data){
+        status=ADD;
+        value=data;
+        findViewById(numPadKeys[15]).callOnClick();
+    }
+
+
+    //바코드
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if(result.getText() == null || result.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            lastText = result.getText();
+            barcodeScanner.setStatusText(result.getText());
+            if(EAN13.checkAvailability(lastText)) {
+                Log.d("EAN13", "CORRECT MSG : " + lastText);
+                inputDataByBarcode(lastText);
+                Toast.makeText(getApplicationContext(), lastText, Toast.LENGTH_SHORT).show();
+            }else{
+                Log.d("EAN13","WRONG MSG");
+            }
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 }
