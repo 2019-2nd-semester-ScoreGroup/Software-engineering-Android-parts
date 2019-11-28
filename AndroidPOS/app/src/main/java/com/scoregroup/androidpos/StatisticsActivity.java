@@ -3,6 +3,8 @@ package com.scoregroup.androidpos;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.Client;
+import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 
 import java.util.ArrayList;
@@ -23,10 +27,11 @@ import java.util.StringTokenizer;
 
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
+    private ClientLoading task;
     private ListView SaleListView = null;
-    Button buttons[] = new Button[4];
-    TextView texts[] = new TextView[3];
-    String startymd, endymd;
+    private Button buttons[] = new Button[4];
+    private TextView texts[] = new TextView[3];
+    private String Data, startymd, endymd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +57,17 @@ public class StatisticsActivity extends AppCompatActivity {
         };
 
         buttons[0].setOnClickListener(view -> {
+            task = new ClientLoading(this);
+            task.show();
             texts[0].setText("날짜");
             texts[1].setText("매출");
             texts[2].setText("비고");
-            sales_list(startymd, endymd);
+            Client c = cm.getDB("getSelling"+ " " + startymd + " " + endymd);
+            c.setOnReceiveListener((v)->{
+                Data = v.getData();
+                task.dismiss();
+                sales_list();
+            }).send();
             Log.i("ymd", startymd + " and " + endymd);
         });
 
@@ -77,35 +89,34 @@ public class StatisticsActivity extends AppCompatActivity {
         });
     }
 
-    public void sales_list(String strDate, String endDate){ // DB데이터로 어댑터와 리스트뷰 연결
-        String ackMsg;
+    public void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(()->{
+            ArrayList<item_selling> sData = new ArrayList<>();
 
-        ArrayList<item_selling> sData = new ArrayList<>();
+            if(Data == null){
+                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        ackMsg = cm.getDB("getSelling"+ " " + strDate + " " + endDate);
+            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
+            while(stringTokenizer.hasMoreTokens()){
+                String line = stringTokenizer.nextToken();
+                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                item_selling item  = new item_selling();
 
-        if(ackMsg.equals("NetworkError")){
-            Toast.makeText(getApplicationContext(), ackMsg, Toast.LENGTH_LONG).show();
-            return;
-        }
+                String parsedAckMsg = lineTokenizer.nextToken();
+                item.Date = parsedAckMsg;
 
-        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
-        while(stringTokenizer.hasMoreTokens()){
-            String line = stringTokenizer.nextToken();
-            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-            item_selling item  = new item_selling();
+                lineTokenizer.hasMoreTokens();
+                item.Money = parsedAckMsg;
 
-            String parsedAckMsg = lineTokenizer.nextToken();
-            item.Date = parsedAckMsg;
-
-            lineTokenizer.hasMoreTokens();
-            item.Money = parsedAckMsg;
-
-            sData.add(item);
-        }
-        SaleListView = (ListView)findViewById(R.id.salelist);
-        ListAdapter sales_Adapter = new ListAdapter(sData);
-        SaleListView.setAdapter(sales_Adapter);
+                sData.add(item);
+            }
+            SaleListView = (ListView)findViewById(R.id.salelist);
+            ListAdapter sales_Adapter = new ListAdapter(sData);
+            SaleListView.setAdapter(sales_Adapter);
+        });
     }
 
     public class item_selling{ // 리스트뷰 용 매출통계 데이터 클래스
