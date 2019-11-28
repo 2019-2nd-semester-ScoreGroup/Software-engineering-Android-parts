@@ -164,7 +164,7 @@ public class StockListActivity extends AppCompatActivity {
                     intent.putExtra("nextCount",m_oData.get(position).Count);
                     intent.putExtra("nextName",m_oData.get(position).Name);
                     intent.putExtra("nextPrice",m_oData.get(position).Price);
-                    startActivityForResult(intent,RESULT_OK);
+                    startActivity(intent);
 
                 }
 
@@ -175,27 +175,5 @@ public class StockListActivity extends AppCompatActivity {
 
     }
 
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data)
-    {
-        TextView oTextCode = (TextView) findViewById(R.id.Product_KeyCode);
-        TextView oTextName = (TextView) findViewById(R.id.Product_Name);
-        TextView oTextPrice = (TextView) findViewById(R.id.Product_Price);
-        TextView oTextCount = (TextView) findViewById(R.id.Product_Count);
-
-        switch (requestCode){
-            case RESULT_OK:
-                if (resultCode==REQUEST_BARCODE){
-                    oTextCode.setText(data.getStringExtra("Result_Barcode"));
-                }
-                else if (resultCode==REQUEST_NAME){
-                    oTextName.setText(data.getStringExtra("Result_Name"));
-                }
-                else if (resultCode==REQUEST_PRICE){
-                    oTextPrice.setText(data.getStringExtra("Result_Price"));
-                }
-                break;
-
-        }
-    }
 
 }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -16,12 +17,8 @@ import java.util.BitSet;
 public class SingleStockActivity extends AppCompatActivity {
     final int RESULT_OK = 100;
     final int RESULT_STORE = 0;
+    final int RESULT_DELETE= 10;
     final int RESULT_CANCLED = 50;
-    final int REQUEST_BARCODE = 1;
-    final int REQUEST_NAME = 2;
-    final int REQUEST_PRICE=3;
-    private ListView StockListView = null;
-    ArrayList<StockListActivity.itemsale> oData = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -31,57 +28,53 @@ public class SingleStockActivity extends AppCompatActivity {
         EditText s_p = (EditText) findViewById(R.id.modifyprice);
         EditText s_n = (EditText) findViewById(R.id.modifyname);
         EditText s_b = (EditText) findViewById(R.id.modifybarcode);
+        TextView Title=(TextView) findViewById(R.id.productname);
+        String product_name = intent.getStringExtra("nextName");
+        String product_price = intent.getStringExtra("nextprice");
+        String product_barcode= intent.getStringExtra("nextkey");
+        String Count= intent.getStringExtra("nextCount");
 
-        StockListActivity.itemsale key = intent.getParcelableExtra("nextkey");
-        StockListActivity.itemsale price = intent.getParcelableExtra("nextprice");
-        StockListActivity.itemsale Name = intent.getParcelableExtra("nextName");
-        StockListActivity.itemsale Count = intent.getParcelableExtra("nextCount");
+        Title.setText(product_name);
 
-        Button exitButton = findViewById(R.id.goback);
-        Button nameButton = findViewById(R.id.namebutton);
-        Button priceButton = findViewById(R.id.pricebutton);
-        Button barcodeButton = findViewById(R.id.barcodebutton);
 
-        nameButton.setOnClickListener(new View.OnClickListener(){
+
+        Button OKButton = findViewById(R.id.btnok);
+        Button CancelButton = findViewById(R.id.btncancel);
+        Button DeleteButton = findViewById(R.id.delete);
+        Button AddButton = findViewById(R.id.add);
+
+        OKButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                sendData.modified_name = s_n.getText().toString();
-                intent.putExtra("Result_Name",s_n.getText().toString());
-                setResult(REQUEST_NAME,intent);
+                finish();
+
             }
 
         });
-        priceButton.setOnClickListener(new View.OnClickListener(){
+        CancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                sendData.modified_price= s_p.getText().toString();
-                intent.putExtra("Result_Price", s_p.getText().toString());
-                setResult(REQUEST_PRICE,intent);
+                finish();
             }
 
         });
-        barcodeButton.setOnClickListener(new View.OnClickListener(){
+        AddButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                sendData.modified_barcode = s_b.getText().toString();
-                intent.putExtra("Result_Barcode", s_b.getText().toString());
-                setResult(REQUEST_BARCODE,intent);
-            }
-
-
-        });        ;;
-
-
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 finish();
             }
         });
+        DeleteButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                finish();
+            }
+        });
+// TODO 버튼들 클릭했을때 서버와 통신
+
     }
 
-    public static class sendData{
-        public static String modified_count;
-        public static String modified_barcode;
-        public static String  modified_name;
-        public static String modified_price;
+    public  class sendData{
+        public  String modified_count;
+        public  String modified_barcode;
+        public  String  modified_name;
+        public  String modified_price;
 
     }
 
