@@ -13,6 +13,10 @@ public class ClientManger {
         return cm;
     }
 
+    public static boolean get_wait(){ // 데이터에 응답을 기다리는 메소드
+        return wait;
+    }
+
     public static void wait_false(){ // 데이터에 응답을 기다리는 메소드
         wait = false;
     }

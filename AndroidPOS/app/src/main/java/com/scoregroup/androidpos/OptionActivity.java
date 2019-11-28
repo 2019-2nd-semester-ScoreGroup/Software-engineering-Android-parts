@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 
 public class OptionActivity extends AppCompatActivity {
@@ -46,6 +47,9 @@ public class OptionActivity extends AppCompatActivity {
         E_PASS.setText(PASS); // 비밀번호 기억
 
         buttons[0].setOnClickListener(view -> {
+//            ClientLoading task = new ClientLoading(this);
+//            task.execute();
+
             PASS = E_PASS.getText().toString(); // 비밀번호 입력 저장
 
             if(!PASS.equals("1234")) { // 초기 비밀번호는 1234, 틀릴 시 리턴
