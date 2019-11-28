@@ -16,16 +16,20 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
+import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.PaymentActivity;
 import com.scoregroup.androidpos.R;
 import com.scoregroup.androidpos.util.EAN13;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Date;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
@@ -65,6 +69,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private String lastText;
     private DecoratedBarcodeView barcodeScanner;
 
+    private ClientManger clientManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,13 +84,27 @@ public class HistoryCreateActivity extends AppCompatActivity {
             numButton.setOnClickListener((view) -> ProcessNumpadButton(view));
         }
         itemList=new ArrayList<>();
-         adapter=new HistoryItemAdapter(itemList);
+        adapter=new HistoryItemAdapter(itemList);
         scrollArea.setAdapter(adapter);
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
             String newKey="새로운 키";
+
             //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
 
+
+            clientManager = ClientManger.getInstance();
+
+            //물품 수량 변경 이벤트 등록 editStock -> addEvent
+
+            for(HistoryItem t :itemList)
+            {
+                clientManager.getDB("editStock" + t.key + " " + t.name + " "  + t.pricePerItem); //key, name, price
+            }
+
+            //TODO memo 입력받는 부분
+            //status 0:Nomal, 1:Cancle, 2:Nan
+            newKey = clientManager.getDB("addEvent" + " sell " + Timestamp.valueOf(LocalDateTime.now().toString()) + " " + 0);
 
             if(newKey==null){
                 Log.e("POS","DB registering Failed");
@@ -208,7 +227,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 break;
             case R.id.minus:
                 if(status==MINUS)
-                    value=""+(ToInteger(value)+1);
+                    value=""+(ToInteger(value)-1);
                 else status=MINUS;
                 break;
             case R.id.multiply:
@@ -234,6 +253,16 @@ public class HistoryCreateActivity extends AppCompatActivity {
                             itemList.add(item);
                             selected=itemList.indexOf(item);
                         }
+                        if(added)break;
+
+                        //TODO 네트워크
+
+                        clientManager = ClientManger.getInstance();
+
+                        String ackMsg = clientManager.getDB("getStock ");
+
+                        item=new HistoryItem(value,"example",100,1);
+                        itemList.add(item);
                         value="";
                         break;
                     case PLUS:
