@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Date;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
@@ -99,7 +98,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
 
             for(HistoryItem t :itemList)
             {
-                clientManager.getDB("editStock" + t.key + " " + t.name + " "  + t.pricePerItem); //key, name, price
+                clientManager.getDB("editStock" + " " + t.key + " " + t.name + " "  + t.pricePerItem); //key, name, price
             }
 
             //TODO memo 입력받는 부분
