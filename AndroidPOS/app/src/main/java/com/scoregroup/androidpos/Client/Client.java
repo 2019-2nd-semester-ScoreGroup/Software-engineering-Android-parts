@@ -73,6 +73,7 @@ public class Client implements Runnable {
             alreadySent = true;
 
             //수신
+            sock.setSoTimeout(5000); // Read 타임아웃
             data = in.readLine();
             isReceived = true;
             Log.i("ju", "받은 데이터: " + data);

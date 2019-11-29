@@ -44,10 +44,8 @@ public class OptionActivity extends AppCompatActivity {
     private void Login(){
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(() -> {
-            if(Data == null){
+            if(Data == null)
                 Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_SHORT).show();
-                ClientManger.getIP("localhost");
-            }
             else if(Data.equals("pass"))
                 Toast.makeText(getApplicationContext(), "로그인 성공!", Toast.LENGTH_SHORT).show();
             else

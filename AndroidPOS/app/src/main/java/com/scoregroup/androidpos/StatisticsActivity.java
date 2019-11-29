@@ -28,9 +28,9 @@ import java.util.StringTokenizer;
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
     private ClientLoading task;
+    private TextView TCash;
     private ListView SaleListView = null;
     private Button buttons[] = new Button[4];
-    private TextView texts[] = new TextView[3];
     private String Data, startymd, endymd;
 
     @Override
@@ -42,9 +42,7 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[1] = findViewById(R.id.StartDate);
         buttons[2] = findViewById(R.id.EndDate);
         buttons[3] = findViewById(R.id.ExitButton);
-        texts[0] = findViewById(R.id.S_date);
-        texts[1] = findViewById(R.id.S_money);
-        texts[2] = findViewById(R.id.S_detail);
+        TCash = findViewById(R.id.total_cash);
 
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
             buttons[1].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
@@ -59,16 +57,13 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[0].setOnClickListener(view -> {
             task = new ClientLoading(this);
             task.show();
-            texts[0].setText("날짜");
-            texts[1].setText("매출");
-            texts[2].setText("비고");
             Client c = cm.getDB("getSelling"+ " " + startymd + " " + endymd);
+            Log.i("ymd", startymd + " and " + endymd);
             c.setOnReceiveListener((v)->{
                 Data = v.getData();
                 task.dismiss();
                 sales_list();
             }).send();
-            Log.i("ymd", startymd + " and " + endymd);
         });
 
         buttons[1].setOnClickListener(view -> {
@@ -89,30 +84,43 @@ public class StatisticsActivity extends AppCompatActivity {
         });
     }
 
-    public void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
+    private void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(()->{
             ArrayList<item_selling> sData = new ArrayList<>();
-
+            int total_cash = 0; // 총 매출 계산
+            // 데이터가 널 값일 시 리턴
             if(Data == null){
                 Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
                 return;
             }
-
+            // 데이터 추출
             StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
             while(stringTokenizer.hasMoreTokens()){
                 String line = stringTokenizer.nextToken();
                 StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
                 item_selling item  = new item_selling();
 
+                lineTokenizer.hasMoreTokens();
                 String parsedAckMsg = lineTokenizer.nextToken();
-                item.Date = parsedAckMsg;
+                item.sKey = parsedAckMsg;
 
                 lineTokenizer.hasMoreTokens();
-                item.Money = parsedAckMsg;
+                parsedAckMsg = lineTokenizer.nextToken();
+                item.sName = parsedAckMsg;
 
+                lineTokenizer.hasMoreTokens();
+                parsedAckMsg = lineTokenizer.nextToken();
+                item.sPrice = parsedAckMsg;
+
+                lineTokenizer.hasMoreTokens();
+                parsedAckMsg = lineTokenizer.nextToken();
+                item.sRate = parsedAckMsg;
+
+                total_cash += (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
                 sData.add(item);
             }
+            TCash.setText(" 총 매출: " + Integer.toString(total_cash) + "원");
             SaleListView = (ListView)findViewById(R.id.salelist);
             ListAdapter sales_Adapter = new ListAdapter(sData);
             SaleListView.setAdapter(sales_Adapter);
@@ -120,8 +128,10 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public class item_selling{ // 리스트뷰 용 매출통계 데이터 클래스
-        public String Date;
-        public String Money;
+        public String sKey;
+        public String sName;
+        public String sPrice;
+        public String sRate;
     }
 
     public class ListAdapter extends BaseAdapter // 커스텀 리스트뷰 어댑터 구현
@@ -168,11 +178,13 @@ public class StatisticsActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.simple_sale_list, parent, false);
             }
 
-            TextView oTextDate = (TextView) convertView.findViewById(R.id.date);
-            TextView oTextMoney = (TextView) convertView.findViewById(R.id.sale);
+            TextView oTextName = (TextView) convertView.findViewById(R.id.sta_name);
+            TextView oTextPrice = (TextView) convertView.findViewById(R.id.sta_price);
+            TextView oTextRate = (TextView) convertView.findViewById(R.id.sta_rate);
 
-            oTextDate.setText(SaleData.get(position).Date);
-            oTextMoney.setText(SaleData.get(position).Money);
+            oTextName.setText(SaleData.get(position).sName);
+            oTextPrice.setText(SaleData.get(position).sPrice + "원");
+            oTextRate.setText(SaleData.get(position).sRate + "개");
             return convertView;
         }
     }

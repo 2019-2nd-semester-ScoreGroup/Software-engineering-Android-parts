@@ -5,32 +5,32 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/sta_name"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="날짜"
+        android:gravity="center"
+        android:text="물품 이름"
         android:textColor="#000000"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/sale"
+        android:id="@+id/sta_price"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="매출"
-        android:textColor="#FF0000"
+        android:gravity="center"
+        android:text="가격"
+        android:textColor="#000000"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/bigo"
+        android:id="@+id/sta_rate"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="비고"
+        android:gravity="center"
+        android:text="판매 수량"
         android:textColor="#000000"
         android:textSize="20dp" />
 

@@ -104,6 +104,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/total_cash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text=" 총 매출:  -원"
+        android:textColor="#FF0000"
+        android:textSize="25dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,35 +121,35 @@
         <TextView
             android:id="@+id/S_date"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="#4D000000"
             android:gravity="center"
-            android:text=""
+            android:text="물품 이름"
             android:textColor="#000000"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/S_money"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="#4D000000"
             android:gravity="center"
-            android:text=""
-            android:textColor="#FF0000"
-            android:textSize="30dp" />
+            android:text="가격"
+            android:textColor="#000000"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/S_detail"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="#4D000000"
             android:gravity="center"
-            android:text=""
+            android:text="판매 수량"
             android:textColor="#000000"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
     </LinearLayout>
 
     <ListView
