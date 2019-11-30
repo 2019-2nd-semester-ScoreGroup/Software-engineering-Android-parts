@@ -102,7 +102,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
             }
 
             //TODO memo 입력받는 부분
-            //status 0:Nomal, 1:Cancle, 2:Nan
+            //status 0:Normal, 1:Cancel, 2:Nan
             newKey = clientManager.getDB("addEvent" + " sell " + Timestamp.valueOf(LocalDateTime.now().toString()) + " " + 0);
 
             if(newKey==null){
