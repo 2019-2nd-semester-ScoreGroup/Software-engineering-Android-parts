@@ -21,6 +21,7 @@ import com.scoregroup.androidpos.Client.Client;
 import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -32,6 +33,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private ListView SaleListView = null;
     private Button buttons[] = new Button[4];
     private String Data, startymd, endymd;
+    private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +122,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 total_cash += (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
                 sData.add(item);
             }
-            TCash.setText(" 총 매출: " + Integer.toString(total_cash) + "원");
+            TCash.setText(" 총 매출: " + Cash_format.format(total_cash) + "원");
             SaleListView = (ListView)findViewById(R.id.salelist);
             ListAdapter sales_Adapter = new ListAdapter(sData);
             SaleListView.setAdapter(sales_Adapter);
