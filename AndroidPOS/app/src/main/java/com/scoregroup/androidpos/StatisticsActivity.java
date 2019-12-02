@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.scoregroup.androidpos.Client.ClientManger;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,9 @@ public class StatisticsActivity extends AppCompatActivity {
     private ListView SaleListView = null;
     Button buttons[] = new Button[2];
     TextView texts[] = new TextView[3];
+    private ClientManger clientManger;
+    private EditText startDate;
+    private EditText endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,8 @@ public class StatisticsActivity extends AppCompatActivity {
         texts[0] = findViewById(R.id.S_date);
         texts[1] = findViewById(R.id.S_money);
         texts[2] = findViewById(R.id.S_detail);
+        startDate = findViewById(R.id.StartDate);
+        endDate = findViewById(R.id.EndDate);
 
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,22 +61,23 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public void sales_list(){ // DB예시로 어댑터와 리스트뷰 연결
-        String[] strDate = {"2017-01-03", "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-07",
-                "2017-01-08", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12"};
-        String[] strMoney = {"2,212,300", "2,008,100", "3,272,900", "1,942,000", "5,892,000",
-                "2,683,490", "1,694,400", "4,112,900", "1,772,000", "6,102,100"};
-
-        int nDatCnt=0;
         ArrayList<itemsale> oData = new ArrayList<>();
+        clientManger = ClientManger.getInstance();
+        /*
+        timestamp = "yyyy-MM-dd hh:mm:ss" (year, month, day, hour, minute, second)
+         */
+        clientManger.getDB("getSelling" + startDate.getText().toString() + " 00:00:00" + endDate.getText().toString() + " 00:00:00");
 
-        for (int i=0; i<100; ++i)
+
+
+        /*for (int i=0; i<100; ++i)
         {
             itemsale oItem = new itemsale();
             oItem.Money = "\t" + strMoney[nDatCnt] + "원";
             oItem.Date = "\t" + strDate[nDatCnt++];
             oData.add(oItem);
             if (nDatCnt >= strDate.length) nDatCnt = 0;
-        }
+        }*/
 
         SaleListView = (ListView)findViewById(R.id.salelist);
         ListAdapter oAdapter = new ListAdapter(oData);
