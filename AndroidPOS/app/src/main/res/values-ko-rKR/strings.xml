@@ -6,4 +6,21 @@
     <string name="toOption">설정</string>
     <string name="paymentTitle">결제 진행중</string>
     <string name="paymentProcessingName">진행중.</string>
+    <string name="ABcancel">취소</string>
+    <string name="ABdelete">삭제</string>
+    <string name="ABenter">확인</string>
+    <string name="ABremove">제거</string>
+    <string name="barcode">바코드</string>
+    <string name="cancel">취소</string>
+    <string name="create">생성</string>
+    <string name="details">자세히</string>
+    <string name="history">기록</string>
+    <string name="list">목록</string>
+    <string name="name">이름</string>
+    <string name="pay">결제</string>
+    <string name="price">가격</string>
+    <string name="serialno">시리얼번호</string>
+    <string name="time">시간</string>
+    <string name="totalPrice">총액 :</string>
+    <string name="amount">갯수</string>
 </resources>

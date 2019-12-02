@@ -2,20 +2,31 @@
 <android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/historyContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/key"
+        style="@style/historyTexts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="키" />
 
     <TextView
         android:id="@+id/name"
         style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="이름" />
+        android:text="이름"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/amount"
         style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="123"
@@ -24,7 +35,7 @@
     <TextView
         android:id="@+id/price"
         style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="999"
