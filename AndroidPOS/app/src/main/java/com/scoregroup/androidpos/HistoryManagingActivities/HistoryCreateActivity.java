@@ -94,7 +94,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
 
             //TODO memo 입력받는 부분
             //status 0:Normal, 1:Cancel, 2:Nan
-            newKey = clientManager.getDB(String.format("addEvent %s %s %d", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0));
+            newKey = clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
 
             if(newKey==null){
                 Log.e("POS","DB registering Failed");
