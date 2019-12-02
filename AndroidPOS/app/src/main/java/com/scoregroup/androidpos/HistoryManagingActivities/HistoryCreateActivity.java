@@ -87,36 +87,36 @@ public class HistoryCreateActivity extends AppCompatActivity {
         adapter=new HistoryItemAdapter(itemList);
         scrollArea.setAdapter(adapter);
         payButton=findViewById(R.id.createButton);
-        payButton.setOnClickListener((view)->{
-            String newKey;
-
-            //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
-
-            //TODO memo 입력받는 부분
-            //status 0:Normal, 1:Cancel, 2:Nan
-            newKey = clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
-
-            if(newKey==null){
-                Log.e("POS","DB registering Failed");
-            }else {
-                long newKeyLong=Long.valueOf(newKey);
-                for(HistoryItem t : itemList){
-                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount()));
-                }
-                if(mode==SELL){
-                    //TODO 결재 액티비티로 변경
-                    Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
-                    t.putExtra(getString(R.string.ModeIntentKey), mode);
-                    t.putExtra(getString(R.string.EventIntentKey), newKey);
-                    startActivity(t);
-                    reInitialize();
-                }else if(mode==DELIVERY){
-                    //TODO 액티비티 나가기
-                    finish();
-                }
-
-            }
-        });
+//        payButton.setOnClickListener((view)->{
+//            String newKey;
+//
+//            //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
+//
+//            //TODO memo 입력받는 부분
+//            //status 0:Normal, 1:Cancel, 2:Nan
+//            newKey = clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
+//
+//            if(newKey==null){
+//                Log.e("POS","DB registering Failed");
+//            }else {
+//                long newKeyLong=Long.valueOf(newKey);
+//                for(HistoryItem t : itemList){
+//                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount()));
+//                }
+//                if(mode==SELL){
+//                    //TODO 결재 액티비티로 변경
+//                    Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
+//                    t.putExtra(getString(R.string.ModeIntentKey), mode);
+//                    t.putExtra(getString(R.string.EventIntentKey), newKey);
+//                    startActivity(t);
+//                    reInitialize();
+//                }else if(mode==DELIVERY){
+//                    //TODO 액티비티 나가기
+//                    finish();
+//                }
+//
+//            }
+//        });
         if(mode==SELL){
             historyButton=findViewById(R.id.historyButton);
             historyButton.setOnClickListener((view)->{
@@ -231,61 +231,61 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 status=DIVIDE;
                 break;
             case R.id.enter:
-                HistoryItem item;
-                switch(status){
-                    case ADD:
-                        boolean added=false;
-                        for(HistoryItem t :itemList){
-                            if(t.getKey().equals(value)){
-                                t.setAmount(t.getAmount()+1);
-                                added=true;
-                            }
-                        }
-                        if(!added){
-                            String[] msgs=clientManager.getDB("getStock "+value).split(" ");
-                            item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
-                            itemList.add(item);
-                            value="";
-                            //TODO 네트워크
-                            item=new HistoryItem(value,"example",100,1);
-                            clientManager.getDB("getStock");
-                            itemList.add(item);
-                            selected=itemList.indexOf(item);
-                        }
-                        if(added)break;
-
-                        //TODO 네트워크
-
-                        String[] msgs=clientManager.getDB("getStock "+value).split(" ");
-                        item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
-                        itemList.add(item);
-                        value="";
-                        break;
-                    case PLUS:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()+ToInteger(value));
-                        status=ADD;
-                        value="";
-                        break;
-                    case MINUS:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()-ToInteger(value));
-                        status=ADD;
-                        value="";
-                        break;
-                    case MULTIPLY:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()*ToInteger(value));
-                        status=ADD;
-                        value="";
-                        break;
-                    case DIVIDE:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()/ToInteger(value));
-                        status=ADD;
-                        value="";
-                        break;
-                }
+//                HistoryItem item;
+//                switch(status){
+//                    case ADD:
+//                        boolean added=false;
+//                        for(HistoryItem t :itemList){
+//                            if(t.getKey().equals(value)){
+//                                t.setAmount(t.getAmount()+1);
+//                                added=true;
+//                            }
+//                        }
+//                        if(!added){
+//                            String[] msgs=clientManager.getDB("getStock "+value).split(" ");
+//                            item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
+//                            itemList.add(item);
+//                            value="";
+//                            //TODO 네트워크
+//                            item=new HistoryItem(value,"example",100,1);
+//                            clientManager.getDB("getStock");
+//                            itemList.add(item);
+//                            selected=itemList.indexOf(item);
+//                        }
+//                        if(added)break;
+//
+//                        //TODO 네트워크
+//
+//                        String[] msgs=clientManager.getDB("getStock "+value).split(" ");
+//                        item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
+//                        itemList.add(item);
+//                        value="";
+//                        break;
+//                    case PLUS:
+//                        item=itemList.get(selected);
+//                        item.setAmount(item.getAmount()+ToInteger(value));
+//                        status=ADD;
+//                        value="";
+//                        break;
+//                    case MINUS:
+//                        item=itemList.get(selected);
+//                        item.setAmount(item.getAmount()-ToInteger(value));
+//                        status=ADD;
+//                        value="";
+//                        break;
+//                    case MULTIPLY:
+//                        item=itemList.get(selected);
+//                        item.setAmount(item.getAmount()*ToInteger(value));
+//                        status=ADD;
+//                        value="";
+//                        break;
+//                    case DIVIDE:
+//                        item=itemList.get(selected);
+//                        item.setAmount(item.getAmount()/ToInteger(value));
+//                        status=ADD;
+//                        value="";
+//                        break;
+//                }
                 break;
             case R.id.cancel:
                 status=ADD;

@@ -80,20 +80,15 @@ public class Client implements Runnable {
 
             //연결종료
             sock.close();
-
+        } catch (IOException e) {
+            Log.i("ju", e.getLocalizedMessage());
+            e.printStackTrace();
+        } finally {
             //이벤트 실행
             if (callback != null){
                 Log.i("ju", "이벤트 실행");
                 callback.onReceive(this);
             }
-        } catch (IOException e) {
-            Log.i("ju", e.getLocalizedMessage());
-            //이벤트 실행
-            if (callback != null) {
-                Log.i("ju", "이벤트 실행");
-                callback.onReceive(this);
-            }
-            e.printStackTrace();
         }
     }
 }
