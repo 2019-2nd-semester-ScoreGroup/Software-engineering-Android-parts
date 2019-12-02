@@ -17,6 +17,7 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
+import com.scoregroup.androidpos.Client.Client;
 import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
@@ -88,34 +89,32 @@ public class HistoryCreateActivity extends AppCompatActivity {
         scrollArea.setAdapter(adapter);
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
-            String newKey;
+
 
             //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
 
             //TODO memo 입력받는 부분
             //status 0:Normal, 1:Cancel, 2:Nan
-            newKey = clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
-
-            if(newKey==null){
-                Log.e("POS","DB registering Failed");
-            }else {
-                long newKeyLong=Long.valueOf(newKey);
+            Client addEventClient= clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
+            addEventClient.setOnReceiveListener((client)->{
+                long newKeyLong=Long.valueOf(client.getData());
+                String newKey=client.getData();
                 for(HistoryItem t : itemList){
-                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount()));
+                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount())).getData();
                 }
                 if(mode==SELL){
                     //TODO 결재 액티비티로 변경
                     Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
                     t.putExtra(getString(R.string.ModeIntentKey), mode);
-                    t.putExtra(getString(R.string.EventIntentKey), newKey);
+                    t.putExtra(getString(R.string.EventIntentKey), newKeyLong);
                     startActivity(t);
                     reInitialize();
                 }else if(mode==DELIVERY){
                     //TODO 액티비티 나가기
                     finish();
                 }
-
-            }
+            });
+            addEventClient.send();
         });
         if(mode==SELL){
             historyButton=findViewById(R.id.historyButton);
@@ -242,7 +241,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                             }
                         }
                         if(!added){
-                            String[] msgs=clientManager.getDB("getStock "+value).split(" ");
+                            String[] msgs=clientManager.getDB("getStock "+value).getData().split(" ");
                             item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
                             itemList.add(item);
                             value="";
@@ -251,15 +250,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
                             clientManager.getDB("getStock");
                             itemList.add(item);
                             selected=itemList.indexOf(item);
+                            value="";
                         }
-                        if(added)break;
-
-                        //TODO 네트워크
-
-                        String[] msgs=clientManager.getDB("getStock "+value).split(" ");
-                        item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
-                        itemList.add(item);
-                        value="";
                         break;
                     case PLUS:
                         item=itemList.get(selected);
