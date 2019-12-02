@@ -30,6 +30,11 @@ public class HistoryListActivity extends AppCompatActivity {
                 return R.layout.activity_sell_history_list;
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //HisotryEvent 새로고침
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.scoregroup.androidpos.Client.ClientManger;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -19,15 +21,19 @@ public class SingleStockActivity extends AppCompatActivity {
     final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
     ArrayList<StockListActivity.itemsale> oData = new ArrayList<>();
+    private ClientManger clientManager;
+    private EditText s_p;
+    private EditText s_n;
+    private EditText s_b;
 
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.singlestock);
         Intent intent = getIntent();
 
-        EditText s_p = (EditText) findViewById(R.id.modifyprice);
-        EditText s_n = (EditText) findViewById(R.id.modifyname);
-        EditText s_b = (EditText) findViewById(R.id.modifybarcode);
+        s_p = (EditText) findViewById(R.id.modifyprice);
+        s_n = (EditText) findViewById(R.id.modifyname);
+        s_b = (EditText) findViewById(R.id.modifybarcode);
 
         StockListActivity.itemsale key = intent.getParcelableExtra("nextkey");
         StockListActivity.itemsale price = intent.getParcelableExtra("nextprice");
@@ -43,12 +49,16 @@ public class SingleStockActivity extends AppCompatActivity {
         });
     }
 
-    public class sendData{
-        public String modified_Count;
-        public String modified_Code;
-        public String modified_Name;
-        public String modified_Price;
+    protected void sendData()
+    {
+        //TODO 석빈이한테 UI 변경 요소 물어보고 다시 작업
+        String modified_Count;
+        String modified_Code = s_b.getText().toString();
+        String modified_Name = s_n.getText().toString();
+        String modified_Price = s_p.getText().toString();;
 
+        clientManager = ClientManger.getInstance();
+        clientManager.getDB("editStock");
     }
 
 }
