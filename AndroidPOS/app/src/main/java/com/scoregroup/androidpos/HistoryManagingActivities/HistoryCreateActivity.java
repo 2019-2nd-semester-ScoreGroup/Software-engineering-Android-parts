@@ -74,7 +74,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
-
+        clientManager = ClientManger.getInstance();
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         setContentView(GetLayoutId(mode));
         scrollArea=findViewById(R.id.scrollArea);
@@ -88,27 +88,21 @@ public class HistoryCreateActivity extends AppCompatActivity {
         scrollArea.setAdapter(adapter);
         payButton=findViewById(R.id.createButton);
         payButton.setOnClickListener((view)->{
-            String newKey="새로운 키";
+            String newKey;
 
             //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
 
-
-            clientManager = ClientManger.getInstance();
-
-            //물품 수량 변경 이벤트 등록 editStock -> addEvent
-
-            for(HistoryItem t :itemList)
-            {
-                clientManager.getDB("editStock" + " " + t.key + " " + t.name + " "  + t.pricePerItem); //key, name, price
-            }
-
             //TODO memo 입력받는 부분
             //status 0:Normal, 1:Cancel, 2:Nan
-            newKey = clientManager.getDB("addEvent" + " sell " + Timestamp.valueOf(LocalDateTime.now().toString()) + " " + 0);
+            newKey = clientManager.getDB(String.format("addEvent %s %s %d", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0));
 
             if(newKey==null){
                 Log.e("POS","DB registering Failed");
             }else {
+                long newKeyLong=Long.valueOf(newKey);
+                for(HistoryItem t : itemList){
+                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount()));
+                }
                 if(mode==SELL){
                     //TODO 결재 액티비티로 변경
                     Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
@@ -248,8 +242,13 @@ public class HistoryCreateActivity extends AppCompatActivity {
                             }
                         }
                         if(!added){
+                            String[] msgs=clientManager.getDB("getStock "+value).split(" ");
+                            item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
+                            itemList.add(item);
+                            value="";
                             //TODO 네트워크
                             item=new HistoryItem(value,"example",100,1);
+                            clientManager.getDB("getStock");
                             itemList.add(item);
                             selected=itemList.indexOf(item);
                         }
@@ -257,11 +256,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
 
                         //TODO 네트워크
 
-                        clientManager = ClientManger.getInstance();
-
-                        String ackMsg = clientManager.getDB("getStock ");
-
-                        item=new HistoryItem(value,"example",100,1);
+                        String[] msgs=clientManager.getDB("getStock "+value).split(" ");
+                        item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
                         itemList.add(item);
                         value="";
                         break;
