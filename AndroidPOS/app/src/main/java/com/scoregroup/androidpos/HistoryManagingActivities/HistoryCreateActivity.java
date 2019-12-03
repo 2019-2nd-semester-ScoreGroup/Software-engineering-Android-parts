@@ -108,7 +108,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                         String newKey = client.getData();
                         long newKeyLong = Long.valueOf(newKey);
                         for (HistoryItem t : itemList) {
-                            clientManager.getDB(String.format("addChange %d %s %d", newKeyLong, t.getKey(), t.getAmount())).send();
+                            clientManager.getDB(String.format("addChange %d %s %d", newKeyLong, t.getKey(), t.getAmount()*(mode==SELL?-1:1))).send();
                         }
                         if (mode == SELL) {
                             //TODO 결재 액티비티로 변경
