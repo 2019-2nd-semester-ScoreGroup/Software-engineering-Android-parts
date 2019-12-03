@@ -36,10 +36,14 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 
 
 public class HistoryCreateActivity extends AppCompatActivity {
-    private static final int
-            ADD = 0, PLUS = 1, MINUS = 2, MULTIPLY = 3, DIVIDE = 4, DELETE = 5, CANCEL = 6;
+    private static final int INPUT_MODE_ADD = 0;
+    private static final int INPUT_MODE_PLUS = 1;
+    private static final int INPUT_MODE_MINUS = 2;
+    private static final int INPUT_MODE_MULTIPLY = 3;
+    private static final int INPUT_MODE_DIVIDE = 4;
+    private static final int INPUT_MODE_CANCEL = 5;
     private static final String[] symbols = new String[]{
-            "", "+", "-", "×", "÷", "DEL", "CANCEL"
+            "", "+", "-", "×", "÷", "CANCEL"
     };
     private final int[] numPadKeys =
             new int[]{R.id.zero, R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight, R.id.nine,
@@ -54,6 +58,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 return R.layout.activity_sell_history_creating;
         }
     }
+
     private HistoryItemAdapter adapter;
     private int status;
     private String value = "";
@@ -62,14 +67,15 @@ public class HistoryCreateActivity extends AppCompatActivity {
     private TextView calcStatus;
     private ListView scrollArea;
     private ArrayList<HistoryItem> itemList;
-    private Button payButton,historyButton;
-    private int selected=-1;
+    private Button payButton, historyButton;
+    private int selected = -1;
     private TextView totalPrice;
 
     private String lastText;
     private DecoratedBarcodeView barcodeScanner;
 
     private ClientManger clientManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,79 +83,80 @@ public class HistoryCreateActivity extends AppCompatActivity {
         clientManager = ClientManger.getInstance();
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         setContentView(GetLayoutId(mode));
-        scrollArea=findViewById(R.id.scrollArea);
+        scrollArea = findViewById(R.id.scrollArea);
         calcStatus = findViewById(R.id.nowStatus);
         for (int i = 0; i < numPadKeys.length; i++) {
             Button numButton = findViewById(numPadKeys[i]);
             numButton.setOnClickListener((view) -> ProcessNumpadButton(view));
         }
-        itemList=new ArrayList<>();
-        adapter=new HistoryItemAdapter(itemList);
+        itemList = new ArrayList<>();
+        adapter = new HistoryItemAdapter(itemList);
         scrollArea.setAdapter(adapter);
-        payButton=findViewById(R.id.createButton);
-        payButton.setOnClickListener((view)->{
-            String newKey;
-
-            //TODO DB로 전송 후 새로 생긴 이벤트 키 받기(newKey)
-
-            //TODO memo 입력받는 부분
+        payButton = findViewById(R.id.createButton);
+        totalPrice = findViewById(R.id.totalPrice);
+        payButton.setOnClickListener((view) -> {
             //status 0:Normal, 1:Cancel, 2:Nan
-            newKey = clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0,"selling"));
+            clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0, mode == SELL ? "selling" : "delivering"))
+                    .setOnReceiveListener((client) -> {
+                        if (!client.isReceived()) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(HistoryCreateActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
 
-            if(newKey==null){
-                Log.e("POS","DB registering Failed");
-            }else {
-                long newKeyLong=Long.valueOf(newKey);
-                for(HistoryItem t : itemList){
-                    clientManager.getDB(String.format("addChange %d %s %d",newKeyLong,t.getKey(),t.getAmount()));
-                }
-                if(mode==SELL){
-                    //TODO 결재 액티비티로 변경
-                    Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
-                    t.putExtra(getString(R.string.ModeIntentKey), mode);
-                    t.putExtra(getString(R.string.EventIntentKey), newKey);
-                    startActivity(t);
-                    reInitialize();
-                }else if(mode==DELIVERY){
-                    //TODO 액티비티 나가기
-                    finish();
-                }
-
-            }
+                            });
+                            return;
+                        }
+                        String newKey = client.getData();
+                        long newKeyLong = Long.valueOf(newKey);
+                        for (HistoryItem t : itemList) {
+                            clientManager.getDB(String.format("addChange %d %s %d", newKeyLong, t.getKey(), t.getAmount()*(mode==SELL?-1:1))).send();
+                        }
+                        if (mode == SELL) {
+                            //TODO 결재 액티비티로 변경
+                            Intent t = new Intent(HistoryCreateActivity.this, PaymentActivity.class);
+                            t.putExtra(getString(R.string.ModeIntentKey), mode);
+                            t.putExtra(getString(R.string.EventIntentKey), newKeyLong);
+                            startActivity(t);
+                            reInitialize();
+                        } else if (mode == DELIVERY) {
+                            //TODO 액티비티 나가기
+                            finish();
+                        }
+                    }).send();
         });
-        if(mode==SELL){
-            historyButton=findViewById(R.id.historyButton);
-            historyButton.setOnClickListener((view)->{
-                Intent t=new Intent(HistoryCreateActivity.this,HistoryListActivity.class);
-                t.putExtra(getString(R.string.ModeIntentKey),mode);
+        if (mode == SELL) {
+            historyButton = findViewById(R.id.historyButton);
+            historyButton.setOnClickListener((view) -> {
+                Intent t = new Intent(HistoryCreateActivity.this, HistoryListActivity.class);
+                t.putExtra(getString(R.string.ModeIntentKey), mode);
                 startActivity(t);
             });
+
+
             //TODO 판매중일 때 UI 이벤트 바인딩
-        }else if(mode==DELIVERY){
+        } else if (mode == DELIVERY) {
             //TODO 납품중일 때 UI 이벤트 바인딩
         }
-
-        totalPrice=findViewById(R.id.totalPrice);
-
-
         //바코드 스캐너
-        barcodeScanner= findViewById(R.id.barcodeScanner);
+        barcodeScanner = findViewById(R.id.barcodeScanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
         barcodeScanner.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeScanner.initializeFromIntent(getIntent());
         barcodeScanner.decodeContinuous(callback);
-        Log.d("DEBUG",Boolean.toString(barcodeScanner!=null));
+        Log.d("DEBUG", Boolean.toString(barcodeScanner != null));
+
+
     }
 
     private void refreshCalcStatus() {
         calcStatus.setText(symbols[status] + value);
-        int totP=0;
-        for(HistoryItem t:itemList){
-            totP+=t.getAmount()*t.getPricePerItem();
+        int totP = 0;
+        for (HistoryItem t : itemList) {
+            totP += t.getAmount() * t.getPricePerItem();
         }
-        totalPrice.setText(""+totP);
+        totalPrice.setText("" + totP);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -163,10 +170,10 @@ public class HistoryCreateActivity extends AppCompatActivity {
 
         barcodeScanner.pause();
     }
+
     public void triggerScan(View view) {
         barcodeScanner.decodeSingle(callback);
     }
-
 
 
     public void pause(View view) {
@@ -176,9 +183,10 @@ public class HistoryCreateActivity extends AppCompatActivity {
     public void resume(View view) {
         barcodeScanner.resume();
     }
+
     private void ProcessNumpadButton(View view) {//TODO 넘패드 버튼 이벤트
-        selected=adapter.getSelected();
-        if(status==CANCEL)status=ADD;
+        selected = adapter.getSelected();
+        if (status == INPUT_MODE_CANCEL) status = INPUT_MODE_ADD;
         switch (view.getId()) {
             case R.id.one:
                 value += "1";
@@ -212,94 +220,90 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 break;
             case R.id.remove:
                 itemList.remove(selected);
-                selected=-1;
+                selected = -1;
                 break;
             case R.id.plus:
-                if(status==PLUS)
-                    value=""+(ToInteger(value)+1);
-                else status=PLUS;
+                if (status == INPUT_MODE_PLUS)
+                    value = "" + (ToInteger(value) + 1);
+                else status = INPUT_MODE_PLUS;
                 break;
             case R.id.minus:
-                if(status==MINUS)
-                    value=""+(ToInteger(value)-1);
-                else status=MINUS;
+                if (status == INPUT_MODE_MINUS)
+                    value = "" + (ToInteger(value) - 1);
+                else status = INPUT_MODE_MINUS;
                 break;
             case R.id.multiply:
-                status=MULTIPLY;
+                status = INPUT_MODE_MULTIPLY;
                 break;
             case R.id.divide:
-                status=DIVIDE;
+                status = INPUT_MODE_DIVIDE;
                 break;
             case R.id.enter:
                 HistoryItem item;
-                switch(status){
-                    case ADD:
-                        boolean added=false;
-                        for(HistoryItem t :itemList){
-                            if(t.getKey().equals(value)){
-                                t.setAmount(t.getAmount()+1);
-                                added=true;
-                            }
+                switch (status) {
+                    case INPUT_MODE_ADD:
+                        boolean added = false;
+                        item=findItemByKey(value);
+                        if(item!=null){
+                            added=true;
+                            item.setAmount(item.getAmount()+1);
                         }
-                        if(!added){
-                            String[] msgs=clientManager.getDB("getStock "+value).split(" ");
-                            item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
+                        if (!added) {
+                            item = new HistoryItem(value, "NaN",-1, 1);
                             itemList.add(item);
-                            value="";
-                            //TODO 네트워크
-                            item=new HistoryItem(value,"example",100,1);
-                            clientManager.getDB("getStock");
-                            itemList.add(item);
-                            selected=itemList.indexOf(item);
+                            selected=itemList.size()-1;
+                            clientManager.getDB("getStock " + value).setOnReceiveListener((client) -> {
+                                if (!client.isReceived()) {
+                                    runOnUiThread(() -> {
+                                        Toast.makeText(HistoryCreateActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
+                                    });
+                                    return;
+                                }
+                                String[] msgs = client.getData().split(" ");
+                                HistoryItem tItem=findItemByKey(msgs[0]);
+                                tItem.setName(msgs[1]);
+                                tItem.setPricePerItem(Integer.valueOf(msgs[2]));
+                            }).send();
                         }
-                        if(added)break;
-
-                        //TODO 네트워크
-
-                        String[] msgs=clientManager.getDB("getStock "+value).split(" ");
-                        item=new HistoryItem(value,msgs[1],Integer.valueOf(msgs[2]),1);
-                        itemList.add(item);
-                        value="";
                         break;
-                    case PLUS:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()+ToInteger(value));
-                        status=ADD;
-                        value="";
+                    case INPUT_MODE_PLUS:
+                        item = itemList.get(selected);
+                        item.setAmount(item.getAmount() + ToInteger(value));
+                        status = INPUT_MODE_ADD;
+                        value = "";
                         break;
-                    case MINUS:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()-ToInteger(value));
-                        status=ADD;
-                        value="";
+                    case INPUT_MODE_MINUS:
+                        item = itemList.get(selected);
+                        item.setAmount(item.getAmount() - ToInteger(value));
+                        status = INPUT_MODE_ADD;
+                        value = "";
                         break;
-                    case MULTIPLY:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()*ToInteger(value));
-                        status=ADD;
-                        value="";
+                    case INPUT_MODE_MULTIPLY:
+                        item = itemList.get(selected);
+                        item.setAmount(item.getAmount() * ToInteger(value));
+                        status = INPUT_MODE_ADD;
+                        value = "";
                         break;
-                    case DIVIDE:
-                        item=itemList.get(selected);
-                        item.setAmount(item.getAmount()/ToInteger(value));
-                        status=ADD;
-                        value="";
+                    case INPUT_MODE_DIVIDE:
+                        item = itemList.get(selected);
+                        item.setAmount(item.getAmount() / ToInteger(value));
+                        status = INPUT_MODE_ADD;
+                        value = "";
                         break;
                 }
                 break;
             case R.id.cancel:
-                status=ADD;
-                value="";
+                status = INPUT_MODE_ADD;
+                value = "";
                 break;
             case R.id.del:
-                if(value.length()>1){
-                    value=value.substring(0,value.length()-1);
-                }else{
-                    value="";
+                if (value.length() > 1) {
+                    value = value.substring(0, value.length() - 1);
+                } else {
+                    value = "";
                 }
                 break;
             case R.id.add1:
-                break;
             case R.id.add2:
                 break;
             default:
@@ -311,46 +315,63 @@ public class HistoryCreateActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
     }
-    private int ToInteger(String input){
-        int ret=0;
-        if(input.length()>0)
-            ret=Integer.valueOf(input);
+
+    private int ToInteger(String input) {
+        int ret = 0;
+        if (input.length() > 0)
+            ret = Integer.valueOf(input);
         return ret;
     }
-    public void reInitialize(){
-        status=ADD;
-        value="";
+
+    public void reInitialize() {
+        status = INPUT_MODE_ADD;
+        value = "";
         itemList.clear();
-        selected=-1;
+        selected = -1;
         adapter.setSelected(-1);
         adapter.notifyDataSetChanged();
         refreshCalcStatus();
     }
 
-    public synchronized void inputDataByBarcode(String data){
-        status=ADD;
-        value=data;
+    public synchronized void inputDataByBarcode(String data) {
+        status = INPUT_MODE_ADD;
+        value = data;
         findViewById(numPadKeys[15]).callOnClick();
     }
 
+    private HistoryItem findItemByKey(String key){
+        for(HistoryItem t :itemList){
+            if(t.getKey().equals(key))return t;
+        }
+        return null;
+    }
 
     //바코드
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            if(result.getText() == null || result.getText().equals(lastText)) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
 
             lastText = result.getText();
+            Log.v("Barcode", lastText);
             barcodeScanner.setStatusText(result.getText());
-            if(EAN13.checkAvailability(lastText)) {
+            if(lastText.substring(0,7).equals("bundle\n")){
+                String[] lines=lastText.substring(7).split("\n");
+                for(int i=0;i<lines.length;i++){
+                    String[] cells=lines[i].split(";");
+                    inputDataByBarcode(cells[0]);
+                    itemList.get(selected).setAmount(Integer.valueOf(cells[1]));
+                }
+            }
+            if (EAN13.checkAvailability(lastText)) {
                 Log.d("EAN13", "CORRECT MSG : " + lastText);
                 inputDataByBarcode(lastText);
                 Toast.makeText(getApplicationContext(), lastText, Toast.LENGTH_SHORT).show();
-            }else{
-                Log.d("EAN13","WRONG MSG");
+            } else {
+                Log.d("EAN13", "WRONG MSG");
             }
         }
 
