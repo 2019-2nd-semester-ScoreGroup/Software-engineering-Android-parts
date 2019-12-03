@@ -243,13 +243,15 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 switch (status) {
                     case INPUT_MODE_ADD:
                         boolean added = false;
-                        for (HistoryItem t : itemList) {
-                            if (t.getKey().equals(value)) {
-                                t.setAmount(t.getAmount() + 1);
-                                added = true;
-                            }
+                        item=findItemByKey(value);
+                        if(item!=null){
+                            added=true;
+                            item.setAmount(item.getAmount()+1);
                         }
                         if (!added) {
+                            item = new HistoryItem(value, "NaN",-1, 1);
+                            itemList.add(item);
+                            selected=itemList.size()-1;
                             clientManager.getDB("getStock " + value).setOnReceiveListener((client) -> {
                                 if (!client.isReceived()) {
                                     runOnUiThread(() -> {
@@ -258,9 +260,9 @@ public class HistoryCreateActivity extends AppCompatActivity {
                                     return;
                                 }
                                 String[] msgs = client.getData().split(" ");
-                                HistoryItem tItem = new HistoryItem(value, msgs[1], Integer.valueOf(msgs[2]), 1);
-                                itemList.add(tItem);
-                                value = "";
+                                HistoryItem tItem=findItemByKey(msgs[0]);
+                                tItem.setName(msgs[1]);
+                                tItem.setPricePerItem(Integer.valueOf(msgs[2]));
                             }).send();
                         }
                         break;
@@ -337,6 +339,12 @@ public class HistoryCreateActivity extends AppCompatActivity {
         findViewById(numPadKeys[15]).callOnClick();
     }
 
+    private HistoryItem findItemByKey(String key){
+        for(HistoryItem t :itemList){
+            if(t.getKey().equals(key))return t;
+        }
+        return null;
+    }
 
     //바코드
     private BarcodeCallback callback = new BarcodeCallback() {
@@ -350,6 +358,14 @@ public class HistoryCreateActivity extends AppCompatActivity {
             lastText = result.getText();
             Log.v("Barcode", lastText);
             barcodeScanner.setStatusText(result.getText());
+            if(lastText.substring(0,7).equals("bundle\n")){
+                String[] lines=lastText.substring(7).split("\n");
+                for(int i=0;i<lines.length;i++){
+                    String[] cells=lines[i].split(";");
+                    inputDataByBarcode(cells[0]);
+                    itemList.get(selected).setAmount(Integer.valueOf(cells[1]));
+                }
+            }
             if (EAN13.checkAvailability(lastText)) {
                 Log.d("EAN13", "CORRECT MSG : " + lastText);
                 inputDataByBarcode(lastText);
