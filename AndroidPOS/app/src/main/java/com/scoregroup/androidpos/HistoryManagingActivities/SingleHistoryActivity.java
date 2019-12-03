@@ -2,11 +2,17 @@ package com.scoregroup.androidpos.HistoryManagingActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.Client;
+import com.scoregroup.androidpos.Client.ClientLoading;
+import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.R;
@@ -14,13 +20,21 @@ import com.scoregroup.androidpos.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class SingleHistoryActivity extends AppCompatActivity {
+    ClientManger cm = ClientManger.getInstance();
+    private ClientLoading task;
     private Intent receivePack;
     private ListView listScrollArea;
+    private int mode;
+    private String eventKey, time, Data;
+    private ArrayList<HistoryItem> listView;
+    private TextView keyView, dateView, totalPrice;
+    private Button cancelButton;
 
     public static int GetLayoutId(int mode) {
         switch (mode) {
@@ -32,38 +46,74 @@ public class SingleHistoryActivity extends AppCompatActivity {
         }
     }
 
-    private int mode;
-    private String eventKey;
-    private ArrayList<HistoryItem> listView;
-    private TextView keyView, dateView, totalPrice;
-    private Button cancelButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         eventKey = receivePack.getStringExtra(getString(R.string.EventIntentKey));
+        time = receivePack.getStringExtra(getString(R.string.TimeIntentKey));
         setContentView(GetLayoutId(mode));
-        listScrollArea = findViewById(R.id.scrollArea);
-        listView = new ArrayList<>();
-        int totalPriceData = 0;
-        for (int i = 0; i < 100; i++) {
-            HistoryItem item = new HistoryItem("키"+i,"이름"+i,100,i);
-            listView.add(item);
-            //TODO 총액계산
-            totalPriceData += i * 100;
-        }
+
         keyView = findViewById(R.id.keyNumber);
-        keyView.setText(eventKey);
-        //TODO 데이터 받아오기
         dateView = findViewById(R.id.dateTime);
-        dateView.setText(new SimpleDateFormat("yyyy.mm.dd.hh.mm").format(Calendar.getInstance().getTime()));
         totalPrice = findViewById(R.id.totlaPrice);
-        totalPrice.setText(getString(R.string.empty) + totalPriceData);
         cancelButton=findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->finish());
-        listScrollArea.setAdapter(new HistoryItemAdapter(listView));
 
+        listScrollArea = findViewById(R.id.scrollArea);
+        task = new ClientLoading(this);
+        task.show();
+        Client c = cm.getDB("getEvent" + " " + eventKey);
+        c.setOnReceiveListener((v)->{
+            Data = v.getData();
+            task.dismiss();
+            view_list();
+        }).send();
     }
 
+    private void view_list(){ // DB데이터로 어댑터와 리스트뷰 연결
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(()->{
+            keyView.setText(eventKey);
+            dateView.setText(time);
+
+            listView = new ArrayList<>();
+            Data = "0 박카스 1000 20, 1 비타오백 1000 30, 2 새우깡 1500 10, 3 뭐시기 2000 10";
+            int totalPriceData = 0;
+            // 데이터가 널 값일 시 리턴
+            if(Data == null){
+                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                return;
+            }
+            // 데이터 추출
+            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
+            while(stringTokenizer.hasMoreTokens()){
+                String line = stringTokenizer.nextToken();
+                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+
+                lineTokenizer.hasMoreTokens();
+                String parsedAckMsg = lineTokenizer.nextToken();
+                String Key = parsedAckMsg;
+
+                lineTokenizer.hasMoreTokens();
+                parsedAckMsg = lineTokenizer.nextToken();
+                String Name = parsedAckMsg;
+
+                lineTokenizer.hasMoreTokens();
+                parsedAckMsg = lineTokenizer.nextToken();
+                String Price = parsedAckMsg;
+
+                lineTokenizer.hasMoreTokens();
+                parsedAckMsg = lineTokenizer.nextToken();
+                String Amount = parsedAckMsg;
+
+                totalPriceData += Integer.parseInt(Amount) * Integer.parseInt(Price);
+                HistoryItem item = new HistoryItem(Key, Name, Integer.parseInt(Price), Integer.parseInt(Amount));
+                listView.add(item);
+            }
+            totalPrice.setText(getString(R.string.empty) + totalPriceData);
+            listScrollArea.setAdapter(new HistoryItemAdapter(listView));
+        });
+    }
 }

@@ -58,7 +58,7 @@ public class Client implements Runnable {
         try {
             Log.i("ju", "런어블 실행");
             //소켓 설정
-            InetSocketAddress sock_address = new InetSocketAddress(ip, 8080); // 소켓 설정
+            InetSocketAddress sock_address = new InetSocketAddress(ip, 12142); // 소켓 설정
             sock = new Socket();
             sock.connect(sock_address, 2000);
             //스트림 설정

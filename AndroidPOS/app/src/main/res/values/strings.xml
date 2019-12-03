@@ -10,6 +10,7 @@
     <!--IntentKeys-->
     <string name="ModeIntentKey" translatable="false">Mode</string>
     <string name="EventIntentKey" translatable="false">EventKey</string>
+    <string name="TimeIntentKey" translatable="false">Time</string>
 
     <!--History-->
     <string name="plusSymbol" translatable="false">+</string>
