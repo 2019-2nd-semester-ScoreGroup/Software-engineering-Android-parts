@@ -100,24 +100,25 @@ public class StatisticsActivity extends AppCompatActivity {
             // 데이터 추출
             StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
             while(stringTokenizer.hasMoreTokens()){
+                String parsedAckMsg = null;
                 String line = stringTokenizer.nextToken();
                 StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
                 item_selling item  = new item_selling();
 
-                lineTokenizer.hasMoreTokens();
-                String parsedAckMsg = lineTokenizer.nextToken();
+                if(lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
                 item.sKey = parsedAckMsg;
 
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
+                if(lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
                 item.sName = parsedAckMsg;
 
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
+                if(lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
                 item.sPrice = parsedAckMsg;
 
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
+                if(lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
                 item.sRate = parsedAckMsg;
 
                 total_cash += (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));

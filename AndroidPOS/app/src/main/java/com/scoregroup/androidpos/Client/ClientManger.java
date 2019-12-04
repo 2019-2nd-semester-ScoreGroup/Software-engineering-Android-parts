@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class ClientManger {
     private static ClientManger cm; // 액티비티가 모두 접근 가능
-    private static String ip = "localhost";// 아이피를 저장
+    private static String ip = "192.168.43.148";// 아이피를 저장
 
     private ClientManger(){}
 

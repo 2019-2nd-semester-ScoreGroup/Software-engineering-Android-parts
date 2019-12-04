@@ -3,6 +3,8 @@ package com.scoregroup.androidpos;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.Client;
+import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
@@ -25,6 +29,7 @@ import java.io.IOError;
 import java.security.cert.PKIXRevocationChecker;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 //activity_stock.xml
@@ -33,8 +38,10 @@ public class StockListActivity extends AppCompatActivity {
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
+    String Data;
     Button buttons[] = new Button[3];
     TextView texts[] = new TextView[4];
+    ClientManger clientManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +59,13 @@ public class StockListActivity extends AppCompatActivity {
         texts[1].setText("품명");
         texts[2].setText("가격");
 
+        clientManger = ClientManger.getInstance();
+
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-//                stock_list();
+                stock_list();
                 Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
             }
         });
@@ -79,49 +88,69 @@ public class StockListActivity extends AppCompatActivity {
         });
     }
 
+    public void stock_list(){
+        ClientLoading task;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public void stock_list(){
-//        String ackMsg;
-//
-//        ArrayList<itemsale> oData = new ArrayList<>();
-//
-//        ClientManger clientManger = ClientManger.getInstance();
-//
-//        ackMsg = clientManger.getDB("getStocks");
-//
-//        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
-//
-//        while (stringTokenizer.hasMoreTokens()) {
-//            String line = stringTokenizer.nextToken();
-//            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-//            String parsedAckMsg = lineTokenizer.nextToken();
-//
-//            //예외 출력
-//            if(lineTokenizer.countTokens() == 1)
-//                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
-//
-//            itemsale itemsale = new itemsale();
-//            itemsale.Code = parsedAckMsg;
-//
-//            lineTokenizer.hasMoreTokens();
-//            parsedAckMsg = lineTokenizer.nextToken();
-//            itemsale.Name = parsedAckMsg;
-//
-//            lineTokenizer.hasMoreTokens();
-//            parsedAckMsg = lineTokenizer.nextToken();
-//            itemsale.Price = parsedAckMsg;
-//
-//            lineTokenizer.hasMoreTokens();
-//            parsedAckMsg = lineTokenizer.nextToken();
-//            itemsale.Count = parsedAckMsg;
-//
-//            oData.add(itemsale);
-//        }
-//        StockListView = (ListView) findViewById(R.id.stocklist);
-//        ListAdapter oAdapter = new ListAdapter(oData);
-//        StockListView.setAdapter(oAdapter);
-//    }
+        ArrayList<itemsale> oData = new ArrayList<>();
+
+        task = new ClientLoading(this);
+        task.show();
+
+        Client client = clientManger.getDB("getStocks");
+
+        client.setOnReceiveListener((v)->{
+            Log.i("ju", "리스너 실행");
+            Data = v.getData();
+            task.dismiss();
+        }).send();
+
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(()-> {
+
+            // 데이터가 널 값일 시 리턴
+            if (Data == null) {
+                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
+
+            while (stringTokenizer.hasMoreTokens()) {
+                String line = stringTokenizer.nextToken();
+                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                String parsedAckMsg = lineTokenizer.nextToken();
+
+                //예외 출력
+                if (lineTokenizer.countTokens() == 1)
+                    Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
+
+                itemsale itemsale = new itemsale();
+                itemsale.Code = parsedAckMsg;
+
+                try {
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Name = parsedAckMsg;
+
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Price = parsedAckMsg;
+
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Count = parsedAckMsg;
+
+                    oData.add(itemsale);
+                } catch(NoSuchElementException e)
+                {
+                    Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
+                }
+            }
+            StockListView = (ListView) findViewById(R.id.stocklist);
+            ListAdapter oAdapter = new ListAdapter(oData);
+            StockListView.setAdapter(oAdapter);
+        });
+    }
 
     public class itemsale { // 리스트뷰 데이터 클래스
         public String Code;
