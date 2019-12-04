@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="키" />
+        android:text="키"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/dateTime"
@@ -18,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="날짜" />
+        android:text="시간"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/price"
@@ -26,14 +28,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="9999"
-        android:textAlignment="textEnd" />
+        android:text="가격"
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/detailButton"
         style="@style/historyButton"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Details..." />
+        android:layout_weight="0.5"
+        android:text="상세" />
 </android.widget.LinearLayout>

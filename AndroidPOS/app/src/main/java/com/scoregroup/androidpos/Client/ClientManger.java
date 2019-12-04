@@ -1,37 +1,53 @@
 package com.scoregroup.androidpos.Client;
 
+import android.util.Log;
+
 public class ClientManger {
     private static ClientManger cm; // 액티비티가 모두 접근 가능
-    private static String ip;// 아이피를 저장
-    private static boolean wait = true; // 응답을 기다리는 변수
+    private static String ip = "localhost";// 아이피를 저장
 
-    private ClientManger(){} // 임의로 생성 불가
+    private ClientManger(){}
 
-    public static ClientManger getInstance(){ // 클라이언트 매니저는 한번만 생성되어 여러 액티비티에서 사용
+    /**클라이언트 매너저 생성 메소드*/
+    public static ClientManger getInstance(){
         if(cm == null)
             cm = new ClientManger();
         return cm;
     }
 
-    public static void wait_false(){ // 데이터에 응답을 기다리는 메소드
-        wait = false;
-    }
-
-    public static void set_IP(String ip_num){ // IP를 기억함
+    /**IP를 받는 메소드*/
+    public static void getIP(String ip_num){
         ip = ip_num;
     }
 
-    public String getDB(String msg){ // DB와 통신을 위한 메소드
-        Client c = new Client(ip); // 서버에 연결 시도
-
-        if(c.Communication(msg) == 2) // 2실패, 예외 처리
-            return "통신 에러";
-        else{ // 연결 성공
-            while(wait) // DB로 온 데이터를 기다림
-                System.out.println("data wait...");
-            wait = true; // 통신 완료 시 다시 응답을 기다리게
-
-            return c.send_Data(); // DB로 온 데이터 전송
-        }
+    /**DB와 통신을 위한 메소드*/
+    /**
+     * 현재 "getStocks" 작동 확인
+     * Network Manager에서 받은 소켓에서 보내는 데이터를 해석하고 DBManager를 호출한 후, ack를 반환
+     * 인수와 반환값은 String
+     * []안의 값은 대치되어야 함
+     * @param "editStock" + " " + [key] + " " + [name] + " " + [price]
+     * @return  true or false : 성공, 실패
+     * @param "getStock"
+     * @return [key] [name] [price] : 띄워쓰기로 연결된 문자열
+     * @param "getStocks"
+     * @return [key] [name] [price],[key] [name] [price] [amount] ,... : stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @param "getEvent" + " " + [eventKey]
+     * @return [type] [time] [memo] [c.stockKey] [c.amount] [c.eventKey] + [c.key],... : change마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @param "tryChangEvent" + " " + [eventKey] + " " + [status] : status(0 Normal, 1 Cancel, 2 NaN)
+     * @return true or false : 성공, 실패
+     * @param "getEventList" + " " + [type] : type(1 Sell, 2 delivery, 3 NaN)
+     * @return [key] [type] [totalPrice],... : event마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @param "getSelling" + " " + [startTime] + " " + [endTime] : startTime, endTime은 타임스탬프 형식(yyyy-MM-dd hh:mm:ss)
+     * @return [key] [name] [price] [amount],... : startTime과 endTime 사이에 판매된 stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @param "addEvent" + " " + [type] + " " + [time] + " " + [status] + " " + [memo]
+     * @return [eventKey]
+     * @param "addChange" + " " + [eventKey] + " " + [stockKey] + " " + [changedAmount]
+     * @return [eventKey]
+     */
+    public Client getDB(String msg) {
+        Log.i("ju", "클라인트매니저 겟디비");
+        Client t = new Client().setIP(ip).setMsg(msg);
+        return t;
     }
 }

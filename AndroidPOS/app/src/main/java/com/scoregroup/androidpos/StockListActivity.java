@@ -56,7 +56,7 @@ public class StockListActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                stock_list();
+//                stock_list();
                 Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
             }
         });
@@ -81,47 +81,47 @@ public class StockListActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void stock_list(){
-        String ackMsg;
-
-        ArrayList<itemsale> oData = new ArrayList<>();
-
-        ClientManger clientManger = ClientManger.getInstance();
-
-        ackMsg = clientManger.getDB("getStocks");
-
-        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
-
-        while (stringTokenizer.hasMoreTokens()) {
-            String line = stringTokenizer.nextToken();
-            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-            String parsedAckMsg = lineTokenizer.nextToken();
-
-            //예외 출력
-            if(lineTokenizer.countTokens() == 1)
-                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
-
-            itemsale itemsale = new itemsale();
-            itemsale.Code = parsedAckMsg;
-
-            lineTokenizer.hasMoreTokens();
-            parsedAckMsg = lineTokenizer.nextToken();
-            itemsale.Name = parsedAckMsg;
-
-            lineTokenizer.hasMoreTokens();
-            parsedAckMsg = lineTokenizer.nextToken();
-            itemsale.Price = parsedAckMsg;
-
-            lineTokenizer.hasMoreTokens();
-            parsedAckMsg = lineTokenizer.nextToken();
-            itemsale.Count = parsedAckMsg;
-
-            oData.add(itemsale);
-        }
-        StockListView = (ListView) findViewById(R.id.stocklist);
-        ListAdapter oAdapter = new ListAdapter(oData);
-        StockListView.setAdapter(oAdapter);
-    }
+//    public void stock_list(){
+//        String ackMsg;
+//
+//        ArrayList<itemsale> oData = new ArrayList<>();
+//
+//        ClientManger clientManger = ClientManger.getInstance();
+//
+//        ackMsg = clientManger.getDB("getStocks");
+//
+//        StringTokenizer stringTokenizer = new StringTokenizer(ackMsg, ",");
+//
+//        while (stringTokenizer.hasMoreTokens()) {
+//            String line = stringTokenizer.nextToken();
+//            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+//            String parsedAckMsg = lineTokenizer.nextToken();
+//
+//            //예외 출력
+//            if(lineTokenizer.countTokens() == 1)
+//                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
+//
+//            itemsale itemsale = new itemsale();
+//            itemsale.Code = parsedAckMsg;
+//
+//            lineTokenizer.hasMoreTokens();
+//            parsedAckMsg = lineTokenizer.nextToken();
+//            itemsale.Name = parsedAckMsg;
+//
+//            lineTokenizer.hasMoreTokens();
+//            parsedAckMsg = lineTokenizer.nextToken();
+//            itemsale.Price = parsedAckMsg;
+//
+//            lineTokenizer.hasMoreTokens();
+//            parsedAckMsg = lineTokenizer.nextToken();
+//            itemsale.Count = parsedAckMsg;
+//
+//            oData.add(itemsale);
+//        }
+//        StockListView = (ListView) findViewById(R.id.stocklist);
+//        ListAdapter oAdapter = new ListAdapter(oData);
+//        StockListView.setAdapter(oAdapter);
+//    }
 
     public class itemsale { // 리스트뷰 데이터 클래스
         public String Code;
