@@ -7,7 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client implements Runnable {
-    private static String ip = "localhost";
+    private String ip;
+    private int port;
     private ReceiveListener callback;
     private boolean isReceived = false;
     private boolean alreadySent = false;
@@ -18,6 +19,12 @@ public class Client implements Runnable {
     /**아이피 설정*/
     public Client setIP(String ip) {
         this.ip = ip;
+        return this;
+    }
+
+    /**포트 설정*/
+    public Client setPORT(int port) {
+        this.port = port;
         return this;
     }
 
@@ -56,27 +63,34 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            Log.i("ju", "런어블 실행");
+            Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
             //소켓 설정
-            InetSocketAddress sock_address = new InetSocketAddress(ip, 12142); // 소켓 설정
+            InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
             sock = new Socket();
             sock.connect(sock_address, 2000);
-            //스트림 설정
-            BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())));
 
-            //송신
-            out.println(msg);
-            out.flush();
+            //로그인 시도 시
+            if(msg.equals("login"))
+                data = "pass";
+            //로그인 시도 아닐 시
+            else{
+                //스트림 설정
+                BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())));
 
-            //중복송신 방지
-            alreadySent = true;
+                //송신
+                out.println(msg);
+                out.flush();
 
-            //수신
-            sock.setSoTimeout(5000); // Read 타임아웃
-            data = in.readLine();
-            isReceived = true;
-            Log.i("ju", "받은 데이터: " + data);
+                //중복송신 방지
+                alreadySent = true;
+
+                //수신
+                sock.setSoTimeout(5000); // Read 타임아웃
+                data = in.readLine();
+                isReceived = true;
+                Log.i("ju", "받은 데이터: " + data);
+            }
 
             //연결종료
             sock.close();
