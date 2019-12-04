@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +36,8 @@ public class SingleHistoryActivity extends AppCompatActivity {
     private ArrayList<HistoryItem> listView;
     private TextView keyView, dateView, totalPrice;
     private Button cancelButton;
-
+    private HistoryItemAdapter adapter;
+    private int totalPriceData=0;
     public static int GetLayoutId(int mode) {
         switch (mode) {
             case DELIVERY:
@@ -58,62 +60,68 @@ public class SingleHistoryActivity extends AppCompatActivity {
         keyView = findViewById(R.id.keyNumber);
         dateView = findViewById(R.id.dateTime);
         totalPrice = findViewById(R.id.totlaPrice);
-        cancelButton=findViewById(R.id.cancel);
-        cancelButton.setOnClickListener((view)->finish());
-
+        cancelButton = findViewById(R.id.cancel);
+        cancelButton.setOnClickListener((view) -> finish());
+        listView = new ArrayList<>();
         listScrollArea = findViewById(R.id.scrollArea);
+        adapter=new HistoryItemAdapter(listView);
+        listScrollArea.setAdapter(adapter);
         task = new ClientLoading(this);
         task.show();
-        Client c = cm.getDB("getEvent" + " " + eventKey);
-        c.setOnReceiveListener((v)->{
+        Client c = cm.getDB("getEvent " + eventKey);
+        c.setOnReceiveListener((v) -> {
+            if (!v.isReceived()) {
+                Log.e("CLIENT", "Failed to connect");
+                runOnUiThread(()->{
+                    Toast.makeText(SingleHistoryActivity.this, "연결 실패", Toast.LENGTH_SHORT).show();
+                });
+
+            }
             Data = v.getData();
             task.dismiss();
             view_list();
         }).send();
     }
 
-    private void view_list(){ // DB데이터로 어댑터와 리스트뷰 연결
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.post(()->{
+    private void view_list() { // DB데이터로 어댑터와 리스트뷰 연결
+        runOnUiThread(() -> {
             keyView.setText(eventKey);
             dateView.setText(time);
 
-            listView = new ArrayList<>();
-            Data = "0 박카스 1000 20, 1 비타오백 1000 30, 2 새우깡 1500 10, 3 뭐시기 2000 10";
-            int totalPriceData = 0;
-            // 데이터가 널 값일 시 리턴
-            if(Data == null){
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
-                return;
+
+            Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
+            String memoText=Data.split(" ")[3];
+            Data=Data.substring(Data.indexOf(memoText)+memoText.length()+1);
+            String[] changes=Data.split(",");
+
+            for(String change :changes){
+                String[] word=change.split(" ");
+                HistoryItem temp=new HistoryItem(word[0],"NaN",-1,0);
+                temp.setAmount(Integer.valueOf(word[1]));
+
+                listView.add(temp);
+                ClientManger.getInstance().getDB("getStock "+word[0]).setOnReceiveListener((client)->{
+                    if(!client.isReceived())return;
+                    String[] msgs=client.getData().split(" ");
+                    HistoryItem t=findItemByKey(msgs[0]);
+                    t.setName(msgs[1]);
+                    t.setPricePerItem(Integer.valueOf(msgs[2]));
+                    synchronized (this){
+                        totalPriceData+=t.getPricePerItem()*t.getAmount();
+                    }
+                    runOnUiThread(()->totalPrice.setText(getString(R.string.empty) + totalPriceData));
+                }).send();
+
             }
-            // 데이터 추출
-            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
-            while(stringTokenizer.hasMoreTokens()){
-                String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
 
-                lineTokenizer.hasMoreTokens();
-                String parsedAckMsg = lineTokenizer.nextToken();
-                String Key = parsedAckMsg;
-
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
-                String Name = parsedAckMsg;
-
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
-                String Price = parsedAckMsg;
-
-                lineTokenizer.hasMoreTokens();
-                parsedAckMsg = lineTokenizer.nextToken();
-                String Amount = parsedAckMsg;
-
-                totalPriceData += Integer.parseInt(Amount) * Integer.parseInt(Price);
-                HistoryItem item = new HistoryItem(Key, Name, Integer.parseInt(Price), Integer.parseInt(Amount));
-                listView.add(item);
-            }
-            totalPrice.setText(getString(R.string.empty) + totalPriceData);
-            listScrollArea.setAdapter(new HistoryItemAdapter(listView));
+            adapter.notifyDataSetChanged();
         });
     }
+    private HistoryItem findItemByKey(String key){
+        for(HistoryItem t : listView){
+            if(t.getKey().equals(key))return t;
+        }
+        return null;
+    }
+
 }
