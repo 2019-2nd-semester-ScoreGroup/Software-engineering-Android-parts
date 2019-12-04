@@ -152,6 +152,77 @@ public class StockListActivity extends AppCompatActivity {
         });
     }
 
+
+    /*
+    입력 getEvent [type] ex) getEvent 1
+    출력 [type] [time] [memo] [change1.stockKey], [change1.amount], [change1.eventKey], [change1.c.key], ...   ex) SELL 2019-12-04 10:58:55.0 Testing 1 12 1 1,2 31 1 2,3 23 1 3,4 86 1 4,5 10 1 5,6 23 1 6,
+
+    public void stock_list(){
+        ClientLoading task;
+
+        ArrayList<itemsale> oData = new ArrayList<>();
+
+        task = new ClientLoading(this);
+        task.show();
+
+        Client client = clientManger.getDB("getEvent 1");
+
+        client.setOnReceiveListener((v)->{
+            Log.i("ju", "리스너 실행");
+            Data = v.getData();
+            task.dismiss();
+        }).send();
+
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(()-> {
+
+            // 데이터가 널 값일 시 리턴
+            if (Data == null) {
+                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
+
+            while (stringTokenizer.hasMoreTokens()) {
+                String line = stringTokenizer.nextToken();
+                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                String parsedAckMsg = lineTokenizer.nextToken();
+
+                //예외 출력
+                if (lineTokenizer.countTokens() == 1)
+                    Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
+
+                itemsale itemsale = new itemsale();
+                itemsale.Code = parsedAckMsg;
+
+                try {
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Name = parsedAckMsg;
+
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Price = parsedAckMsg;
+
+                    if (lineTokenizer.hasMoreTokens())
+                        parsedAckMsg = lineTokenizer.nextToken();
+                    itemsale.Count = parsedAckMsg;
+
+                    oData.add(itemsale);
+                } catch(NoSuchElementException e)
+                {
+                    Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
+                }
+            }
+            StockListView = (ListView) findViewById(R.id.stocklist);
+            ListAdapter oAdapter = new ListAdapter(oData);
+            StockListView.setAdapter(oAdapter);
+
+        });
+    }
+     */
+
     public class itemsale { // 리스트뷰 데이터 클래스
         public String Code;
         public String Count;
