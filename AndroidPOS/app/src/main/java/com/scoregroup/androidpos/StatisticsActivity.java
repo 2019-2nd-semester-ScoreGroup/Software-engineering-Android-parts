@@ -94,7 +94,7 @@ public class StatisticsActivity extends AppCompatActivity {
             int total_cash = 0; // 총 매출 계산
             // 데이터가 널 값일 시 리턴
             if(Data == null){
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_LONG).show();
                 return;
             }
             // 데이터 추출

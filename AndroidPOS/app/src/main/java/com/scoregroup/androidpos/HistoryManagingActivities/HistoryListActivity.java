@@ -80,7 +80,7 @@ public class HistoryListActivity extends AppCompatActivity {
             // 데이터가 널 값일 시 리턴
             Data = "0 2019.12.15 100000, 1 2019.12.16 200000, 2 2019.12.17 300000, 3 2019.12.18 400000";
             if(Data == null){
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_LONG).show();
                 return;
             }
             // 데이터 추출

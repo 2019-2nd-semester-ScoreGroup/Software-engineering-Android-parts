@@ -67,7 +67,7 @@ public class Client implements Runnable {
             //소켓 설정
             InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
             sock = new Socket();
-            sock.connect(sock_address, 2000);
+            sock.connect(sock_address, 1000);
 
             //로그인 시도 시
             if(msg.equals("login"))
