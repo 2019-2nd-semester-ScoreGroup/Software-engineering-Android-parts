@@ -58,15 +58,20 @@ public class StatisticsActivity extends AppCompatActivity {
         };
 
         buttons[0].setOnClickListener(view -> {
-            task = new ClientLoading(this);
-            task.show();
-            Client c = cm.getDB("getSelling"+ " " + startymd + " " + endymd);
-            Log.i("ymd", startymd + " and " + endymd);
-            c.setOnReceiveListener((v)->{
-                Data = v.getData();
-                task.dismiss();
-                sales_list();
-            }).send();
+            if(startymd == null || endymd == null)
+                Toast.makeText(getApplicationContext(), "put time!", Toast.LENGTH_LONG).show();
+            else
+            {
+                task = new ClientLoading(this);
+                task.show();
+                Client c = cm.getDB("getSelling"+ " " + startymd + " " + endymd);
+                Log.i("ymd", startymd + " and " + endymd);
+                c.setOnReceiveListener((v)->{
+                    Data = v.getData();
+                    task.dismiss();
+                    sales_list();
+                }).send();
+            }
         });
 
         buttons[1].setOnClickListener(view -> {
