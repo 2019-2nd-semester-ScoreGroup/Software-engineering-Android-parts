@@ -75,12 +75,13 @@ public class OptionActivity extends AppCompatActivity {
             SaveIPPW(IP, PASS); // 아이피, 비밀번호 저장
             // 서버에 로그인 예시
             ClientManger.getIP(IP); // 클라이언트 매니저에 IP 저장
+            ClientManger.getPORT(Integer.parseInt(PASS));
             /**@중요 NEW DB요청 방식*/
             /**1.클라이언트 매니저의 겟디비로 클라이언트를 생성, 포맷은 기존과 동일
              * 2.리시브 리스너(.setOnReceiveListener)로 DB로 온 데이터를 받고 원하는 액티비티 메소드를 실행
              * 3.리시브 리스너 후(.send)필수임! 아니면 동작안함.
              * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓*/
-            Client c = cm.getDB("login" + " " + PASS);
+            Client c = cm.getDB("login");
             c.setOnReceiveListener((v)->{
                 Log.i("ju", "리스너 실행");
                 Data = v.getData();
