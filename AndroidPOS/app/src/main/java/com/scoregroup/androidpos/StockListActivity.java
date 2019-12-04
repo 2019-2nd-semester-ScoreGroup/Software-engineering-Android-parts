@@ -32,16 +32,19 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-//activity_stock.xml
+//activity_stock.xml 레이아웃
+
 public class StockListActivity extends AppCompatActivity {
     final int _REQ = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
-    String Data;
-    Button buttons[] = new Button[3];
-    TextView texts[] = new TextView[4];
-    ClientManger clientManger;
+    private String Data;
+    private Button buttons[] = new Button[3];
+    private TextView texts[] = new TextView[4];
+    private ClientManger clientManger;
+    private ClientLoading task;
+    private ArrayList<itemsale> oData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class StockListActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                stock_list();
+                getStockList();
                 Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
             }
         });
@@ -88,21 +91,34 @@ public class StockListActivity extends AppCompatActivity {
         });
     }
 
-    public void stock_list(){
-        ClientLoading task;
+    private void getStockList()
+    {
+        loadingClient();
+        connectClient();
+        setStockList();
+        closingClient();
+    }
 
-        ArrayList<itemsale> oData = new ArrayList<>();
-
-        task = new ClientLoading(this);
-        task.show();
-
+    private void connectClient()
+    {
         Client client = clientManger.getDB("getStocks");
 
         client.setOnReceiveListener((v)->{
             Log.i("ju", "리스너 실행");
             Data = v.getData();
-            task.dismiss();
+            closingClient();
         }).send();
+    }
+
+    private void loadingClient()
+    {
+        task = new ClientLoading(this);
+        task.show();
+    }
+
+    private void setStockList()
+    {
+        oData = new ArrayList<itemsale>();
 
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(()-> {
@@ -115,43 +131,54 @@ public class StockListActivity extends AppCompatActivity {
 
             StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
 
-            while (stringTokenizer.hasMoreTokens()) {
-                String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-                String parsedAckMsg = lineTokenizer.nextToken();
+            tokenizingAndAdd(stringTokenizer);
 
-                //예외 출력
-                if (lineTokenizer.countTokens() == 1)
-                    Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
-
-                itemsale itemsale = new itemsale();
-                itemsale.Code = parsedAckMsg;
-
-                try {
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Name = parsedAckMsg;
-
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Price = parsedAckMsg;
-
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Count = parsedAckMsg;
-
-                    oData.add(itemsale);
-                } catch(NoSuchElementException e)
-                {
-                    Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
-                }
-            }
             StockListView = (ListView) findViewById(R.id.stocklist);
             ListAdapter oAdapter = new ListAdapter(oData);
             StockListView.setAdapter(oAdapter);
         });
     }
 
+    private void tokenizingAndAdd(StringTokenizer stringTokenizer)
+    {
+        while (stringTokenizer.hasMoreTokens()) {
+            String line = stringTokenizer.nextToken();
+            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+            String parsedAckMsg = lineTokenizer.nextToken();
+
+            //예외 출력
+            if (lineTokenizer.countTokens() == 1)
+                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
+
+            itemsale itemsale = new itemsale();
+            itemsale.Code = parsedAckMsg;
+
+            try {
+                if (lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
+                itemsale.Name = parsedAckMsg;
+
+                if (lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
+                itemsale.Price = parsedAckMsg;
+
+                if (lineTokenizer.hasMoreTokens())
+                    parsedAckMsg = lineTokenizer.nextToken();
+                itemsale.Count = parsedAckMsg;
+
+
+            } catch(NoSuchElementException e)
+            {
+                Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
+            }
+            oData.add(itemsale);
+        }
+    }
+
+    private void closingClient()
+    {
+        task.dismiss();
+    }
 
     /*
     입력 getEvent [type] ex) getEvent 1
