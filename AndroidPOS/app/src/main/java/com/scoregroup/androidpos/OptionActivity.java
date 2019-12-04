@@ -35,8 +35,8 @@ public class OptionActivity extends AppCompatActivity {
     /**쉐얼드 프리퍼런스 아이피, 패스워드 불러오기*/
     private void ImportIPPW(){
         SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
-        IP = pref.getString("IP", "");
-        PASS = pref.getString("PW", "");
+        IP = pref.getString("IP", "localhost");
+        PASS = pref.getString("PW", "12142");
     }
 
     /**리시브 리스너로 UI 실행 시 다음과 같은 핸들러를 사용해야 함
