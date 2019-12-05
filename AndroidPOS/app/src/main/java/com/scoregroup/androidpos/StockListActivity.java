@@ -35,9 +35,12 @@ import java.util.StringTokenizer;
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
-    final int _REQ = 100;
+    final int RESULT_OK = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
+    final int REQUEST_BARCODE = 1;
+    final int REQUEST_NAME = 2;
+    final int REQUEST_PRICE= 3;
     private ListView StockListView = null;
     private String Data;
     private Button buttons[] = new Button[3];
@@ -245,9 +248,15 @@ public class StockListActivity extends AppCompatActivity {
                     intent.putExtra("nextName", m_oData.get(position).Name);
                     intent.putExtra("nextPrice", m_oData.get(position).Price);
                     startActivity(intent);
+
                 }
+
             });
+
             return convertView;
         }
+
     }
+
+
 }

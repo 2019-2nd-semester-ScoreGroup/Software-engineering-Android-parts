@@ -57,15 +57,28 @@ public class SingleHistoryActivity extends AppCompatActivity {
         dateView = findViewById(R.id.dateTime);
         totalPrice = findViewById(R.id.totlaPrice);
         cancelButton = findViewById(R.id.cancel);
-        cancelButton.setOnClickListener((view) -> finish());
+        cancelButton.setOnClickListener((view)->{
+            cm.getDB("tryChangeEvent "+eventKey+" 1").setOnReceiveListener((client)->{
+                if(!client.isReceived()){
+                    Log.i("Network","Network Failed");
+                    return;
+                }
+                boolean result=Boolean.valueOf(client.getData());
+                if(result){
+                    finish();
+                }else{
+                    runOnUiThread(()->Toast.makeText(this,"연결 실패",Toast.LENGTH_SHORT).show());
+                }
+            }).send();
+        });
         listView = new ArrayList<>();
         listScrollArea = findViewById(R.id.scrollArea);
         adapter=new HistoryItemAdapter(listView);
+        adapter.setSelectable(false);
         listScrollArea.setAdapter(adapter);
         task = new ClientLoading(this);
         task.show();
-        Client c = cm.getDB("getEvent " + eventKey);
-        c.setOnReceiveListener((v) -> {
+        cm.getDB("getEvent " + eventKey).setOnReceiveListener((v) -> {
             if (!v.isReceived()) {
                 Log.e("CLIENT", "Failed to connect");
                 runOnUiThread(()->{
@@ -102,15 +115,20 @@ public class SingleHistoryActivity extends AppCompatActivity {
                     HistoryItem t=findItemByKey(msgs[0]);
                     t.setName(msgs[1]);
                     t.setPricePerItem(Integer.valueOf(msgs[2]));
+                    t.setAmount(t.getAmount()*(mode==SELL?-1:1));
                     synchronized (this){
                         totalPriceData+=t.getPricePerItem()*t.getAmount();
                     }
-                    runOnUiThread(()->totalPrice.setText(getString(R.string.empty) + totalPriceData));
+                    runOnUiThread(()->{
+                        totalPrice.setText(getString(R.string.empty) + totalPriceData);
+                        adapter.notifyDataSetChanged();
+                    });
+
                 }).send();
 
             }
 
-            adapter.notifyDataSetChanged();
+
         });
     }
     private HistoryItem findItemByKey(String key){

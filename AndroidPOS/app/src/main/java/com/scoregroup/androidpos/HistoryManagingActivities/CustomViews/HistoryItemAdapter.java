@@ -15,9 +15,19 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class HistoryItemAdapter extends BaseAdapter {
-    ArrayList<HistoryItem> items;
+    private ArrayList<HistoryItem> items;
     private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
-    int selected=-1;
+    private int selected=-1;
+    private boolean selectable=true;
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
+    }
+
+
     public HistoryItemAdapter(ArrayList<HistoryItem> items) {
         this.items = items;
     }
@@ -52,13 +62,15 @@ public class HistoryItemAdapter extends BaseAdapter {
 
         HistoryItem item=items.get(i);
         barcode.setText(item.getKey());
-        view.setBackgroundColor(selected==i? Color.YELLOW:Color.GRAY);
+        view.setBackgroundColor(selected==i? Color.YELLOW:Color.WHITE);
         name.setText(item.getName());
         amount.setText(context.getString(R.string.empty) + item.getAmount());
         price.setText(context.getString(R.string.empty) + Cash_format.format(item.getAmount()*item.getPricePerItem()));
         view.setOnClickListener(v -> {
-            HistoryItemAdapter.this.selected=i;
-            HistoryItemAdapter.this.notifyDataSetChanged();
+            if(selectable) {
+                HistoryItemAdapter.this.selected = i;
+                HistoryItemAdapter.this.notifyDataSetChanged();
+            }
         });
         return view;
     }

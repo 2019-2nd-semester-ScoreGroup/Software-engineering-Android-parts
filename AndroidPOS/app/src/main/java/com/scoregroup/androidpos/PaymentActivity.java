@@ -3,6 +3,7 @@ package com.scoregroup.androidpos;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
@@ -35,8 +36,7 @@ public class PaymentActivity extends AppCompatActivity {
         */
 
         mod = receiveIntent.getIntExtra(getString(R.string.ModeIntentKey), SELL);
-        key = receiveIntent.getIntExtra(getString(R.string.EventIntentKey), 0000000000000);
-
+        key = receiveIntent.getLongExtra(getString(R.string.EventIntentKey), 0);
         /*
         기능 구현 전 3초 대기 후 전환
         */
