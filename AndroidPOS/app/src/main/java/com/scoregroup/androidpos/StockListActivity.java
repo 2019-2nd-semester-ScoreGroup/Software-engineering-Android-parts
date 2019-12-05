@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class StockListActivity extends AppCompatActivity {
     private ListView StockListView = null;
     private String Data;
     private Button buttons[] = new Button[2];
+    private ImageButton Ibutton;
     private ClientLoading task;
     private ArrayList<itemsale> oData;
 
@@ -51,6 +53,7 @@ public class StockListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stock);
         buttons[0] = findViewById(R.id.exit);
         buttons[1] = findViewById(R.id.toHistory);
+        Ibutton = findViewById(R.id.refreshButton);
 
         task = new ClientLoading(this);
         task.show();
@@ -65,6 +68,12 @@ public class StockListActivity extends AppCompatActivity {
             Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
             in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
             startActivity(in);
+        });
+
+        Ibutton.setOnClickListener(view -> {
+            task = new ClientLoading(this);
+            task.show();
+            getStockList();
         });
     }
 

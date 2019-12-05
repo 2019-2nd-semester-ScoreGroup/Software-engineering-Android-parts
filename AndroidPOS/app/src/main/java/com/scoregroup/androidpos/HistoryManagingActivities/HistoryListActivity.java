@@ -43,7 +43,13 @@ public class HistoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //HisotryEvent 새로고침
+        task.show();
+        Client c = cm.getDB("getEventList" + " " + mode);
+        c.setOnReceiveListener((v)->{
+            Data = v.getData();
+            task.dismiss();
+            view_list();
+        }).send();
     }
 
     @Override
