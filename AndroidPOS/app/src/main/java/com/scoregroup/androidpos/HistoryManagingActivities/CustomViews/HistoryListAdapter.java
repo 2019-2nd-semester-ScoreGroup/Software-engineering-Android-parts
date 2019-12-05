@@ -66,7 +66,5 @@ public class HistoryListAdapter extends BaseAdapter {
             context.startActivity(t);
         });
         return view;
-
-
     }
 }
