@@ -115,7 +115,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                     HistoryItem t=findItemByKey(msgs[0]);
                     t.setName(msgs[1]);
                     t.setPricePerItem(Integer.valueOf(msgs[2]));
-                    t.setAmount(t.getAmount()*mode==SELL?-1:1);
+                    t.setAmount(t.getAmount()*(mode==SELL?-1:1));
                     synchronized (this){
                         totalPriceData+=t.getPricePerItem()*t.getAmount();
                     }
