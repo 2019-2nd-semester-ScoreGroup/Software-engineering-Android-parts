@@ -35,14 +35,13 @@ import java.util.StringTokenizer;
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
+    ClientManger clientManger = ClientManger.getInstance();
     final int _REQ = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
     private ListView StockListView = null;
     private String Data;
-    private Button buttons[] = new Button[3];
-    private TextView texts[] = new TextView[4];
-    private ClientManger clientManger;
+    private Button buttons[] = new Button[2];
     private ClientLoading task;
     private ArrayList<itemsale> oData;
 
@@ -50,53 +49,28 @@ public class StockListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
-        buttons[0] = findViewById(R.id.f5);
-        buttons[1] = findViewById(R.id.exit);
-        buttons[2] = findViewById(R.id.toHistory);
-        texts[0] = findViewById(R.id.keycode);
-        texts[1] = findViewById(R.id.name);
-        texts[2] = findViewById(R.id.Price);
-        texts[3] = findViewById(R.id.Count);
+        buttons[0] = findViewById(R.id.exit);
+        buttons[1] = findViewById(R.id.toHistory);
 
-        texts[0].setText("코드");
-        texts[1].setText("품명");
-        texts[2].setText("가격");
+        task = new ClientLoading(this);
+        task.show();
+        getStockList();
 
-        clientManger = ClientManger.getInstance();
-
-        buttons[0].setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View view) {
-                getStockList();
-                Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
-            }
+        buttons[0].setOnClickListener(view -> {
+            Intent in = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(in);
         });
 
-        buttons[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(in);
-            }
-        });
-
-        buttons[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
-                in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
-                startActivity(in);
-            }
+        buttons[1].setOnClickListener(view -> {
+            Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
+            in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
+            startActivity(in);
         });
     }
 
     private void getStockList()
     {
-        loadingClient();
         connectClient();
-        setStockList();
-        closingClient();
     }
 
     private void connectClient()
@@ -106,14 +80,9 @@ public class StockListActivity extends AppCompatActivity {
         client.setOnReceiveListener((v)->{
             Log.i("ju", "리스너 실행");
             Data = v.getData();
-            closingClient();
+            task.dismiss();
+            setStockList();
         }).send();
-    }
-
-    private void loadingClient()
-    {
-        task = new ClientLoading(this);
-        task.show();
     }
 
     private void setStockList()
@@ -122,10 +91,9 @@ public class StockListActivity extends AppCompatActivity {
 
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(()-> {
-
             // 데이터가 널 값일 시 리턴
             if (Data == null) {
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -173,11 +141,6 @@ public class StockListActivity extends AppCompatActivity {
             }
             oData.add(itemsale);
         }
-    }
-
-    private void closingClient()
-    {
-        task.dismiss();
     }
 
     /*
