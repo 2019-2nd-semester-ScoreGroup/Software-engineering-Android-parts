@@ -106,7 +106,7 @@ public class HistoryListActivity extends AppCompatActivity {
                     parsedAckMsg = lineTokenizer.nextToken();
                 String Price = parsedAckMsg;
 
-                events.add(new HistoryEvent(Key , Time.substring(0, 18), Integer.parseInt(Price)));
+                events.add(new HistoryEvent(mode, Key , Time.substring(0, 18), Integer.parseInt(Price)));
             }
             HistoryListAdapter adapter = new HistoryListAdapter(events);
             listScrollArea.setAdapter(adapter);
