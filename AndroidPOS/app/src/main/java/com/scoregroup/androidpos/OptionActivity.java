@@ -42,11 +42,7 @@ public class OptionActivity extends AppCompatActivity {
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(() -> {
             if(Data == null)
-                Toast.makeText(getApplicationContext(), "로그인 실패!", Toast.LENGTH_SHORT).show();
-            else if(Data.equals("pass"))
-                Toast.makeText(getApplicationContext(), "로그인 성공!", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(getApplicationContext(), "알수없는 오류!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -41,7 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(() -> {
             if(Data == null)
-                Toast.makeText(getApplicationContext(), "연결 실패, 설정에서 네트워크 설정을 확인하세요.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패, 설정에서 연결 설정을 확인하세요.", Toast.LENGTH_LONG).show();
         });
     }
 
