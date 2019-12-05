@@ -2,8 +2,6 @@ package com.scoregroup.androidpos.HistoryManagingActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -18,10 +16,7 @@ import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.Hist
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.StringTokenizer;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
@@ -32,7 +27,8 @@ public class SingleHistoryActivity extends AppCompatActivity {
     private Intent receivePack;
     private ListView listScrollArea;
     private int mode;
-    private String eventKey, time, Data;
+    private String  time, Data;
+    private long eventKey;
     private ArrayList<HistoryItem> listView;
     private TextView keyView, dateView, totalPrice;
     private Button cancelButton;
@@ -53,7 +49,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
-        eventKey = receivePack.getStringExtra(getString(R.string.EventIntentKey));
+        eventKey = receivePack.getLongExtra(getString(R.string.EventIntentKey),0);
         time = receivePack.getStringExtra(getString(R.string.TimeIntentKey));
         setContentView(GetLayoutId(mode));
 
@@ -85,11 +81,11 @@ public class SingleHistoryActivity extends AppCompatActivity {
 
     private void view_list() { // DB데이터로 어댑터와 리스트뷰 연결
         runOnUiThread(() -> {
-            keyView.setText(eventKey);
+            keyView.setText(""+eventKey);
             dateView.setText(time);
 
 
-            Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
+            //Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
             String memoText=Data.split(" ")[3];
             Data=Data.substring(Data.indexOf(memoText)+memoText.length()+1);
             String[] changes=Data.split(",");
