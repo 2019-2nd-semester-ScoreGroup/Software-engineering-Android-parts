@@ -14,11 +14,13 @@ import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.SingleHistoryActivity;
 import com.scoregroup.androidpos.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
 public class HistoryListAdapter extends BaseAdapter {
     private ArrayList<HistoryEvent> data;
+    private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
 
     public HistoryListAdapter(ArrayList<HistoryEvent> data) {
         this.data = data;
@@ -53,17 +55,16 @@ public class HistoryListAdapter extends BaseAdapter {
 
         keyCode.setText(nowData.getKey());
         dateTime.setText(nowData.getDateTime());
-        price.setText(context.getString(R.string.empty)+nowData.getTotalPrice());
+        price.setText(context.getString(R.string.empty)+Cash_format.format(nowData.getTotalPrice()));
 
         Button detailButton = view.findViewById(R.id.detailButton);
         detailButton.setOnClickListener((button) -> {
             Intent t = new Intent(context, SingleHistoryActivity.class);
             t.putExtra(context.getString(R.string.ModeIntentKey), context.mode);
-            t.putExtra(context.getString(R.string.EventIntentKey), keyCode.getText().toString());
+            t.putExtra(context.getString(R.string.EventIntentKey), Long.valueOf(keyCode.getText().toString()));
+            t.putExtra(context.getString(R.string.TimeIntentKey), dateTime.getText().toString());
             context.startActivity(t);
         });
         return view;
-
-
     }
 }

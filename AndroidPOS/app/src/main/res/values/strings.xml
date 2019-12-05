@@ -2,19 +2,21 @@
     <string name="app_name">AndroidPOS</string>
     <string name="toCalc">Seller</string>
     <string name="toOffer">Offerings</string>
+    <string name="toStatis">Statistics</string>
     <string name="toOption">Options</string>
     <string name="paymentTitle">paying</string>
     <string name="paymentProcessingName">processing</string>
 
     <!--IntentKeys-->
-    <string name="ModeIntentKey">Mode</string>
-    <string name="EventIntentKey">EventKey</string>
+    <string name="ModeIntentKey" translatable="false">Mode</string>
+    <string name="EventIntentKey" translatable="false">EventKey</string>
+    <string name="TimeIntentKey" translatable="false">Time</string>
 
     <!--History-->
-    <string name="plusSymbol">+</string>
-    <string name="minusSymbol">-</string>
-    <string name="multiplySymbol">×</string>
-    <string name="divideSymbol">÷</string>
+    <string name="plusSymbol" translatable="false">+</string>
+    <string name="minusSymbol" translatable="false">-</string>
+    <string name="multiplySymbol" translatable="false">×</string>
+    <string name="divideSymbol" translatable="false">÷</string>
     <string name="name">Name</string>
     <string name="time">Time</string>
     <string name="amount">Amount</string>
@@ -28,6 +30,12 @@
     <string name="serialno">SerialNo.</string>
     <string name="cancel">Cancel</string>
     <!--Misc-->
-    <string name="empty"> </string>
+    <string name="empty" translatable="false"> </string>
+    <string name="barcode">Barcode</string>
+    <!--abbreviation-->
+    <string name="ABenter">EN</string>
+    <string name="ABcancel">CN</string>
+    <string name="ABdelete">DL</string>
+    <string name="ABremove">RM</string>
 
 </resources>

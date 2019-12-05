@@ -2,31 +2,42 @@
 <android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/historyContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/barcode"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="바코드" />
 
     <TextView
         android:id="@+id/name"
-        style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="이름" />
+        android:text="이름"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/amount"
-        style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="123"
-        android:textAlignment="textEnd" />
+        android:text="갯수"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/price"
-        style="@style/historyTexts"
-        android:layout_width="wrap_content"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="999"
-        android:textAlignment="textEnd" />
+        android:text="가격"
+        android:textAlignment="center" />
 </android.widget.LinearLayout>

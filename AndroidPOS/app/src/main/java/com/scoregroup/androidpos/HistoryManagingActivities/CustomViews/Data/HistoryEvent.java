@@ -1,21 +1,24 @@
 package com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data;
 
-import java.util.ArrayList;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryEvent {
+    private int totalPrice, mode;
     private String key, dateTime;
 
     public int getTotalPrice() {
-        return totalPrice;
+        if(mode == SELL)
+            return totalPrice * -1;
+        else
+            return totalPrice;
     }
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    private int totalPrice;
-
-    public HistoryEvent(String key, String dateTime, int totalPrice) {
+    public HistoryEvent(int mode, String key, String dateTime, int totalPrice) {
+        this.mode = mode;
         this.key = key;
         this.dateTime = dateTime;
         this.totalPrice = totalPrice;

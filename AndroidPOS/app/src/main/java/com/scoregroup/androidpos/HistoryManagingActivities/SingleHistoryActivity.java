@@ -3,25 +3,37 @@ package com.scoregroup.androidpos.HistoryManagingActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.scoregroup.androidpos.Client.Client;
+import com.scoregroup.androidpos.Client.ClientLoading;
+import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.HistoryItemAdapter;
 import com.scoregroup.androidpos.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class SingleHistoryActivity extends AppCompatActivity {
+    ClientManger cm = ClientManger.getInstance();
+    private ClientLoading task;
     private Intent receivePack;
     private ListView listScrollArea;
-
+    private int mode;
+    private String  time, Data;
+    private long eventKey;
+    private ArrayList<HistoryItem> listView;
+    private TextView keyView, dateView, totalPrice;
+    private Button cancelButton;
+    private HistoryItemAdapter adapter;
+    private int totalPriceData=0;
     public static int GetLayoutId(int mode) {
         switch (mode) {
             case DELIVERY:
@@ -32,38 +44,98 @@ public class SingleHistoryActivity extends AppCompatActivity {
         }
     }
 
-    private int mode;
-    private String eventKey;
-    private ArrayList<HistoryItem> listView;
-    private TextView keyView, dateView, totalPrice;
-    private Button cancelButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
-        eventKey = receivePack.getStringExtra(getString(R.string.EventIntentKey));
+        eventKey = receivePack.getLongExtra(getString(R.string.EventIntentKey),0);
+        time = receivePack.getStringExtra(getString(R.string.TimeIntentKey));
         setContentView(GetLayoutId(mode));
-        listScrollArea = findViewById(R.id.scrollArea);
-        listView = new ArrayList<>();
-        int totalPriceData = 0;
-        for (int i = 0; i < 100; i++) {
-            HistoryItem item = new HistoryItem("키"+i,"이름"+i,100,i);
-            listView.add(item);
-            //TODO 총액계산
-            totalPriceData += i * 100;
-        }
-        keyView = findViewById(R.id.keyNumber);
-        keyView.setText(eventKey);
-        //TODO 데이터 받아오기
-        dateView = findViewById(R.id.dateTime);
-        dateView.setText(new SimpleDateFormat("yyyy.mm.dd.hh.mm").format(Calendar.getInstance().getTime()));
-        totalPrice = findViewById(R.id.totlaPrice);
-        totalPrice.setText(getString(R.string.empty) + totalPriceData);
-        cancelButton=findViewById(R.id.cancel);
-        cancelButton.setOnClickListener((view)->finish());
-        listScrollArea.setAdapter(new HistoryItemAdapter(listView));
 
+        keyView = findViewById(R.id.keyNumber);
+        dateView = findViewById(R.id.dateTime);
+        totalPrice = findViewById(R.id.totlaPrice);
+        cancelButton = findViewById(R.id.cancel);
+        cancelButton.setOnClickListener((view)->{
+            cm.getDB("tryChangeEvent "+eventKey+" 1").setOnReceiveListener((client)->{
+                if(!client.isReceived()){
+                    Log.i("Network","Network Failed");
+                    return;
+                }
+                boolean result=Boolean.valueOf(client.getData());
+                if(result){
+                    finish();
+                }else{
+                    runOnUiThread(()->Toast.makeText(this,"연결 실패",Toast.LENGTH_SHORT).show());
+                }
+            }).send();
+        });
+        listView = new ArrayList<>();
+        listScrollArea = findViewById(R.id.scrollArea);
+        adapter=new HistoryItemAdapter(listView);
+        adapter.setSelectable(false);
+        listScrollArea.setAdapter(adapter);
+        task = new ClientLoading(this);
+        task.show();
+        cm.getDB("getEvent " + eventKey).setOnReceiveListener((v) -> {
+            if (!v.isReceived()) {
+                Log.e("CLIENT", "Failed to connect");
+                runOnUiThread(()->{
+                    Toast.makeText(SingleHistoryActivity.this, "연결 실패", Toast.LENGTH_SHORT).show();
+                });
+
+            }
+            Data = v.getData();
+            task.dismiss();
+            view_list();
+        }).send();
+    }
+
+    private void view_list() { // DB데이터로 어댑터와 리스트뷰 연결
+        runOnUiThread(() -> {
+            keyView.setText(""+eventKey);
+            dateView.setText(time);
+
+
+            //Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
+            String memoText=Data.split(" ")[3];
+            Data=Data.substring(Data.indexOf(memoText)+memoText.length()+1);
+            String[] changes=Data.split(",");
+
+            for(String change :changes){
+                String[] word=change.split(" ");
+                HistoryItem temp=new HistoryItem(word[0],"NaN",-1,0);
+                temp.setAmount(Integer.valueOf(word[1]));
+
+                listView.add(temp);
+                ClientManger.getInstance().getDB("getStock "+word[0]).setOnReceiveListener((client)->{
+                    if(!client.isReceived())return;
+                    String[] msgs=client.getData().split(" ");
+                    HistoryItem t=findItemByKey(msgs[0]);
+                    t.setName(msgs[1]);
+                    t.setPricePerItem(Integer.valueOf(msgs[2]));
+                    t.setAmount(t.getAmount()*(mode==SELL?-1:1));
+                    synchronized (this){
+                        totalPriceData+=t.getPricePerItem()*t.getAmount();
+                    }
+                    runOnUiThread(()->{
+                        totalPrice.setText(getString(R.string.empty) + totalPriceData);
+                        adapter.notifyDataSetChanged();
+                    });
+
+                }).send();
+
+            }
+
+
+        });
+    }
+    private HistoryItem findItemByKey(String key){
+        for(HistoryItem t : listView){
+            if(t.getKey().equals(key))return t;
+        }
+        return null;
     }
 
 }

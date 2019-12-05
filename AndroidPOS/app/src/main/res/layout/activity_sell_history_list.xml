@@ -41,7 +41,7 @@
         <TextView
             android:id="@+id/key"
             style="@style/historyTexts"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
@@ -51,7 +51,7 @@
         <TextView
             android:id="@+id/date"
             style="@style/historyTexts"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
@@ -61,22 +61,13 @@
         <TextView
             android:id="@+id/price"
             style="@style/historyTexts"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="@string/price"
             android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/name2"
-            style="@style/historyTexts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="@string/details"
-            android:textAlignment="center" />
     </LinearLayout>
 
     <ListView
