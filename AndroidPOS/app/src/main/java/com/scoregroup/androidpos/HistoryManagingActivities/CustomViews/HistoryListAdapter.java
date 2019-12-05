@@ -55,7 +55,8 @@ public class HistoryListAdapter extends BaseAdapter {
 
         keyCode.setText(nowData.getKey());
         dateTime.setText(nowData.getDateTime());
-        price.setText(context.getString(R.string.empty)+Cash_format.format(nowData.getTotalPrice()));
+        String priceString = context.getString(R.string.empty)+Cash_format.format(nowData.getTotalPrice());
+        price.setText(priceString);
 
         Button detailButton = view.findViewById(R.id.detailButton);
         detailButton.setOnClickListener((button) -> {
