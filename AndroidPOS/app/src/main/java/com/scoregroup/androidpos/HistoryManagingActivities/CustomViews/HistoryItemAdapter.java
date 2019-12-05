@@ -52,7 +52,7 @@ public class HistoryItemAdapter extends BaseAdapter {
 
         HistoryItem item=items.get(i);
         barcode.setText(item.getKey());
-        view.setBackgroundColor(selected==i? Color.YELLOW:Color.GRAY);
+        view.setBackgroundColor(selected==i? Color.YELLOW:Color.WHITE);
         name.setText(item.getName());
         amount.setText(context.getString(R.string.empty) + item.getAmount());
         price.setText(context.getString(R.string.empty) + Cash_format.format(item.getAmount()*item.getPricePerItem()));
