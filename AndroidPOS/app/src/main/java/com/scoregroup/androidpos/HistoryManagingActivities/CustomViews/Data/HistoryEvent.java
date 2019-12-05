@@ -1,5 +1,6 @@
 package com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data;
 
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryEvent {
@@ -8,9 +9,11 @@ public class HistoryEvent {
 
     public int getTotalPrice() {
         if(mode == SELL)
-            return totalPrice * -1;
-        else
+            return Math.abs(totalPrice);
+        else if(mode == DELIVERY)
             return totalPrice;
+        else
+            return 99999; //debug 용
     }
 
     public void setTotalPrice(int totalPrice) {
