@@ -15,9 +15,7 @@ import com.scoregroup.androidpos.Client.ClientManger;
 
 public class OptionActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
-    private String Data = null;
     private static String IP = "", PASS = "";
-    private Button buttons[] = new Button[2];
     private EditText E_IP, E_PASS;
 
     /**쉐얼드 프리퍼런스 아이피, 패스워드 저장*/
@@ -36,16 +34,6 @@ public class OptionActivity extends AppCompatActivity {
         PASS = pref.getString("PW", "12142");
     }
 
-    /**리시브 리스너로 UI 실행 시 다음과 같은 핸들러를 사용해야 함
-     * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓*/
-    private void Login(){
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.post(() -> {
-            if(Data == null)
-                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_SHORT).show();
-        });
-    }
-
     /**아이피, 비밀번호(포트) 설정하기*/
     @Override
     protected void onPause() {
@@ -55,17 +43,6 @@ public class OptionActivity extends AppCompatActivity {
         SaveIPPW(IP, PASS); // 아이피, 비밀번호 임시 데이터에 저장
         ClientManger.getIP(IP); // 클라이언트 매니저에 IP 저장
         ClientManger.getPORT(Integer.parseInt(PASS)); // 클라이언트 매니저에 PORT 저장
-        /**@중요 NEW DB요청 방식*/
-        /**1.클라이언트 매니저의 겟디비로 클라이언트를 생성, 포맷은 기존과 동일
-         * 2.리시브 리스너(.setOnReceiveListener)로 DB로 온 데이터를 받고 원하는 액티비티 메소드를 실행
-         * 3.리시브 리스너 후(.send)필수임! 아니면 동작안함.
-         * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓*/
-        Client c = cm.getDB("login");
-        c.setOnReceiveListener((v)->{
-            Log.i("ju", "리스너 실행");
-            Data = v.getData();
-            Login();
-        }).send();
     }
 
     @Override
