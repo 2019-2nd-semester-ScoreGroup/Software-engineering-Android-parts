@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1">
+        android:layout_weight="0.2">
         <TextView
             android:id="@+id/productname"
             android:gravity="center"
@@ -16,8 +17,22 @@
             android:layout_height="wrap_content"
             android:background="#03A9F4"
             android:text="물건  이름"
-            android:textSize="25dp"/>
+            android:textSize="35dp"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+
+        <ImageView
+            android:id="@+id/productimage"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/pos_icon" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,32 +98,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="20dp"
-
-        android:layout_weight="1">
-        <Button
-            android:id="@+id/add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:text="재고 추가" />
-
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-
-            android:text="품목 삭제" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginBottom="50dp"
@@ -118,17 +107,18 @@
             android:id="@+id/btnok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
+            android:layout_margin="30dp"
             android:gravity="center"
-            android:text="확인"/>
+            android:text="확인"
+            android:textSize="20dp"/>
         <Button
             android:id="@+id/btncancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
-
+            android:layout_margin="30dp"
             android:gravity="center"
-            android:text="취소"/>
+            android:text="취소"
+            android:textSize="20dp"/>
     </LinearLayout>
 
 
