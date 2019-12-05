@@ -19,7 +19,7 @@ public class PaymentActivity extends AppCompatActivity {
     */
 
     private int mod;
-    private int key;
+    private long key;
 
 
     @Override
@@ -61,7 +61,7 @@ public class PaymentActivity extends AppCompatActivity {
                 value : 키값
              */
 
-            intent.putExtra("EventIntentKey", 1);
+            intent.putExtra(getString(R.string.EventIntentKey), key);
             startActivity(intent);
             finish();
         }).start();

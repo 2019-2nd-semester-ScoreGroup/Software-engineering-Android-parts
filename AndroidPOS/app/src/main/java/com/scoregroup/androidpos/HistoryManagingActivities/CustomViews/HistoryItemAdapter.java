@@ -45,11 +45,13 @@ public class HistoryItemAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.view_history_item_view, viewGroup, false);
         }
+        TextView barcode=view.findViewById(R.id.barcode);
         TextView name = view.findViewById(R.id.name);
         TextView amount = view.findViewById(R.id.amount);
         TextView price = view.findViewById(R.id.price);
 
         HistoryItem item=items.get(i);
+        barcode.setText(item.getKey());
         view.setBackgroundColor(selected==i? Color.YELLOW:Color.GRAY);
         name.setText(item.getName());
         amount.setText(context.getString(R.string.empty) + item.getAmount());

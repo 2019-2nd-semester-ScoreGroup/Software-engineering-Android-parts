@@ -96,7 +96,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         payButton.setOnClickListener((view) -> {
             //status 0:Normal, 1:Cancel, 2:Nan
-            clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString()), 0, mode == SELL ? "selling" : "delivering"))
+            clientManager.getDB(String.format("addEvent %s %s %d %s", mode == SELL ? "sell" : "delivery", Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, mode == SELL ? "selling" : "delivering"))
                     .setOnReceiveListener((client) -> {
                         if (!client.isReceived()) {
                             runOnUiThread(() -> {
@@ -229,7 +229,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                 break;
             case R.id.minus:
                 if (status == INPUT_MODE_MINUS)
-                    value = "" + (ToInteger(value) - 1);
+                    value = "" + (ToInteger(value) + 1);
                 else status = INPUT_MODE_MINUS;
                 break;
             case R.id.multiply:
@@ -263,6 +263,8 @@ public class HistoryCreateActivity extends AppCompatActivity {
                                 HistoryItem tItem=findItemByKey(msgs[0]);
                                 tItem.setName(msgs[1]);
                                 tItem.setPricePerItem(Integer.valueOf(msgs[2]));
+                                value="";
+                                refreshCalcStatus();
                             }).send();
                         }
                         break;
@@ -275,6 +277,9 @@ public class HistoryCreateActivity extends AppCompatActivity {
                     case INPUT_MODE_MINUS:
                         item = itemList.get(selected);
                         item.setAmount(item.getAmount() - ToInteger(value));
+                        if(item.getAmount()==0){
+                            itemList.remove(item);
+                        }
                         status = INPUT_MODE_ADD;
                         value = "";
                         break;
@@ -329,7 +334,10 @@ public class HistoryCreateActivity extends AppCompatActivity {
         itemList.clear();
         selected = -1;
         adapter.setSelected(-1);
-        adapter.notifyDataSetChanged();
+        runOnUiThread(()->{
+            adapter.notifyDataSetChanged();
+        });
+
         refreshCalcStatus();
     }
 
