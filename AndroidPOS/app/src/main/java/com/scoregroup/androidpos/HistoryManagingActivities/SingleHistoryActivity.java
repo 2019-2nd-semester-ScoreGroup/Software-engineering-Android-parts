@@ -74,6 +74,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         listView = new ArrayList<>();
         listScrollArea = findViewById(R.id.scrollArea);
         adapter=new HistoryItemAdapter(listView);
+        adapter.setSelectable(false);
         listScrollArea.setAdapter(adapter);
         task = new ClientLoading(this);
         task.show();
