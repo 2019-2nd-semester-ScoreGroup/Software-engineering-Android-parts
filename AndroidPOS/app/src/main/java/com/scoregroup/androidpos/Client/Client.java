@@ -63,34 +63,29 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
             //소켓 설정
+            Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
             InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
             sock = new Socket();
             sock.connect(sock_address, 1000);
 
-            //로그인 시도 시
-            if(msg.equals("login"))
-                data = "pass";
-            //로그인 시도 아닐 시
-            else{
-                //스트림 설정
-                BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())));
+            //스트림 설정
+            BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())));
 
-                //송신
-                out.println(msg);
-                out.flush();
+            //송신
+            Log.i("ju", "송신 메시지" + msg);
+            out.println(msg);
+            out.flush();
 
-                //중복송신 방지
-                alreadySent = true;
+            //중복송신 방지
+            alreadySent = true;
 
-                //수신
-                sock.setSoTimeout(5000); // Read 타임아웃
-                data = in.readLine();
-                isReceived = true;
-                Log.i("ju", "받은 데이터: " + data);
-            }
+            //수신
+            sock.setSoTimeout(5000); // Read 타임아웃
+            data = in.readLine();
+            isReceived = true;
+            Log.i("ju", "받은 데이터: " + data);
 
             //연결종료
             sock.close();

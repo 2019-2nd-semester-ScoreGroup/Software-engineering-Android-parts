@@ -7,42 +7,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.scoregroup.androidpos.Client.Client;
 import com.scoregroup.androidpos.Client.ClientManger;
 
 public class LoadingActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance();
-    private String Data;
     private static final int CAMERA_PERMISSION = 0;
 
     private void ImportIPPW(){
         SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
         ClientManger.getIP(pref.getString("IP", "localhost"));
         ClientManger.getPORT(Integer.parseInt(pref.getString("PW", "12142")));
-        Client c = cm.getDB("login");
-        c.setOnReceiveListener((v)->{
-            Log.i("ju", "리스너 실행");
-            Data = v.getData();
-            Login();
-        }).send();
-    }
-
-    private void Login(){
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.post(() -> {
-            if(Data == null)
-                Toast.makeText(getApplicationContext(), "연결 실패, 설정에서 네트워크 설정을 확인하세요.", Toast.LENGTH_LONG).show();
-        });
     }
 
     @Override
