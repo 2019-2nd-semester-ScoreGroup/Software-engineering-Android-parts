@@ -4,18 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
-import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 
 public class MainActivity extends AppCompatActivity {
-    Button[] buttons = new Button[4];
-
+    private Button[] buttons = new Button[4];
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

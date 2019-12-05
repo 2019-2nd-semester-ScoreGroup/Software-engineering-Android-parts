@@ -80,7 +80,7 @@ public class HistoryListActivity extends AppCompatActivity {
             // 데이터가 널 값일 시 리턴
 
             if(Data == null){
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_LONG).show();
                 return;
             }
             // 데이터 추출
@@ -106,7 +106,7 @@ public class HistoryListActivity extends AppCompatActivity {
                     parsedAckMsg = lineTokenizer.nextToken();
                 String Price = parsedAckMsg;
 
-                events.add(new HistoryEvent(Key , Time.substring(0, 18), Integer.parseInt(Price)));
+                events.add(new HistoryEvent(mode, Key , Time.substring(0, 18), Integer.parseInt(Price)));
             }
             HistoryListAdapter adapter = new HistoryListAdapter(events);
             listScrollArea.setAdapter(adapter);

@@ -1,21 +1,27 @@
 package com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data;
 
-import java.util.ArrayList;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryEvent {
+    private int totalPrice, mode;
     private String key, dateTime;
 
     public int getTotalPrice() {
-        return totalPrice;
+        if(mode == SELL)
+            return Math.abs(totalPrice);
+        else if(mode == DELIVERY)
+            return totalPrice;
+        else
+            return 99999; //debug 용
     }
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    private int totalPrice;
-
-    public HistoryEvent(String key, String dateTime, int totalPrice) {
+    public HistoryEvent(int mode, String key, String dateTime, int totalPrice) {
+        this.mode = mode;
         this.key = key;
         this.dateTime = dateTime;
         this.totalPrice = totalPrice;
