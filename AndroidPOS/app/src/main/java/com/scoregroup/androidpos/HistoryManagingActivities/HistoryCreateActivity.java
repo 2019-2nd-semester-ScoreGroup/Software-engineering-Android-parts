@@ -96,7 +96,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         payButton.setOnClickListener((view) -> {
             //status 0:Normal, 1:Cancel, 2:Nan
-            clientManager.getDB(String.format("addEvent %d %s %d %s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), mode, mode == SELL ? "selling" : "delivering"))
+            clientManager.getDB(String.format("addEvent %d %s %d %s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, mode == SELL ? "selling" : "delivering"))
                     .setOnReceiveListener((client) -> {
                         if (!client.isReceived()) {
                             runOnUiThread(() -> {
