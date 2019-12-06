@@ -14,15 +14,6 @@
         android:text="물품 이름" />
 
     <TextView
-        android:id="@+id/sta_price"
-        style="@style/historyListTexts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="가격" />
-
-    <TextView
         android:id="@+id/sta_rate"
         style="@style/historyListTexts"
         android:layout_width="match_parent"
@@ -30,5 +21,14 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="판매 수량" />
+
+    <TextView
+        android:id="@+id/sta_price"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="가격" />
 
 </LinearLayout>

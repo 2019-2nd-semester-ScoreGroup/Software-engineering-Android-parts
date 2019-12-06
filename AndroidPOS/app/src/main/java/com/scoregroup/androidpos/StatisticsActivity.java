@@ -32,7 +32,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private ClientLoading task;
     private TextView TCash;
     private ListView SaleListView = null;
-    private Button buttons[] = new Button[4];
+    private Button buttons[] = new Button[3];
     private String Data, startymd, endymd;
     private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
 
@@ -44,7 +44,6 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[0] = findViewById(R.id.Confirm);
         buttons[1] = findViewById(R.id.StartDate);
         buttons[2] = findViewById(R.id.EndDate);
-        buttons[3] = findViewById(R.id.ExitButton);
         TCash = findViewById(R.id.total_cash);
 
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
@@ -59,7 +58,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         buttons[0].setOnClickListener(view -> {
             if(startymd == null || endymd == null)
-                Toast.makeText(getApplicationContext(), "put time!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show();
             else
             {
                 task = new ClientLoading(this);
@@ -84,11 +83,6 @@ public class StatisticsActivity extends AppCompatActivity {
             Calendar cal = Calendar.getInstance();
             DatePickerDialog EndDialog = new DatePickerDialog(this, end, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             EndDialog.show();
-        });
-
-        buttons[3].setOnClickListener(view -> {
-            Intent in = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(in);
         });
     }
 
@@ -126,7 +120,8 @@ public class StatisticsActivity extends AppCompatActivity {
                     parsedAckMsg = lineTokenizer.nextToken();
                 item.sRate = parsedAckMsg;
 
-                total_cash += (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
+                item.tPrice = (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
+                total_cash += item.tPrice;
                 sData.add(item);
             }
             TCash.setText(" 총 매출: " + Cash_format.format(total_cash) + "원");
@@ -141,6 +136,7 @@ public class StatisticsActivity extends AppCompatActivity {
         public String sName;
         public String sPrice;
         public String sRate;
+        public int tPrice;
     }
 
     public class ListAdapter extends BaseAdapter // 커스텀 리스트뷰 어댑터 구현
@@ -192,7 +188,7 @@ public class StatisticsActivity extends AppCompatActivity {
             TextView oTextRate = (TextView) convertView.findViewById(R.id.sta_rate);
 
             oTextName.setText(SaleData.get(position).sName);
-            oTextPrice.setText(SaleData.get(position).sPrice + "원");
+            oTextPrice.setText(SaleData.get(position).tPrice + "원");
             oTextRate.setText(SaleData.get(position).sRate + "개");
             return convertView;
         }
