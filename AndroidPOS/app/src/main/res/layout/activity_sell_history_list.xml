@@ -41,6 +41,7 @@
         <TextView
             android:id="@+id/key"
             style="@style/historyTexts"
+            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -51,6 +52,7 @@
         <TextView
             android:id="@+id/date"
             style="@style/historyTexts"
+            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -61,6 +63,7 @@
         <TextView
             android:id="@+id/price"
             style="@style/historyTexts"
+            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
