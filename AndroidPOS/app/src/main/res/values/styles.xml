@@ -57,5 +57,9 @@
         <item name="android:textSize">20dp</item>
 
     </style>
-
+    <style name="historyListTexts" parent="historyTexts">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>

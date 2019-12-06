@@ -62,7 +62,7 @@ public class HistoryListAdapter extends BaseAdapter {
         detailButton.setOnClickListener((button) -> {
             Intent t = new Intent(context, SingleHistoryActivity.class);
             t.putExtra(context.getString(R.string.ModeIntentKey), context.mode);
-            t.putExtra(context.getString(R.string.EventIntentKey), keyCode.getText().toString());
+            t.putExtra(context.getString(R.string.EventIntentKey), Long.valueOf(keyCode.getText().toString()));
             t.putExtra(context.getString(R.string.TimeIntentKey), dateTime.getText().toString());
             context.startActivity(t);
         });
