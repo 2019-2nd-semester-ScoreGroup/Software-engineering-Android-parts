@@ -26,33 +26,6 @@
             android:layout_weight="1"
             android:text="재고 목록"
             android:textAlignment="center" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleBack"
-        app:layout_constraintVertical_bias="0.0">
-
-        <Button
-            android:id="@+id/toHistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="납품기록"
-            android:textColor="#000000"/>
-
-        <Button
-            android:id="@+id/exit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="나가기"
-            android:textColor="#000000"/>
 
     </LinearLayout>
 
@@ -63,45 +36,45 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/titleBack">
 
         <TextView
             android:id="@+id/keycode"
             style="@style/historyTexts"
-            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_list_icon"
             android:text="코드"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/name"
             style="@style/historyTexts"
-            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_list_icon"
             android:text="품명"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/Price"
             style="@style/historyTexts"
-            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_list_icon"
             android:text="가격"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/Count"
             style="@style/historyTexts"
-            android:background="@drawable/bg_list_icon"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_list_icon"
             android:text="재고량"
             android:textAlignment="center" />
 
@@ -113,8 +86,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="0.0">
 
     </ListView>
 
@@ -124,9 +99,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/toHistory"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@color/histPrimary"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:src="@android:drawable/ic_menu_recent_history"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/refreshButton"
@@ -139,6 +131,7 @@
             android:src="@android:drawable/stat_notify_sync_noanim"
             android:textSize="30sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
