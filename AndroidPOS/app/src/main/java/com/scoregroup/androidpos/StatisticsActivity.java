@@ -118,9 +118,9 @@ public class StatisticsActivity extends AppCompatActivity {
 
                 if(lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
-                item.sRate = parsedAckMsg;
+                item.sRate = Integer.parseInt(parsedAckMsg) * -1;
 
-                item.tPrice = (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
+                item.tPrice = (Integer.parseInt(item.sPrice)) * (item.sRate);
                 total_cash += item.tPrice;
                 sData.add(item);
             }
@@ -135,7 +135,7 @@ public class StatisticsActivity extends AppCompatActivity {
         public String sKey;
         public String sName;
         public String sPrice;
-        public String sRate;
+        public int sRate;
         public int tPrice;
     }
 
