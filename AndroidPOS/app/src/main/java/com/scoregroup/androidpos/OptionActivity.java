@@ -1,21 +1,13 @@
 package com.scoregroup.androidpos;
 
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.scoregroup.androidpos.Client.Client;
-import com.scoregroup.androidpos.Client.ClientManger;
 
 public class OptionActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
-    private static String IP = "", PASS = "";
+    private String IP = "", PASS = "";
     private EditText E_IP, E_PASS;
 
     /**쉐얼드 프리퍼런스 아이피, 패스워드 저장*/
@@ -41,8 +33,7 @@ public class OptionActivity extends AppCompatActivity {
         IP = E_IP.getText().toString(); // 아이피 입력
         PASS = E_PASS.getText().toString(); // 비밀번호 입력
         SaveIPPW(IP, PASS); // 아이피, 비밀번호 임시 데이터에 저장
-        ClientManger.getIP(IP); // 클라이언트 매니저에 IP 저장
-        ClientManger.getPORT(Integer.parseInt(PASS)); // 클라이언트 매니저에 PORT 저장
+        Log.i("ju", "Set: " + IP + ":" + PASS);
     }
 
     @Override

@@ -22,7 +22,7 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class SingleHistoryActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private Intent receivePack;
     private ListView listScrollArea;
@@ -109,7 +109,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                 temp.setAmount(Integer.valueOf(word[1]));
 
                 listView.add(temp);
-                ClientManger.getInstance().getDB("getStock "+word[0]).setOnReceiveListener((client)->{
+                ClientManger.getInstance(this).getDB("getStock "+word[0]).setOnReceiveListener((client)->{
                     if(!client.isReceived())return;
                     String[] msgs=client.getData().split(" ");
                     HistoryItem t=findItemByKey(msgs[0]);

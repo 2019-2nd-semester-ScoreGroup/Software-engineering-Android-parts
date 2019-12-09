@@ -23,7 +23,7 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryListActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private ArrayList<HistoryEvent> events;
     private Intent receivePack;

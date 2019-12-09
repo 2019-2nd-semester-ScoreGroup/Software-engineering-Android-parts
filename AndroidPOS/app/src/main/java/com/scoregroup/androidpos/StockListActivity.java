@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
-    ClientManger clientManger = ClientManger.getInstance();
+    ClientManger clientManger = ClientManger.getInstance(this);
     final int _REQ = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
