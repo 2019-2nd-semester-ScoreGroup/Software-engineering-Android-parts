@@ -40,6 +40,7 @@
     </style>
     <style name="historyTexts" parent="historyContainer">
         <item name="android:textColor">@color/histText</item>
+        <item name="android:background">@drawable/bg_list_icon</item>
     </style>
     <style name="historyButton" parent="historyTexts">
         <item name="android:minWidth">0dp</item>
@@ -57,7 +58,8 @@
         <item name="android:textSize">20dp</item>
 
     </style>
-    <style name="historyListTexts" parent="historyTexts">
+    <style name="historyListTexts">
+        <item name="android:textColor">@color/histText</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:singleLine">true</item>

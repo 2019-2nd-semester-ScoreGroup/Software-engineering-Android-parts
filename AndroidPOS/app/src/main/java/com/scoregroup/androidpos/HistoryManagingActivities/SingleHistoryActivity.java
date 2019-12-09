@@ -55,7 +55,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
 
         keyView = findViewById(R.id.keyNumber);
         dateView = findViewById(R.id.dateTime);
-        totalPrice = findViewById(R.id.totlaPrice);
+        totalPrice = findViewById(R.id.totalPrice);
         cancelButton = findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->{
             cm.getDB("tryChangeEvent "+eventKey+" 1").setOnReceiveListener((client)->{
@@ -120,7 +120,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                         totalPriceData+=t.getPricePerItem()*t.getAmount();
                     }
                     runOnUiThread(()->{
-                        totalPrice.setText(getString(R.string.empty) + totalPriceData);
+                        totalPrice.setText("\t총 가격 : " + getString(R.string.empty) + totalPriceData);
                         adapter.notifyDataSetChanged();
                     });
 

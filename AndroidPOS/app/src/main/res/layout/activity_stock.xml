@@ -44,7 +44,6 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:text="코드"
             android:textAlignment="center" />
 
@@ -54,7 +53,6 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:text="품명"
             android:textAlignment="center" />
 
@@ -64,7 +62,6 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:text="가격"
             android:textAlignment="center" />
 
@@ -74,7 +71,6 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:text="재고량"
             android:textAlignment="center" />
 

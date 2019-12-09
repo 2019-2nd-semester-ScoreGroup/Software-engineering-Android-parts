@@ -123,7 +123,6 @@
         <TextView
             android:id="@+id/S_date"
             style="@style/historyTexts"
-            android:background="@drawable/bg_list_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -136,7 +135,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:gravity="center"
             android:text="판매 수량" />
 
@@ -146,7 +144,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_list_icon"
             android:gravity="center"
             android:text="매출" />
 
