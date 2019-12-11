@@ -37,10 +37,14 @@ public class SingleStockActivity extends AppCompatActivity {
         EditText s_n = (EditText) findViewById(R.id.modifyname);
         EditText s_b = (EditText) findViewById(R.id.modifybarcode);
         String product_name = intent.getStringExtra("nextName");
-        String product_barcode= intent.getStringExtra("nextkey");
+        String product_barcode= intent.getStringExtra("nextKey");
+        String product_price = intent.getStringExtra("nextPrice");
         TextView Title=(TextView) findViewById(R.id.productname);
         Title.getText().toString();
         Title.setText(product_name);
+        s_n.setText(product_name);
+        s_b.setText(product_barcode);
+        s_p.setText(product_price);
         Button OKButton = findViewById(R.id.btnok);
         Button CancelButton = findViewById(R.id.btncancel);
         task = new ClientLoading(this);
