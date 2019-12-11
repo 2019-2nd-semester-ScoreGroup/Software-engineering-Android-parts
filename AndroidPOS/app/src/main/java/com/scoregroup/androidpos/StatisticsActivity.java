@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
-    private TextView TCash;
+    private TextView TCash, Dchoice;
     private ListView SaleListView = null;
     private Button buttons[] = new Button[7];
     private String Data, startymd, endymd;
@@ -48,6 +48,7 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[5] = findViewById(R.id.month);
         buttons[6] = findViewById(R.id.year);
         TCash = findViewById(R.id.total_cash);
+        Dchoice = findViewById(R.id.choice);
 
         /**시작 달력*/
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
@@ -78,12 +79,16 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**시작 날짜 클릭*/
         buttons[1].setOnClickListener(view -> {
+            ReColor();
+            Dchoice.setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             DatePickerDialog StrDialog = new DatePickerDialog(this, start, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             StrDialog.show();
         });
         /**끝 날짜 클릭*/
         buttons[2].setOnClickListener(view -> {
+            ReColor();
+            Dchoice.setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             DatePickerDialog EndDialog = new DatePickerDialog(this, end, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             EndDialog.show();
@@ -144,6 +149,7 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[4].setTextColor(Color.parseColor("#000000"));
         buttons[5].setTextColor(Color.parseColor("#000000"));
         buttons[6].setTextColor(Color.parseColor("#000000"));
+        Dchoice.setTextColor(Color.parseColor("#000000"));
     }
 
     private void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
