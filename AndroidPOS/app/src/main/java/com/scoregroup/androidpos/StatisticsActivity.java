@@ -2,6 +2,7 @@ package com.scoregroup.androidpos;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -89,6 +90,8 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**당일 클릭*/
         buttons[3].setOnClickListener(view -> {
+            ReColor();
+            buttons[3].setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
             startymd = buttons[1].getText().toString();
@@ -97,6 +100,8 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**이번주 클릭*/
         buttons[4].setOnClickListener(view -> {
+            ReColor();
+            buttons[4].setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             while(cal.get(cal.DAY_OF_WEEK) != Calendar.MONDAY){
                 cal.set(cal.get(cal.YEAR), cal.get(cal.MONTH), (cal.get(cal.DATE) - 1));
@@ -112,6 +117,8 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**이번달 클릭*/
         buttons[5].setOnClickListener(view -> {
+            ReColor();
+            buttons[5].setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
             startymd = buttons[1].getText().toString();
@@ -120,6 +127,8 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**이번년도 클릭*/
         buttons[6].setOnClickListener(view -> {
+            ReColor();
+            buttons[6].setTextColor(Color.parseColor("#FF0000"));
             Calendar cal = Calendar.getInstance();
             cal.set(cal.get(cal.YEAR), 0, 1);
             buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMinimum(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
@@ -128,6 +137,13 @@ public class StatisticsActivity extends AppCompatActivity {
             buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMaximum(cal.MONTH) + 1) + "-" + cal.getActualMaximum(cal.DAY_OF_MONTH));
             endymd = buttons[2].getText().toString();
         });
+    }
+
+    private void ReColor(){
+        buttons[3].setTextColor(Color.parseColor("#000000"));
+        buttons[4].setTextColor(Color.parseColor("#000000"));
+        buttons[5].setTextColor(Color.parseColor("#000000"));
+        buttons[6].setTextColor(Color.parseColor("#000000"));
     }
 
     private void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
