@@ -98,10 +98,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <Button
+            android:id="@+id/addStockButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@color/histPrimary"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:text="@string/plusSymbol"
+            android:textColor="@color/colorBackground"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/toHistory"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@color/histPrimary"
             android:minWidth="30dp"
@@ -109,12 +124,6 @@
             android:src="@android:drawable/ic_menu_recent_history"
             android:textSize="30sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/refreshButton"
