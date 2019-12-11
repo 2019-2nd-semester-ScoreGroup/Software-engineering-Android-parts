@@ -16,6 +16,7 @@
 
         <TextView
             android:id="@+id/KeyCode"
+            style="@style/historyListTexts"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -24,6 +25,7 @@
 
         <TextView
             android:id="@+id/Name"
+            style="@style/historyListTexts"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -32,6 +34,7 @@
 
         <TextView
             android:id="@+id/Price"
+            style="@style/historyListTexts"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -40,6 +43,7 @@
 
         <TextView
             android:id="@+id/Count"
+            style="@style/historyListTexts"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

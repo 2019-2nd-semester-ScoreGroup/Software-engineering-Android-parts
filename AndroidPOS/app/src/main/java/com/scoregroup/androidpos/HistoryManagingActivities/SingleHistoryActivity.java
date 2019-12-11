@@ -22,7 +22,7 @@ import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManagin
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class SingleHistoryActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private Intent receivePack;
     private ListView listScrollArea;
@@ -55,7 +55,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
 
         keyView = findViewById(R.id.keyNumber);
         dateView = findViewById(R.id.dateTime);
-        totalPrice = findViewById(R.id.totlaPrice);
+        totalPrice = findViewById(R.id.totalPrice);
         cancelButton = findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->{
             cm.getDB("tryChangeEvent "+eventKey+" 1").setOnReceiveListener((client)->{
@@ -109,7 +109,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                 temp.setAmount(Integer.valueOf(word[1]));
 
                 listView.add(temp);
-                ClientManger.getInstance().getDB("getStock "+word[0]).setOnReceiveListener((client)->{
+                ClientManger.getInstance(this).getDB("getStock "+word[0]).setOnReceiveListener((client)->{
                     if(!client.isReceived())return;
                     String[] msgs=client.getData().split(" ");
                     HistoryItem t=findItemByKey(msgs[0]);
@@ -120,7 +120,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                         totalPriceData+=t.getPricePerItem()*t.getAmount();
                     }
                     runOnUiThread(()->{
-                        totalPrice.setText(getString(R.string.empty) + totalPriceData);
+                        totalPrice.setText("\t총 가격 : " + getString(R.string.empty) + totalPriceData);
                         adapter.notifyDataSetChanged();
                     });
 

@@ -1,29 +1,30 @@
 package com.scoregroup.androidpos.Client;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class ClientManger {
     private static ClientManger cm; // 액티비티가 모두 접근 가능
-    private static String ip = "localhost";// 아이피를 저장
-    private static int port = 12142;
+    private Context con;
+    private String ip;
+    private int port;
 
     private ClientManger(){}
 
     /**클라이언트 매너저 생성 메소드*/
-    public static ClientManger getInstance(){
+    public static ClientManger getInstance(Context con){
         if(cm == null)
             cm = new ClientManger();
+        cm.con = con;
         return cm;
     }
 
-    /**IP를 받는 메소드*/
-    public static void getIP(String ip_num){
-        ip = ip_num;
-    }
-
-    /**PORT를 받는 메소드*/
-    public static void getPORT(int port_num){
-        port = port_num;
+    /**클라이언트 매너저에 아이피,포트 불러오기*/
+    private void ClientManger_Import_IP_PORT(){
+        SharedPreferences pref = con.getSharedPreferences("temp", con.MODE_PRIVATE);
+        ip = pref.getString("IP", "localhost");
+        port = Integer.parseInt(pref.getString("PW", "12142"));
     }
 
     /**DB와 통신을 위한 메소드*/
@@ -52,6 +53,7 @@ public class ClientManger {
      * @return [eventKey]
      */
     public Client getDB(String msg) {
+        ClientManger_Import_IP_PORT();
         Log.i("ju", "클라인트매니저 겟디비" + " " + ip + ":" + port);
         Client t = new Client().setIP(ip).setPORT(port).setMsg(msg);
         return t;

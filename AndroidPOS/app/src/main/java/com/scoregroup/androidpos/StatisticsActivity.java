@@ -2,7 +2,6 @@ package com.scoregroup.androidpos;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +26,11 @@ import java.util.Calendar;
 import java.util.StringTokenizer;
 
 public class StatisticsActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private TextView TCash;
     private ListView SaleListView = null;
-    private Button buttons[] = new Button[4];
+    private Button buttons[] = new Button[3];
     private String Data, startymd, endymd;
     private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
 
@@ -44,7 +42,6 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[0] = findViewById(R.id.Confirm);
         buttons[1] = findViewById(R.id.StartDate);
         buttons[2] = findViewById(R.id.EndDate);
-        buttons[3] = findViewById(R.id.ExitButton);
         TCash = findViewById(R.id.total_cash);
 
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
@@ -59,7 +56,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         buttons[0].setOnClickListener(view -> {
             if(startymd == null || endymd == null)
-                Toast.makeText(getApplicationContext(), "put time!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show();
             else
             {
                 task = new ClientLoading(this);
@@ -84,11 +81,6 @@ public class StatisticsActivity extends AppCompatActivity {
             Calendar cal = Calendar.getInstance();
             DatePickerDialog EndDialog = new DatePickerDialog(this, end, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             EndDialog.show();
-        });
-
-        buttons[3].setOnClickListener(view -> {
-            Intent in = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(in);
         });
     }
 
@@ -124,9 +116,10 @@ public class StatisticsActivity extends AppCompatActivity {
 
                 if(lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
-                item.sRate = parsedAckMsg;
+                item.sRate = Integer.parseInt(parsedAckMsg) * -1;
 
-                total_cash += (Integer.parseInt(item.sPrice)) * (Integer.parseInt(item.sRate));
+                item.tPrice = (Integer.parseInt(item.sPrice)) * (item.sRate);
+                total_cash += item.tPrice;
                 sData.add(item);
             }
             TCash.setText(" 총 매출: " + Cash_format.format(total_cash) + "원");
@@ -140,7 +133,8 @@ public class StatisticsActivity extends AppCompatActivity {
         public String sKey;
         public String sName;
         public String sPrice;
-        public String sRate;
+        public int sRate;
+        public int tPrice;
     }
 
     public class ListAdapter extends BaseAdapter // 커스텀 리스트뷰 어댑터 구현
@@ -192,7 +186,7 @@ public class StatisticsActivity extends AppCompatActivity {
             TextView oTextRate = (TextView) convertView.findViewById(R.id.sta_rate);
 
             oTextName.setText(SaleData.get(position).sName);
-            oTextPrice.setText(SaleData.get(position).sPrice + "원");
+            oTextPrice.setText(SaleData.get(position).tPrice + "원");
             oTextRate.setText(SaleData.get(position).sRate + "개");
             return convertView;
         }

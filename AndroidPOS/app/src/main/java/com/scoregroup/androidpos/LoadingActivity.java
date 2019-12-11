@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
@@ -14,17 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.scoregroup.androidpos.Client.ClientManger;
-
 public class LoadingActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
     private static final int CAMERA_PERMISSION = 0;
-
-    private void ImportIPPW(){
-        SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
-        ClientManger.getIP(pref.getString("IP", "localhost"));
-        ClientManger.getPORT(Integer.parseInt(pref.getString("PW", "12142")));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +42,6 @@ public class LoadingActivity extends AppCompatActivity {
                 // result of the request.
             }
         }else{
-            ImportIPPW();
             startNext();
         }
 

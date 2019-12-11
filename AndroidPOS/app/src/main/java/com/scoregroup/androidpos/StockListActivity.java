@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
-    ClientManger clientManger = ClientManger.getInstance();
+    ClientManger clientManger = ClientManger.getInstance(this);
     final int _REQ = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
@@ -45,8 +45,7 @@ public class StockListActivity extends AppCompatActivity {
     final int REQUEST_PRICE= 3;
     private ListView StockListView = null;
     private String Data;
-    private Button buttons[] = new Button[2];
-    private ImageButton Ibutton;
+    private ImageButton Hbutton, Ibutton;
     private ClientLoading task;
     private ArrayList<itemsale> oData;
 
@@ -54,20 +53,14 @@ public class StockListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
-        buttons[0] = findViewById(R.id.exit);
-        buttons[1] = findViewById(R.id.toHistory);
+        Hbutton = findViewById(R.id.toHistory);
         Ibutton = findViewById(R.id.refreshButton);
 
         task = new ClientLoading(this);
         task.show();
         getStockList();
 
-        buttons[0].setOnClickListener(view -> {
-            Intent in = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(in);
-        });
-
-        buttons[1].setOnClickListener(view -> {
+        Hbutton.setOnClickListener(view -> {
             Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
             in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
             startActivity(in);

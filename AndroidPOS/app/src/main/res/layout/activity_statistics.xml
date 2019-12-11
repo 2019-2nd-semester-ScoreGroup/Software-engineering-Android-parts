@@ -7,50 +7,25 @@
     android:orientation="vertical"
     tools:context=".StatisticsActivity">
 
-    <TextView
-        android:id="@+id/Statistics_Title1"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#4D000000"
-        android:gravity="center"
-        android:text="통계"
-
-        android:textColor="#000000"
-        android:textSize="30dp" />
-
-    <TextView
-        android:id="@+id/search_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text=" 검색년도"
-        android:textColor="#000000"
-        android:textSize="25dp" />
-
     <LinearLayout
+        android:id="@+id/titleBack"
+        style="@style/historyTitleContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/str_text"
-            android:layout_width="match_parent"
+            android:id="@+id/textView"
+            style="@style/historyTitleText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text=" 시작 날짜"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/StartDate"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="yyyy-mm-dd"
-            android:textSize="20dp" />
-
+            android:text="@string/toStatis"
+            android:textAlignment="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -58,48 +33,72 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/end_text"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text=" 끝 날짜"
-            android:textSize="20dp" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/EndDate"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="yyyy-mm-dd"
-            android:textSize="20dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/str_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text=" 시작 날짜"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/StartDate"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="yyyy-mm-dd"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/end_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text=" 끝 날짜"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/EndDate"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="yyyy-mm-dd"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/Confirm"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:text="검  색"
-            android:textSize="20dp" />
-
-
-        <Button
-            android:id="@+id/ExitButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:text="나가기"
             android:textSize="20dp" />
 
     </LinearLayout>
@@ -108,52 +107,52 @@
         android:id="@+id/total_cash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/bg_list_icon"
         android:gravity="center_vertical"
         android:text=" 총 매출:  -원"
         android:textColor="#FF0000"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/S_date"
+            style="@style/historyTexts"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#4D000000"
             android:gravity="center"
-            android:text="물품 이름"
-            android:textColor="#000000"
-            android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/S_money"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="#4D000000"
-            android:gravity="center"
-            android:text="가격"
-            android:textColor="#000000"
-            android:textSize="25dp" />
+            android:text="품명" />
 
         <TextView
             android:id="@+id/S_detail"
+            style="@style/historyTexts"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#4D000000"
             android:gravity="center"
-            android:text="판매 수량"
-            android:textColor="#000000"
-            android:textSize="25dp" />
+            android:text="판매 수량" />
+
+        <TextView
+            android:id="@+id/S_money"
+            style="@style/historyTexts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="매출" />
+
     </LinearLayout>
 
     <ListView
         android:id="@+id/salelist"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0" />
+
 </LinearLayout>

@@ -80,7 +80,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receivePack = getIntent();
-        clientManager = ClientManger.getInstance();
+        clientManager = ClientManger.getInstance(this);
         mode = receivePack.getIntExtra(getString(R.string.ModeIntentKey), SELL);
         setContentView(GetLayoutId(mode));
         scrollArea = findViewById(R.id.scrollArea);

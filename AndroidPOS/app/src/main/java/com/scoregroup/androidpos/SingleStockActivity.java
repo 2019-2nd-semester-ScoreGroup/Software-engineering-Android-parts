@@ -22,7 +22,7 @@ import java.util.BitSet;
 
 public class SingleStockActivity extends AppCompatActivity {
 
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private static Context context = null;
     public String Data;

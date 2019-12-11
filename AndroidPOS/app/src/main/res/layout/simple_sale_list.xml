@@ -6,32 +6,29 @@
 
     <TextView
         android:id="@+id/sta_name"
+        style="@style/historyListTexts"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="물품 이름"
-        android:textColor="#000000"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/sta_price"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="가격"
-        android:textColor="#000000"
-        android:textSize="20dp" />
+        android:text="물품 이름" />
 
     <TextView
         android:id="@+id/sta_rate"
+        style="@style/historyListTexts"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="판매 수량"
-        android:textColor="#000000"
-        android:textSize="20dp" />
+        android:text="판매 수량" />
+
+    <TextView
+        android:id="@+id/sta_price"
+        style="@style/historyListTexts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="가격" />
 
 </LinearLayout>
