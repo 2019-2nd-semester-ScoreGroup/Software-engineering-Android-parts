@@ -47,6 +47,7 @@ public class StatisticsActivity extends AppCompatActivity {
         buttons[5] = findViewById(R.id.month);
         buttons[6] = findViewById(R.id.year);
         TCash = findViewById(R.id.total_cash);
+
         /**시작 달력*/
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
             buttons[1].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
@@ -96,19 +97,36 @@ public class StatisticsActivity extends AppCompatActivity {
         });
         /**이번주 클릭*/
         buttons[4].setOnClickListener(view -> {
-
+            Calendar cal = Calendar.getInstance();
+            while(cal.get(cal.DAY_OF_WEEK) != Calendar.MONDAY){
+                cal.set(cal.get(cal.YEAR), cal.get(cal.MONTH), (cal.get(cal.DATE) - 1));
+            }
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            startymd = buttons[1].getText().toString();
+            cal = Calendar.getInstance();
+            while(cal.get(cal.DAY_OF_WEEK) != Calendar.SUNDAY){
+                cal.set(cal.get(cal.YEAR), cal.get(cal.MONTH), (cal.get(cal.DATE) + 1));
+            }
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            endymd = buttons[2].getText().toString();
         });
         /**이번달 클릭*/
         buttons[5].setOnClickListener(view -> {
             Calendar cal = Calendar.getInstance();
-            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + "1");
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
             startymd = buttons[1].getText().toString();
-            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.getActualMaximum(cal.DAY_OF_MONTH));
             endymd = buttons[2].getText().toString();
         });
         /**이번년도 클릭*/
         buttons[6].setOnClickListener(view -> {
-
+            Calendar cal = Calendar.getInstance();
+            cal.set(cal.get(cal.YEAR), 0, 1);
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMinimum(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
+            startymd = buttons[1].getText().toString();
+            cal.set(cal.get(cal.YEAR), 11, 1);
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMaximum(cal.MONTH) + 1) + "-" + cal.getActualMaximum(cal.DAY_OF_MONTH));
+            endymd = buttons[2].getText().toString();
         });
     }
 

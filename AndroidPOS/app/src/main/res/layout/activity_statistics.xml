@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="이번주" />
+            android:text="이번 주" />
 
         <Button
             android:id="@+id/month"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="이번달" />
+            android:text="이번 달" />
 
         <Button
             android:id="@+id/year"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="이번년도" />
+            android:text="이번 년도" />
     </LinearLayout>
 
     <LinearLayout
