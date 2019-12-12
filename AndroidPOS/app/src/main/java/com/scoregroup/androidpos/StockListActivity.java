@@ -74,7 +74,7 @@ public class StockListActivity extends AppCompatActivity {
 
         Hbutton.setOnClickListener(view -> {
             Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
-            in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY_CHANGE);
+            in.putExtra("Mode", HistoryManaging.DELIVERY);
             startActivity(in);
         });
 
@@ -155,7 +155,7 @@ public class StockListActivity extends AppCompatActivity {
             try {
                 if (lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
-                itemsale.Name = parsedAckMsg;
+                itemsale.Name = parsedAckMsg.replaceAll("_", " ");
 
                 if (lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
@@ -225,7 +225,7 @@ public class StockListActivity extends AppCompatActivity {
 
 
             oTextCode.setText(m_oData.get(position).Code.replaceAll(" ", ""));
-            oTextName.setText(m_oData.get(position).Name.replaceAll(" ", ""));
+            oTextName.setText(m_oData.get(position).Name);
             oTextCount.setText(m_oData.get(position).Count.replaceAll(" ", ""));
             oTextPrice.setText(m_oData.get(position).Price.replaceAll(" ", ""));
 
@@ -234,12 +234,12 @@ public class StockListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(StockListActivity.this, SingleStockActivity.class);
+                    intent.putExtra("Mode", HistoryManaging.DELIVERY_CHANGE);
                     intent.putExtra("nextKey", m_oData.get(position).Code);
                     intent.putExtra("nextCount", m_oData.get(position).Count);
                     intent.putExtra("nextName", m_oData.get(position).Name);
                     intent.putExtra("nextPrice", m_oData.get(position).Price);
-                    startActivity(intent);
-
+                    startActivityForResult(intent, REQUEST_ACT);
                 }
 
             });
