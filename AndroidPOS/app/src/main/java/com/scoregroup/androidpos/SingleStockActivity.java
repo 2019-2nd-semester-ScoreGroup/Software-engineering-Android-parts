@@ -132,9 +132,9 @@ public class SingleStockActivity extends AppCompatActivity {
 
             addButton.setOnClickListener((view) ->
             {
-                oItem.modified_price = s_p.getText().toString().replace(",", "");
-                oItem.modified_barcode = s_b.getText().toString().replace(" ", "");
-                oItem.modified_name = s_n.getText().toString().replace(" ", "_");
+                oItem.modified_price = s_p.getText().toString();
+                oItem.modified_barcode = s_b.getText().toString();
+                oItem.modified_name = s_n.getText().toString();
                 amount = amountText.getText().toString();
 
                 if (oItem.modified_price.equals("") && oItem.modified_barcode.equals("") && oItem.modified_name.equals("")) {
