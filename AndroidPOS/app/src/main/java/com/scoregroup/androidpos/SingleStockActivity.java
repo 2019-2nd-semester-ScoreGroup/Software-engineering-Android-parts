@@ -50,8 +50,7 @@ public class SingleStockActivity extends AppCompatActivity {
         intent = getIntent();
         mode = intent.getIntExtra("Mode", DELIVERY);
 
-        switch (mode)
-        {
+        switch (mode) {
             case DELIVERY_ADD:
                 setContentView(R.layout.addsinglestock);
                 break;
@@ -78,7 +77,7 @@ public class SingleStockActivity extends AppCompatActivity {
         Button CancelButton = findViewById(R.id.btncancel);
         task = new ClientLoading(this);
 
-        if(mode == DELIVERY_CHANGE) {
+        if (mode == DELIVERY_CHANGE) {
             OKButton = findViewById(R.id.btnok);
 
             OKButton.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +124,7 @@ public class SingleStockActivity extends AppCompatActivity {
                     }).send();
                 }
             });
-        }
-        else
-        {
+        } else {
             addButton = findViewById(R.id.btnok);
             amountText = findViewById(R.id.addStockAmountText);
 
@@ -156,7 +153,7 @@ public class SingleStockActivity extends AppCompatActivity {
                     Toast.makeText(SingleStockActivity.this, "바코드(키)를 입력하세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(amount.equals("")) {
+                if (amount.equals("")) {
                     Toast.makeText(SingleStockActivity.this, "수량을 입력하세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -169,23 +166,24 @@ public class SingleStockActivity extends AppCompatActivity {
                                 });
                                 return;
                             }
-                                }).send();
+                            cm.getDB(String.format("addEvent %d %s %d %s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T', ' ')), 0, "addingStackForInitialize"))
+                                    .setOnReceiveListener((clientEv) -> {
+                                        if (!clientEv.isReceived()) {
+                                            runOnUiThread(() -> {
+                                                Toast.makeText(SingleStockActivity.this, "기록 추가 실패", Toast.LENGTH_SHORT).show();
+                                            });
+                                            return;
+                                        }
 
-                cm.getDB(String.format("addEvent %d %s %d %s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, "delivering"))
-                        .setOnReceiveListener((client) -> {
-                            if (!client.isReceived()) {
-                                runOnUiThread(() -> {
-                                    Toast.makeText(SingleStockActivity.this, "기록 추가 실패", Toast.LENGTH_SHORT).show();
-                                });
-                                return;
-                            }
+                                        String newKey = clientEv.getData();
+                                        long newKeyLong = Long.valueOf(newKey);
+                                        cm.getDB(String.format("addChange %d %s %d", newKeyLong, oItem.modified_barcode, Integer.parseInt(amount))).send();
 
-                            String newKey = client.getData();
-                            long newKeyLong = Long.valueOf(newKey);
-                            cm.getDB(String.format("addChange %d %s %d", newKeyLong, oItem.modified_barcode, Integer.parseInt(amount))).send();
-
-                            finish();
+                                        finish();
+                                    }).send();
                         }).send();
+
+
             });
         }
 
