@@ -20,6 +20,7 @@ import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
+import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -48,7 +49,7 @@ public class SingleStockActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
 
         intent = getIntent();
-        mode = intent.getIntExtra("Mode", DELIVERY);
+        mode = intent.getIntExtra("Mode", DELIVERY_ADD);
 
         switch (mode) {
             case DELIVERY_ADD:
@@ -77,14 +78,14 @@ public class SingleStockActivity extends AppCompatActivity {
         Button CancelButton = findViewById(R.id.btncancel);
         task = new ClientLoading(this);
 
-        if (mode == DELIVERY_CHANGE) {
+        if (mode == HistoryManaging.DELIVERY_CHANGE) {
             OKButton = findViewById(R.id.btnok);
 
             OKButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    oItem.modified_price = s_p.getText().toString();
-                    oItem.modified_barcode = s_b.getText().toString();
-                    oItem.modified_name = s_n.getText().toString();
+                    oItem.modified_price = s_p.getText().toString().replace(",", "");
+                    oItem.modified_barcode = s_b.getText().toString().replace(" ", "");
+                    oItem.modified_name = s_n.getText().toString().replace(" ", "_");
 
                     if (oItem.modified_price.equals("") && oItem.modified_barcode.equals("") && oItem.modified_name.equals("")) {
                         setResult(RESULT_FIRST_USER, resultIntent);
@@ -130,9 +131,9 @@ public class SingleStockActivity extends AppCompatActivity {
 
             addButton.setOnClickListener((view) ->
             {
-                oItem.modified_price = s_p.getText().toString();
-                oItem.modified_barcode = s_b.getText().toString();
-                oItem.modified_name = s_n.getText().toString();
+                oItem.modified_price = s_p.getText().toString().replace(",", "");
+                oItem.modified_barcode = s_b.getText().toString().replace(" ", "");
+                oItem.modified_name = s_n.getText().toString().replace(" ", "_");
                 amount = amountText.getText().toString();
 
                 if (oItem.modified_price.equals("") && oItem.modified_barcode.equals("") && oItem.modified_name.equals("")) {
@@ -182,8 +183,6 @@ public class SingleStockActivity extends AppCompatActivity {
                                         finish();
                                     }).send();
                         }).send();
-
-
             });
         }
 

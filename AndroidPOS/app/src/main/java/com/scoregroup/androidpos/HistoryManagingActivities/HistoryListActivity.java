@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_ADD;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_CHANGE;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryListActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class HistoryListActivity extends AppCompatActivity {
     public int mode;
     public static int GetLayoutId(int mode) {
         switch (mode) {
+            case DELIVERY_CHANGE:
+            case DELIVERY_ADD:
             case DELIVERY:
                 return R.layout.activity_delivery_history_list;
             case SELL:
