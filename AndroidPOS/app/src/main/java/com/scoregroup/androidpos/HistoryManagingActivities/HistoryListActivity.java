@@ -95,7 +95,7 @@ public class HistoryListActivity extends AppCompatActivity {
             while(stringTokenizer.hasMoreTokens()){
                 String parsedAckMsg = "";
                 String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                StringTokenizer lineTokenizer = new StringTokenizer(line, Diff);
 
                 if(lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();

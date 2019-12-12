@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
+
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
@@ -140,7 +142,7 @@ public class StockListActivity extends AppCompatActivity {
     {
         while (stringTokenizer.hasMoreTokens()) {
             String line = stringTokenizer.nextToken();
-            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+            StringTokenizer lineTokenizer = new StringTokenizer(line, Diff);
             String parsedAckMsg = lineTokenizer.nextToken();
 
             //예외 출력
