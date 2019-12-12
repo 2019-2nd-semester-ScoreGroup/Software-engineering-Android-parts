@@ -11,10 +11,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="125dp"
         android:layout_height="143dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="292dp"
         android:max="100"
         android:progress="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +28,7 @@
         android:inputType="textPersonName"
         android:text="@string/paymentTitle"
         android:textSize="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,10 +36,11 @@
         android:id="@+id/textView2"
         android:layout_width="61dp"
         android:layout_height="33dp"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:text="@string/paymentProcessingName"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar1"
+        app:layout_constraintStart_toStartOf="@+id/progressBar1"
         app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
 
 </android.support.constraint.ConstraintLayout>

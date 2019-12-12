@@ -37,6 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="#26000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleBackground">
@@ -44,19 +45,20 @@
         <TextView
             android:id="@+id/keyNumber"
             style="@style/historyTexts"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/dateTime"
             style="@style/historyTexts"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="textEnd" />
+            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -79,9 +81,18 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tooltipBarcode"
+                style="@style/historyTexts"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/barcode"
+                android:textAlignment="center" />
+
+            <TextView
                 android:id="@+id/tooltipName"
                 style="@style/historyTexts"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/name"
@@ -90,7 +101,7 @@
             <TextView
                 android:id="@+id/tooltipAmount"
                 style="@style/historyTexts"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/amount"
@@ -99,7 +110,7 @@
             <TextView
                 android:id="@+id/tooltipPrice"
                 style="@style/historyTexts"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/price"
@@ -121,15 +132,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView5"
-                style="@style/historyTexts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/totalPrice" />
-
-            <TextView
-                android:id="@+id/totlaPrice"
+                android:id="@+id/totalPrice"
                 style="@style/historyTexts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

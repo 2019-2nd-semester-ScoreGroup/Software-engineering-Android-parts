@@ -19,11 +19,14 @@ import com.scoregroup.androidpos.R;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_ADD;
+import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_CHANGE;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class HistoryListActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private ArrayList<HistoryEvent> events;
     private Intent receivePack;
@@ -33,6 +36,8 @@ public class HistoryListActivity extends AppCompatActivity {
     public int mode;
     public static int GetLayoutId(int mode) {
         switch (mode) {
+            case DELIVERY_CHANGE:
+            case DELIVERY_ADD:
             case DELIVERY:
                 return R.layout.activity_delivery_history_list;
             case SELL:
@@ -43,7 +48,13 @@ public class HistoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //HisotryEvent 새로고침
+        task.show();
+        Client c = cm.getDB("getEventList" + Diff + mode);
+        c.setOnReceiveListener((v)->{
+            Data = v.getData();
+            task.dismiss();
+            view_list();
+        }).send();
     }
 
     @Override
@@ -56,7 +67,7 @@ public class HistoryListActivity extends AppCompatActivity {
         listScrollArea = findViewById(R.id.scrollArea);
         task = new ClientLoading(this);
         task.show();
-        Client c = cm.getDB("getEventList" + " " + mode);
+        Client c = cm.getDB("getEventList" + Diff + mode);
         c.setOnReceiveListener((v)->{
             Data = v.getData();
             task.dismiss();
@@ -88,7 +99,7 @@ public class HistoryListActivity extends AppCompatActivity {
             while(stringTokenizer.hasMoreTokens()){
                 String parsedAckMsg = "";
                 String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                StringTokenizer lineTokenizer = new StringTokenizer(line, Diff);
 
                 if(lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();

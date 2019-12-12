@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,20 +33,24 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
+
 //activity_stock.xml 레이아웃
 
 public class StockListActivity extends AppCompatActivity {
-    final int RESULT_OK = 100;
+    ClientManger clientManger = ClientManger.getInstance(this);
+    final int _REQ = 100;
     final int RESULT_STORE = 0;
     final int RESULT_CANCLED = 50;
     final int REQUEST_BARCODE = 1;
     final int REQUEST_NAME = 2;
     final int REQUEST_PRICE= 3;
+    final int REQUEST_ACT = 10;
+    final int RESULT_NAN = 11;
     private ListView StockListView = null;
     private String Data;
-    private Button buttons[] = new Button[3];
-    private TextView texts[] = new TextView[4];
-    private ClientManger clientManger;
+    private Button addStockButton;
+    private ImageButton Hbutton, Ibutton;
     private ClientLoading task;
     private ArrayList<itemsale> oData;
 
@@ -53,53 +58,50 @@ public class StockListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
-        buttons[0] = findViewById(R.id.f5);
-        buttons[1] = findViewById(R.id.exit);
-        buttons[2] = findViewById(R.id.toHistory);
-        texts[0] = findViewById(R.id.keycode);
-        texts[1] = findViewById(R.id.name);
-        texts[2] = findViewById(R.id.Price);
-        texts[3] = findViewById(R.id.Count);
+        Hbutton = findViewById(R.id.toHistory);
+        Ibutton = findViewById(R.id.refreshButton);
+        addStockButton = findViewById(R.id.addStockButton);
 
-        texts[0].setText("코드");
-        texts[1].setText("품명");
-        texts[2].setText("가격");
+        task = new ClientLoading(this);
+        task.show();
+        getStockList();
 
-        clientManger = ClientManger.getInstance();
-
-        buttons[0].setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View view) {
-                getStockList();
-                Toast.makeText(getApplicationContext(), "갱신", Toast.LENGTH_LONG).show();
-            }
+        addStockButton.setOnClickListener(view -> {
+            Intent intent = new Intent(StockListActivity.this, SingleStockActivity.class);
+            intent.putExtra("Mode", HistoryManaging.DELIVERY_ADD);
+            startActivityForResult(intent, REQUEST_ACT);
         });
 
-        buttons[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(in);
-            }
+        Hbutton.setOnClickListener(view -> {
+            Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
+            in.putExtra("Mode", HistoryManaging.DELIVERY);
+            startActivity(in);
         });
 
-        buttons[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(StockListActivity.this, HistoryListActivity.class);
-                in.putExtra(getString(R.string.ModeIntentKey), HistoryManaging.DELIVERY);
-                startActivity(in);
-            }
+        Ibutton.setOnClickListener(view -> {
+            task = new ClientLoading(this);
+            task.show();
+            getStockList();
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_CANCLED) {
+            Toast.makeText(StockListActivity.this, "실패", Toast.LENGTH_SHORT).show();
+        }
+
+        if(resultCode == RESULT_OK)
+            Toast.makeText(StockListActivity.this, "성공", Toast.LENGTH_SHORT).show();
+
+        return;
     }
 
     private void getStockList()
     {
-        loadingClient();
         connectClient();
-        setStockList();
-        closingClient();
     }
 
     private void connectClient()
@@ -109,14 +111,9 @@ public class StockListActivity extends AppCompatActivity {
         client.setOnReceiveListener((v)->{
             Log.i("ju", "리스너 실행");
             Data = v.getData();
-            closingClient();
+            task.dismiss();
+            setStockList();
         }).send();
-    }
-
-    private void loadingClient()
-    {
-        task = new ClientLoading(this);
-        task.show();
     }
 
     private void setStockList()
@@ -125,10 +122,9 @@ public class StockListActivity extends AppCompatActivity {
 
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(()-> {
-
             // 데이터가 널 값일 시 리턴
             if (Data == null) {
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "연결 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -146,12 +142,12 @@ public class StockListActivity extends AppCompatActivity {
     {
         while (stringTokenizer.hasMoreTokens()) {
             String line = stringTokenizer.nextToken();
-            StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+            StringTokenizer lineTokenizer = new StringTokenizer(line, Diff);
             String parsedAckMsg = lineTokenizer.nextToken();
 
             //예외 출력
             if (lineTokenizer.countTokens() == 1)
-                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
+                Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT).show();
 
             itemsale itemsale = new itemsale();
             itemsale.Code = parsedAckMsg;
@@ -159,7 +155,7 @@ public class StockListActivity extends AppCompatActivity {
             try {
                 if (lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
-                itemsale.Name = parsedAckMsg;
+                itemsale.Name = parsedAckMsg.replaceAll("_", " ");
 
                 if (lineTokenizer.hasMoreTokens())
                     parsedAckMsg = lineTokenizer.nextToken();
@@ -172,86 +168,11 @@ public class StockListActivity extends AppCompatActivity {
 
             } catch(NoSuchElementException e)
             {
-                Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
+                Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT).show();
             }
             oData.add(itemsale);
         }
     }
-
-    private void closingClient()
-    {
-        task.dismiss();
-    }
-
-    /*
-    입력 getEvent [type] ex) getEvent 1
-    출력 [type] [time] [memo] [change1.stockKey], [change1.amount], [change1.eventKey], [change1.c.key], ...   ex) SELL 2019-12-04 10:58:55.0 Testing 1 12 1 1,2 31 1 2,3 23 1 3,4 86 1 4,5 10 1 5,6 23 1 6,
-
-    public void stock_list(){
-        ClientLoading task;
-
-        ArrayList<itemsale> oData = new ArrayList<>();
-
-        task = new ClientLoading(this);
-        task.show();
-
-        Client client = clientManger.getDB("getEvent 1");
-
-        client.setOnReceiveListener((v)->{
-            Log.i("ju", "리스너 실행");
-            Data = v.getData();
-            task.dismiss();
-        }).send();
-
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.post(()-> {
-
-            // 데이터가 널 값일 시 리턴
-            if (Data == null) {
-                Toast.makeText(getApplicationContext(), "NetworkError", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            StringTokenizer stringTokenizer = new StringTokenizer(Data, ",");
-
-            while (stringTokenizer.hasMoreTokens()) {
-                String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
-                String parsedAckMsg = lineTokenizer.nextToken();
-
-                //예외 출력
-                if (lineTokenizer.countTokens() == 1)
-                    Toast.makeText(this.getApplicationContext(), parsedAckMsg, Toast.LENGTH_SHORT);
-
-                itemsale itemsale = new itemsale();
-                itemsale.Code = parsedAckMsg;
-
-                try {
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Name = parsedAckMsg;
-
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Price = parsedAckMsg;
-
-                    if (lineTokenizer.hasMoreTokens())
-                        parsedAckMsg = lineTokenizer.nextToken();
-                    itemsale.Count = parsedAckMsg;
-
-                    oData.add(itemsale);
-                } catch(NoSuchElementException e)
-                {
-                    Toast.makeText(this.getApplicationContext(), "DB error", Toast.LENGTH_SHORT);
-                }
-            }
-            StockListView = (ListView) findViewById(R.id.stocklist);
-            ListAdapter oAdapter = new ListAdapter(oData);
-            StockListView.setAdapter(oAdapter);
-
-        });
-    }
-     */
 
     public class itemsale { // 리스트뷰 데이터 클래스
         public String Code;
@@ -304,7 +225,7 @@ public class StockListActivity extends AppCompatActivity {
 
 
             oTextCode.setText(m_oData.get(position).Code.replaceAll(" ", ""));
-            oTextName.setText(m_oData.get(position).Name.replaceAll(" ", ""));
+            oTextName.setText(m_oData.get(position).Name);
             oTextCount.setText(m_oData.get(position).Count.replaceAll(" ", ""));
             oTextPrice.setText(m_oData.get(position).Price.replaceAll(" ", ""));
 
@@ -313,12 +234,12 @@ public class StockListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(StockListActivity.this, SingleStockActivity.class);
+                    intent.putExtra("Mode", HistoryManaging.DELIVERY_CHANGE);
                     intent.putExtra("nextKey", m_oData.get(position).Code);
                     intent.putExtra("nextCount", m_oData.get(position).Count);
                     intent.putExtra("nextName", m_oData.get(position).Name);
                     intent.putExtra("nextPrice", m_oData.get(position).Price);
-                    startActivity(intent);
-
+                    startActivityForResult(intent, REQUEST_ACT);
                 }
 
             });

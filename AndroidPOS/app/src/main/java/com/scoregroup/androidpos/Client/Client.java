@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client implements Runnable {
+    public final static String Diff="_";
     private String ip;
     private int port;
     private ReceiveListener callback;
@@ -67,7 +68,7 @@ public class Client implements Runnable {
             Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
             InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
             sock = new Socket();
-            sock.connect(sock_address, 1000);
+            sock.connect(sock_address, 2000);
 
             //스트림 설정
             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -95,7 +96,7 @@ public class Client implements Runnable {
         } finally {
             //이벤트 실행
             if (callback != null){
-                Log.i("ju", "이벤트 실행");
+                Log.i("ju", "이벤트 콜백");
                 callback.onReceive(this);
             }
         }

@@ -18,11 +18,12 @@ import com.scoregroup.androidpos.R;
 
 import java.util.ArrayList;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
 public class SingleHistoryActivity extends AppCompatActivity {
-    ClientManger cm = ClientManger.getInstance();
+    ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
     private Intent receivePack;
     private ListView listScrollArea;
@@ -55,10 +56,10 @@ public class SingleHistoryActivity extends AppCompatActivity {
 
         keyView = findViewById(R.id.keyNumber);
         dateView = findViewById(R.id.dateTime);
-        totalPrice = findViewById(R.id.totlaPrice);
+        totalPrice = findViewById(R.id.totalPrice);
         cancelButton = findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->{
-            cm.getDB("tryChangeEvent "+eventKey+" 1").setOnReceiveListener((client)->{
+            cm.getDB("tryChangeEvent"+Diff+eventKey+Diff+"1").setOnReceiveListener((client)->{
                 if(!client.isReceived()){
                     Log.i("Network","Network Failed");
                     return;
@@ -78,7 +79,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         listScrollArea.setAdapter(adapter);
         task = new ClientLoading(this);
         task.show();
-        cm.getDB("getEvent " + eventKey).setOnReceiveListener((v) -> {
+        cm.getDB("getEvent"+Diff + eventKey).setOnReceiveListener((v) -> {
             if (!v.isReceived()) {
                 Log.e("CLIENT", "Failed to connect");
                 runOnUiThread(()->{
@@ -98,20 +99,20 @@ public class SingleHistoryActivity extends AppCompatActivity {
             dateView.setText(time);
 
 
-            //Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
-            String memoText=Data.split(" ")[3];
+            //Data=" DELIVERY_2019-12-05 14:40:31.0_delivering_1_1_2_6,2_1_2_7,3_1_2_8,4_1_2_9,";
+            String memoText=Data.split(Diff)[2];
             Data=Data.substring(Data.indexOf(memoText)+memoText.length()+1);
             String[] changes=Data.split(",");
 
             for(String change :changes){
-                String[] word=change.split(" ");
+                String[] word=change.split(Diff);
                 HistoryItem temp=new HistoryItem(word[0],"NaN",-1,0);
                 temp.setAmount(Integer.valueOf(word[1]));
 
                 listView.add(temp);
-                ClientManger.getInstance().getDB("getStock "+word[0]).setOnReceiveListener((client)->{
+                ClientManger.getInstance(this).getDB("getStock"+Diff+word[0]).setOnReceiveListener((client)->{
                     if(!client.isReceived())return;
-                    String[] msgs=client.getData().split(" ");
+                    String[] msgs=client.getData().split(Diff);
                     HistoryItem t=findItemByKey(msgs[0]);
                     t.setName(msgs[1]);
                     t.setPricePerItem(Integer.valueOf(msgs[2]));
@@ -120,7 +121,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                         totalPriceData+=t.getPricePerItem()*t.getAmount();
                     }
                     runOnUiThread(()->{
-                        totalPrice.setText(getString(R.string.empty) + totalPriceData);
+                        totalPrice.setText("\t총 가격 : " + getString(R.string.empty) + totalPriceData);
                         adapter.notifyDataSetChanged();
                     });
 
