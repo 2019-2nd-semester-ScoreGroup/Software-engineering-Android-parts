@@ -97,7 +97,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         payButton.setOnClickListener((view) -> {
             //status 0:Normal, 1:Cancel, 2:Nan
-            clientManager.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, mode == SELL ? "selling" : "delivering"))
+            clientManager.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')).toString().replace(' ','_'), 0, mode == SELL ? "selling" : "delivering"))
                     .setOnReceiveListener((client) -> {
                         if (!client.isReceived()) {
                             runOnUiThread(() -> {
@@ -261,7 +261,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                                     });
                                     return;
                                 }
-                                String[] msgs = client.getData().split(" ");
+                                String[] msgs = client.getData().split(Diff);
                                 HistoryItem tItem=findItemByKey(msgs[0]);
                                 tItem.setName(msgs[1]);
                                 tItem.setPricePerItem(Integer.valueOf(msgs[2]));

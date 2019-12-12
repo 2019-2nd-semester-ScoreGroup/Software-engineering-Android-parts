@@ -168,7 +168,7 @@ public class SingleStockActivity extends AppCompatActivity {
                                 });
                                 return;
                             }
-                            cm.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T', ' ')), 0, "addingStackForInitialize"))
+                            cm.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T', ' ')).toString().replace(' ','_'), 0, "addingStackForInitialize"))
                                     .setOnReceiveListener((clientEv) -> {
                                         if (!clientEv.isReceived()) {
                                             runOnUiThread(() -> {

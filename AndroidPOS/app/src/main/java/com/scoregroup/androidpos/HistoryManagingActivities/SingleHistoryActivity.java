@@ -59,7 +59,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         cancelButton = findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->{
-            cm.getDB("tryChangeEvent "+eventKey+Diff+"1").setOnReceiveListener((client)->{
+            cm.getDB("tryChangeEvent"+Diff+eventKey+Diff+"1").setOnReceiveListener((client)->{
                 if(!client.isReceived()){
                     Log.i("Network","Network Failed");
                     return;
@@ -99,8 +99,8 @@ public class SingleHistoryActivity extends AppCompatActivity {
             dateView.setText(time);
 
 
-            //Data="SELL 2019-12-04 10:58:55.0 Testing 1 12 6 1,2 31 5 2,3 23 4 3,4 86 3 2,5 10 1 5,6 23 1 6";
-            String memoText=Data.split(Diff)[3];
+            //Data=" DELIVERY_2019-12-05 14:40:31.0_delivering_1_1_2_6,2_1_2_7,3_1_2_8,4_1_2_9,";
+            String memoText=Data.split(Diff)[2];
             Data=Data.substring(Data.indexOf(memoText)+memoText.length()+1);
             String[] changes=Data.split(",");
 
