@@ -19,8 +19,14 @@ public class OptionActivity extends AppCompatActivity {
     private void SaveIPPW(String ip, String pw){ // sp에 아이피, 비번 저장
         SharedPreferences pref = getSharedPreferences("temp", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("IP", ip);
-        editor.putString("PW", pw);
+        if(ip.equals("") || pw.equals("")){
+            editor.putString("IP", "localhost");
+            editor.putString("PW", "12142");
+            Toast.makeText(getApplicationContext(), "잘못된 입력으로 IP,PW 초기화", Toast.LENGTH_SHORT).show();
+        }else{
+            editor.putString("IP", ip);
+            editor.putString("PW", pw);
+        }
         editor.commit();
     }
 
