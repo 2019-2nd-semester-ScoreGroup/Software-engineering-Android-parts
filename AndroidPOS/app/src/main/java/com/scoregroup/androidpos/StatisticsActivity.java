@@ -2,6 +2,7 @@ package com.scoregroup.androidpos;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private ClientLoading task;
     private TextView TCash;
     private ListView SaleListView = null;
-    private Button buttons[] = new Button[3];
+    private Button buttons[] = new Button[7];
     private String Data, startymd, endymd;
     private DecimalFormat Cash_format = new DecimalFormat("###,###,###");
 
@@ -40,20 +41,25 @@ public class StatisticsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
 
         buttons[0] = findViewById(R.id.Confirm);
-        buttons[1] = findViewById(R.id.StartDate);
-        buttons[2] = findViewById(R.id.EndDate);
+        buttons[1] = findViewById(R.id.startDate);
+        buttons[2] = findViewById(R.id.endDate);
+        buttons[3] = findViewById(R.id.today);
+        buttons[4] = findViewById(R.id.week);
+        buttons[5] = findViewById(R.id.month);
+        buttons[6] = findViewById(R.id.year);
         TCash = findViewById(R.id.total_cash);
 
+        /**시작 달력*/
         DatePickerDialog.OnDateSetListener start = (view, year, month, dayOfMonth) -> {
             buttons[1].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
             startymd = buttons[1].getText().toString();
         };
-
+        /**끝 달력*/
         DatePickerDialog.OnDateSetListener end = (view, year, month, dayOfMonth) -> {
             buttons[2].setText(year + "-" + (month + 1) + "-" + dayOfMonth);
             endymd = buttons[2].getText().toString();
         };
-
+        /**검색 버튼*/
         buttons[0].setOnClickListener(view -> {
             if(startymd == null || endymd == null)
                 Toast.makeText(getApplicationContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show();
@@ -70,18 +76,74 @@ public class StatisticsActivity extends AppCompatActivity {
                 }).send();
             }
         });
-
+        /**시작 날짜 클릭*/
         buttons[1].setOnClickListener(view -> {
             Calendar cal = Calendar.getInstance();
             DatePickerDialog StrDialog = new DatePickerDialog(this, start, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             StrDialog.show();
         });
-
+        /**끝 날짜 클릭*/
         buttons[2].setOnClickListener(view -> {
             Calendar cal = Calendar.getInstance();
             DatePickerDialog EndDialog = new DatePickerDialog(this, end, cal.get(cal.YEAR), cal.get(cal.MONTH) , cal.get(cal.DATE));
             EndDialog.show();
         });
+        /**당일 클릭*/
+        buttons[3].setOnClickListener(view -> {
+            ReColor();
+            buttons[3].setTextColor(Color.parseColor("#FF0000"));
+            Calendar cal = Calendar.getInstance();
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            startymd = buttons[1].getText().toString();
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            endymd = buttons[2].getText().toString();
+        });
+        /**이번주 클릭*/
+        buttons[4].setOnClickListener(view -> {
+            ReColor();
+            buttons[4].setTextColor(Color.parseColor("#FF0000"));
+            Calendar cal = Calendar.getInstance();
+            while(cal.get(cal.DAY_OF_WEEK) != Calendar.MONDAY){
+                cal.set(cal.get(cal.YEAR), cal.get(cal.MONTH), (cal.get(cal.DATE) - 1));
+            }
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            startymd = buttons[1].getText().toString();
+            cal = Calendar.getInstance();
+            while(cal.get(cal.DAY_OF_WEEK) != Calendar.SUNDAY){
+                cal.set(cal.get(cal.YEAR), cal.get(cal.MONTH), (cal.get(cal.DATE) + 1));
+            }
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.get(cal.DATE));
+            endymd = buttons[2].getText().toString();
+        });
+        /**이번달 클릭*/
+        buttons[5].setOnClickListener(view -> {
+            ReColor();
+            buttons[5].setTextColor(Color.parseColor("#FF0000"));
+            Calendar cal = Calendar.getInstance();
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
+            startymd = buttons[1].getText().toString();
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.get(cal.MONTH) + 1) + "-" + cal.getActualMaximum(cal.DAY_OF_MONTH));
+            endymd = buttons[2].getText().toString();
+        });
+        /**이번년도 클릭*/
+        buttons[6].setOnClickListener(view -> {
+            ReColor();
+            buttons[6].setTextColor(Color.parseColor("#FF0000"));
+            Calendar cal = Calendar.getInstance();
+            cal.set(cal.get(cal.YEAR), 0, 1);
+            buttons[1].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMinimum(cal.MONTH) + 1) + "-" + cal.getActualMinimum(cal.DAY_OF_MONTH));
+            startymd = buttons[1].getText().toString();
+            cal.set(cal.get(cal.YEAR), 11, 1);
+            buttons[2].setText(cal.get(cal.YEAR) + "-" + (cal.getActualMaximum(cal.MONTH) + 1) + "-" + cal.getActualMaximum(cal.DAY_OF_MONTH));
+            endymd = buttons[2].getText().toString();
+        });
+    }
+
+    private void ReColor(){
+        buttons[3].setTextColor(Color.parseColor("#000000"));
+        buttons[4].setTextColor(Color.parseColor("#000000"));
+        buttons[5].setTextColor(Color.parseColor("#000000"));
+        buttons[6].setTextColor(Color.parseColor("#000000"));
     }
 
     private void sales_list(){ // DB데이터로 어댑터와 리스트뷰 연결
