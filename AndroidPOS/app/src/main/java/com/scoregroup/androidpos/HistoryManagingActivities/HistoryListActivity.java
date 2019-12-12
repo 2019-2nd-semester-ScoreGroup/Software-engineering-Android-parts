@@ -19,6 +19,7 @@ import com.scoregroup.androidpos.R;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
@@ -44,7 +45,7 @@ public class HistoryListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         task.show();
-        Client c = cm.getDB("getEventList" + " " + mode);
+        Client c = cm.getDB("getEventList" + Diff + mode);
         c.setOnReceiveListener((v)->{
             Data = v.getData();
             task.dismiss();
@@ -62,7 +63,7 @@ public class HistoryListActivity extends AppCompatActivity {
         listScrollArea = findViewById(R.id.scrollArea);
         task = new ClientLoading(this);
         task.show();
-        Client c = cm.getDB("getEventList" + " " + mode);
+        Client c = cm.getDB("getEventList" + Diff + mode);
         c.setOnReceiveListener((v)->{
             Data = v.getData();
             task.dismiss();

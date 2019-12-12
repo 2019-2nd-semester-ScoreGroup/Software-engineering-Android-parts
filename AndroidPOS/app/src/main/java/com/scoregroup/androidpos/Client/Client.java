@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client implements Runnable {
+    public final static String Diff="_";
     private String ip;
     private int port;
     private ReceiveListener callback;

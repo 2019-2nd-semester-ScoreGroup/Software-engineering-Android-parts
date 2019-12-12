@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
+
 public class StatisticsActivity extends AppCompatActivity {
     ClientManger cm = ClientManger.getInstance(this);
     private ClientLoading task;
@@ -68,7 +70,7 @@ public class StatisticsActivity extends AppCompatActivity {
             {
                 task = new ClientLoading(this);
                 task.show();
-                Client c = cm.getDB("getSelling"+ " " + startymd + " " + endymd);
+                Client c = cm.getDB("getSelling"+ Diff + startymd + Diff + endymd);
                 Log.i("ymd", startymd + " and " + endymd);
                 c.setOnReceiveListener((v)->{
                     Data = v.getData();
@@ -167,7 +169,7 @@ public class StatisticsActivity extends AppCompatActivity {
             while(stringTokenizer.hasMoreTokens()){
                 String parsedAckMsg = null;
                 String line = stringTokenizer.nextToken();
-                StringTokenizer lineTokenizer = new StringTokenizer(line, " ");
+                StringTokenizer lineTokenizer = new StringTokenizer(line, Diff);
                 item_selling item  = new item_selling();
 
                 if(lineTokenizer.hasMoreTokens())

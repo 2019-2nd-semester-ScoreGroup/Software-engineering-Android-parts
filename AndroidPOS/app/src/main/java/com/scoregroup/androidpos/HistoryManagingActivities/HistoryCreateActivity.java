@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.SELL;
 
@@ -96,7 +97,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         payButton.setOnClickListener((view) -> {
             //status 0:Normal, 1:Cancel, 2:Nan
-            clientManager.getDB(String.format("addEvent %d %s %d %s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, mode == SELL ? "selling" : "delivering"))
+            clientManager.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", mode, Timestamp.valueOf(LocalDateTime.now().toString().replace('T',' ')), 0, mode == SELL ? "selling" : "delivering"))
                     .setOnReceiveListener((client) -> {
                         if (!client.isReceived()) {
                             runOnUiThread(() -> {
@@ -109,7 +110,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                         long newKeyLong = Long.valueOf(newKey);
                         for (HistoryItem t : itemList) {
                             if(t.getPricePerItem()!=-1)
-                                clientManager.getDB(String.format("addChange %d %s %d", newKeyLong, t.getKey(), t.getAmount()*(mode==SELL?-1:1))).send();
+                                clientManager.getDB(String.format("addChange"+Diff+"%d"+Diff+"%s"+Diff+"%d", newKeyLong, t.getKey(), t.getAmount()*(mode==SELL?-1:1))).send();
                         }
                         if (mode == SELL) {
                             //TODO 결재 액티비티로 변경
@@ -253,7 +254,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                             item = new HistoryItem(value, "NaN",-1, 1);
                             itemList.add(item);
                             selected=itemList.size()-1;
-                            clientManager.getDB("getStock " + value).setOnReceiveListener((client) -> {
+                            clientManager.getDB("getStock"+Diff + value).setOnReceiveListener((client) -> {
                                 if (!client.isReceived()) {
                                     runOnUiThread(() -> {
                                         Toast.makeText(HistoryCreateActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();

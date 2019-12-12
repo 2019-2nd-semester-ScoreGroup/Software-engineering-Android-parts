@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import static com.scoregroup.androidpos.Client.Client.Diff;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_ADD;
 import static com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging.DELIVERY_CHANGE;
@@ -106,7 +107,7 @@ public class SingleStockActivity extends AppCompatActivity {
                     }
 
                     long newkey = Long.valueOf(oItem.modified_price);
-                    c = cm.getDB(String.format("editStock %s %s %s", oItem.modified_barcode, oItem.modified_name, oItem.modified_price));
+                    c = cm.getDB(String.format("editStock"+Diff+"%s"+Diff+"%s"+Diff+"%s", oItem.modified_barcode, oItem.modified_name, oItem.modified_price));
                     Log.i("pnb", "바코드" + oItem.modified_barcode + " 이름 " + oItem.modified_name + " 가격  " + oItem.modified_price);
                     Title.setText(oItem.modified_name);
                     task.show();
@@ -158,7 +159,7 @@ public class SingleStockActivity extends AppCompatActivity {
                     return;
                 }
 
-                cm.getDB(String.format(String.format("editStock %s %s %s", oItem.modified_barcode, oItem.modified_name, oItem.modified_price)))
+                cm.getDB(String.format(String.format("editStock"+Diff+"%s"+Diff+"%s"+Diff+"%s", oItem.modified_barcode, oItem.modified_name, oItem.modified_price)))
                         .setOnReceiveListener((client) -> {
                             if (!client.isReceived()) {
                                 runOnUiThread(() -> {
@@ -166,7 +167,7 @@ public class SingleStockActivity extends AppCompatActivity {
                                 });
                                 return;
                             }
-                            cm.getDB(String.format("addEvent %d %s %d %s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T', ' ')), 0, "addingStackForInitialize"))
+                            cm.getDB(String.format("addEvent"+Diff+"%d"+Diff+"%s"+Diff+"%d"+Diff+"%s", DELIVERY, Timestamp.valueOf(LocalDateTime.now().toString().replace('T', ' ')), 0, "addingStackForInitialize"))
                                     .setOnReceiveListener((clientEv) -> {
                                         if (!clientEv.isReceived()) {
                                             runOnUiThread(() -> {
@@ -177,7 +178,7 @@ public class SingleStockActivity extends AppCompatActivity {
 
                                         String newKey = clientEv.getData();
                                         long newKeyLong = Long.valueOf(newKey);
-                                        cm.getDB(String.format("addChange %d %s %d", newKeyLong, oItem.modified_barcode, Integer.parseInt(amount))).send();
+                                        cm.getDB(String.format("addChange"+Diff+"%d"+Diff+"%s"+Diff+"%d", newKeyLong, oItem.modified_barcode, Integer.parseInt(amount))).send();
 
                                         finish();
                                     }).send();
