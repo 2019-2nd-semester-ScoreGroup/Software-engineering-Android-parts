@@ -262,6 +262,7 @@ public class HistoryCreateActivity extends AppCompatActivity {
                                     return;
                                 }
                                 String[] msgs = client.getData().split(Diff);
+                                if(msgs.length<3)return;
                                 HistoryItem tItem=findItemByKey(msgs[0]);
                                 tItem.setName(msgs[1]);
                                 tItem.setPricePerItem(Integer.valueOf(msgs[2]));
