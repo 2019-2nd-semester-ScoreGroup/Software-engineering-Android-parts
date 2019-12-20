@@ -70,7 +70,7 @@ public class StatisticsActivity extends AppCompatActivity {
             {
                 task = new ClientLoading(this);
                 task.show();
-                Client c = cm.getDB("getSelling"+ Diff + startymd + Diff + endymd);
+                Client c = cm.getDB(getApplicationContext(), "getSelling"+ Diff + startymd + Diff + endymd);
                 Log.i("ymd", startymd + " and " + endymd);
                 c.setOnReceiveListener((v)->{
                     Data = v.getData();

@@ -1,13 +1,21 @@
 package com.scoregroup.androidpos.Client;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.scoregroup.androidpos.R;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.security.KeyStore;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 public class Client implements Runnable {
     public final static String Diff="_";
@@ -17,9 +25,12 @@ public class Client implements Runnable {
     private boolean isReceived = false;
     private boolean alreadySent = false;
     private SSLSocket sock;
+    private Context con;
     private String msg;
     private String data;
-
+    protected Client(Context con){
+        this.con=con;
+    }
     /**아이피 설정*/
     public Client setIP(String ip) {
         this.ip = ip;
@@ -67,12 +78,36 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
+            //키스토어 객체 생성.
+            KeyStore keystore = KeyStore.getInstance("BKS");
+
+            // 암호화 알고리즘 설정.
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+
+            // BKS 파일 로드.
+            InputStream trustStoreStream = con.getResources().openRawResource(R.raw.client);
+
+            // BKS 파일, BKS 비밀번호 설정.
+            keystore.load(trustStoreStream, "12142".toCharArray());
+
+            // 키스토어 설정.
+            tmf.init(keystore);
+
+            // 키스토어 사용을 위해 SSL context 설정.
+            SSLContext context = SSLContext.getInstance("TLS");
+            TrustManager[] trustManagers = tmf.getTrustManagers();
+            context.init(null, trustManagers, null);
+
+            // 클라이언트 소켓 팩토리 생성.
+            SSLSocketFactory sslsocketfactory = context.getSocketFactory();
+
+            // 클라이언트 소켓 생성.
+            SSLSocket sock = (SSLSocket) sslsocketfactory.createSocket(ip, port);
+
+
             //소켓 설정
             Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
-            InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
-            SSLSocket sock =
-                    (SSLSocket)SSLSocketFactory.getDefault().createSocket(ip, port);
-            sock.connect(sock_address, 2000);
+            sock.setSoTimeout(15000);
 
             //스트림 설정
             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -87,14 +122,13 @@ public class Client implements Runnable {
             alreadySent = true;
 
             //수신
-            sock.setSoTimeout(5000); // Read 타임아웃
             data = in.readLine();
             isReceived = true;
             Log.i("ju", "받은 데이터: " + data);
 
             //연결종료
             sock.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.i("ju", e.getLocalizedMessage());
             e.printStackTrace();
         } finally {

@@ -2,10 +2,8 @@ package com.scoregroup.androidpos;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,13 +20,9 @@ import android.widget.Toast;
 import com.scoregroup.androidpos.Client.Client;
 import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
-import com.scoregroup.androidpos.HistoryManagingActivities.HistoryCreateActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryListActivity;
 import com.scoregroup.androidpos.HistoryManagingActivities.HistoryManaging;
 
-import java.io.IOError;
-import java.security.cert.PKIXRevocationChecker;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -106,7 +100,7 @@ public class StockListActivity extends AppCompatActivity {
 
     private void connectClient()
     {
-        Client client = clientManger.getDB("getStocks");
+        Client client = clientManger.getDB(getApplicationContext(), "getStocks");
 
         client.setOnReceiveListener((v)->{
             Log.i("ju", "리스너 실행");

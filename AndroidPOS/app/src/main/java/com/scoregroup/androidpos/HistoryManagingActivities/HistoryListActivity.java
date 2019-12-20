@@ -49,7 +49,7 @@ public class HistoryListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         task.show();
-        Client c = cm.getDB("getEventList" + Diff + mode);
+        Client c = cm.getDB(getApplicationContext(), "getEventList" + Diff + mode);
         c.setOnReceiveListener((v)->{
             Data = v.getData();
             task.dismiss();
@@ -67,7 +67,7 @@ public class HistoryListActivity extends AppCompatActivity {
         listScrollArea = findViewById(R.id.scrollArea);
         task = new ClientLoading(this);
         task.show();
-        Client c = cm.getDB("getEventList" + Diff + mode);
+        Client c = cm.getDB(getApplicationContext(), "getEventList" + Diff + mode);
         c.setOnReceiveListener((v)->{
             Data = v.getData();
             task.dismiss();

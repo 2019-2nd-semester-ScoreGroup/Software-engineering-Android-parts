@@ -34,28 +34,29 @@ public class ClientManger {
      * 인수와 반환값은 String
      * []안의 값은 대치되어야 함
      * @param "editStock" + " " + [key] + " " + [name] + " " + [price]
-     * @return  true or false : 성공, 실패
      * @param "getStock"
-     * @return [key] [name] [price] : 띄워쓰기로 연결된 문자열
      * @param "getStocks"
-     * @return [key] [name] [price],[key] [name] [price] [amount] ,... : stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
      * @param "getEvent" + " " + [eventKey]
-     * @return [type] [time] [memo] [c.stockKey] [c.amount] [c.eventKey] + [c.key],... : change마다 ,로 구분된 띄워쓰기로 연결된 문자열
      * @param "tryChangEvent" + " " + [eventKey] + " " + [status] : status(0 Normal, 1 Cancel, 2 NaN)
-     * @return true or false : 성공, 실패
      * @param "getEventList" + " " + [type] : type(1 Sell, 2 delivery, 3 NaN)
-     * @return [key] [type] [totalPrice],... : event마다 ,로 구분된 띄워쓰기로 연결된 문자열
      * @param "getSelling" + " " + [startTime] + " " + [endTime] : startTime, endTime은 타임스탬프 형식(yyyy-MM-dd hh:mm:ss)
-     * @return [key] [name] [price] [amount],... : startTime과 endTime 사이에 판매된 stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
      * @param "addEvent" + " " + [type] + " " + [time] + " " + [status] + " " + [memo]
-     * @return [eventKey]
      * @param "addChange" + " " + [eventKey] + " " + [stockKey] + " " + [changedAmount]
+     * @param con
+     * @return  true or false : 성공, 실패
+     * @return [key] [name] [price] : 띄워쓰기로 연결된 문자열
+     * @return [key] [name] [price],[key] [name] [price] [amount] ,... : stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @return [type] [time] [memo] [c.stockKey] [c.amount] [c.eventKey] + [c.key],... : change마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @return true or false : 성공, 실패
+     * @return [key] [type] [totalPrice],... : event마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @return [key] [name] [price] [amount],... : startTime과 endTime 사이에 판매된 stock마다 ,로 구분된 띄워쓰기로 연결된 문자열
+     * @return [eventKey]
      * @return [eventKey]
      */
-    public Client getDB(String msg) {
+    public Client getDB(Context con, String msg) {
         ClientManger_Import_IP_PORT();
         Log.i("ju", "클라인트매니저 겟디비" + " " + ip + ":" + port);
-        Client t = new Client().setIP(ip).setPORT(port).setMsg(msg);
+        Client t = new Client(this.con).setIP(ip).setPORT(port).setMsg(msg);
         return t;
     }
 }

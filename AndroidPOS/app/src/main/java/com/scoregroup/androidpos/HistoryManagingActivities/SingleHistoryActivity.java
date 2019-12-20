@@ -9,7 +9,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.scoregroup.androidpos.Client.Client;
 import com.scoregroup.androidpos.Client.ClientLoading;
 import com.scoregroup.androidpos.Client.ClientManger;
 import com.scoregroup.androidpos.HistoryManagingActivities.CustomViews.Data.HistoryItem;
@@ -59,7 +58,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         cancelButton = findViewById(R.id.cancel);
         cancelButton.setOnClickListener((view)->{
-            cm.getDB("tryChangeEvent"+Diff+eventKey+Diff+"1").setOnReceiveListener((client)->{
+            cm.getDB(getApplicationContext(), "tryChangeEvent"+Diff+eventKey+Diff+"1").setOnReceiveListener((client)->{
                 if(!client.isReceived()){
                     Log.i("Network","Network Failed");
                     return;
@@ -79,7 +78,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
         listScrollArea.setAdapter(adapter);
         task = new ClientLoading(this);
         task.show();
-        cm.getDB("getEvent"+Diff + eventKey).setOnReceiveListener((v) -> {
+        cm.getDB(getApplicationContext(), "getEvent"+Diff + eventKey).setOnReceiveListener((v) -> {
             if (!v.isReceived()) {
                 Log.e("CLIENT", "Failed to connect");
                 runOnUiThread(()->{
@@ -110,7 +109,7 @@ public class SingleHistoryActivity extends AppCompatActivity {
                 temp.setAmount(Integer.valueOf(word[1]));
 
                 listView.add(temp);
-                ClientManger.getInstance(this).getDB("getStock"+Diff+word[0]).setOnReceiveListener((client)->{
+                ClientManger.getInstance(this).getDB(getApplicationContext(), "getStock"+Diff+word[0]).setOnReceiveListener((client)->{
                     if(!client.isReceived())return;
                     String[] msgs=client.getData().split(Diff);
                     HistoryItem t=findItemByKey(msgs[0]);
