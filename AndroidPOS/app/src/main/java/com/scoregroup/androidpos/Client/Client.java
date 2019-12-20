@@ -78,31 +78,16 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            //키스토어 객체 생성.
+            //SSL 모듈 로드
             KeyStore keystore = KeyStore.getInstance("BKS");
-
-            // 암호화 알고리즘 설정.
+            keystore.load(con.getResources().openRawResource(R.raw.client), "12142".toCharArray());
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-
-            // BKS 파일 로드.
-            InputStream trustStoreStream = con.getResources().openRawResource(R.raw.client);
-
-            // BKS 파일, BKS 비밀번호 설정.
-            keystore.load(trustStoreStream, "12142".toCharArray());
-
-            // 키스토어 설정.
             tmf.init(keystore);
-
-            // 키스토어 사용을 위해 SSL context 설정.
             SSLContext context = SSLContext.getInstance("TLS");
-            TrustManager[] trustManagers = tmf.getTrustManagers();
-            context.init(null, trustManagers, null);
-
-            // 클라이언트 소켓 팩토리 생성.
-            SSLSocketFactory sslsocketfactory = context.getSocketFactory();
+            context.init(null, tmf.getTrustManagers(), null);
 
             // 클라이언트 소켓 생성.
-            SSLSocket sock = (SSLSocket) sslsocketfactory.createSocket(ip, port);
+            SSLSocket sock = (SSLSocket) context.getSocketFactory().createSocket(ip, port);
 
 
             //소켓 설정
