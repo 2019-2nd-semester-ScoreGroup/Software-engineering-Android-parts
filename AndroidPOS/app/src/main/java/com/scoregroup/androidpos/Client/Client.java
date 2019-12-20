@@ -6,6 +6,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 public class Client implements Runnable {
     public final static String Diff="_";
     private String ip;
@@ -13,7 +16,7 @@ public class Client implements Runnable {
     private ReceiveListener callback;
     private boolean isReceived = false;
     private boolean alreadySent = false;
-    private Socket sock;
+    private SSLSocket sock;
     private String msg;
     private String data;
 
@@ -67,7 +70,8 @@ public class Client implements Runnable {
             //소켓 설정
             Log.i("ju", "런어블 실행" + " " + ip + ":" + port);
             InetSocketAddress sock_address = new InetSocketAddress(ip, port); // 소켓 설정
-            sock = new Socket();
+            SSLSocket sock =
+                    (SSLSocket)SSLSocketFactory.getDefault().createSocket(ip, port);
             sock.connect(sock_address, 2000);
 
             //스트림 설정
